@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/nav_users"
+        android:title="Usuaris"
+        android:icon="@drawable/ic_users_white"/>
+    <item android:id="@+id/nav_orders"
+        android:title="Ordres"
+        android:icon="@drawable/ic_orders_white"/>
+ </menu>

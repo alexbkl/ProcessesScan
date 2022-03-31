@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="12dp"
+    android:layout_marginLeft="16dp"
+    android:backgroundTint="#C9252525"
+    android:background="#C9252525"
+    android:layout_marginRight="16dp"
+    android:id="@+id/card_pertanyaan"
+    app:cardBackgroundColor="#FFFF"
+    app:cardCornerRadius="8dp"
+    app:contentPadding="10dp"
+    android:foreground="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/ordersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/orderTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Nº ordre"
+                    android:textColor="@color/white"
+                    android:textSize="25sp" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_below="@id/orderTv"
+                    android:layout_height="wrap_content">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/corteLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/layout_border"
+                        android:padding="5dp"
+                        android:visibility="gone"
+
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/corteTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Corte: "
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints" />
+
+
+                        <TextView
+                            android:id="@+id/corteNameTv"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="5dp"
+                            android:text="Joze Luí Miguè Alezàndeh"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteX="0dp" />
+
+                        <TextView
+                            android:id="@+id/corteDateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingTop="15dp"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cajonesLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/corteLayout"
+
+                        android:layout_marginTop="-1dp"
+                        android:background="@drawable/layout_border"
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/cajonesTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Cajones: "
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+
+                            />
+
+
+                        <TextView
+                            android:id="@+id/cajonesNameTv"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="5dp"
+                            android:text="Joze Luí Miguè Alezàndeh"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteX="0dp" />
+
+                        <TextView
+                            android:id="@+id/cajonesDateTv"
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingTop="15dp"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/espejosLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/cajonesLayout"
+                        android:layout_marginTop="-1dp"
+                        android:background="@drawable/layout_border"
+                        android:padding="5dp"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/espejosTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Espejos: "
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+
+                            />
+
+
+                        <TextView
+                            android:id="@+id/espejosNameTv"
+
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="15dp"
+                            android:paddingBottom="5dp"
+                            android:text="Joze Luí Miguè Alezàndeh"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteX="0dp" />
+
+                        <TextView
+                            android:id="@+id/espejosDateTv"
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingTop="15dp"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/uneroLayout"                    android:padding="5dp"
+                    android:visibility="gone"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/espejosLayout"
+                    android:layout_marginTop="-1dp"
+                    android:background="@drawable/layout_border"                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/uneroTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Unero: "
+                        android:textColor="@color/white"
+                        tools:ignore="MissingConstraints"
+
+                        />
+
+
+                    <TextView
+                        android:paddingTop="15dp"
+
+                        android:id="@+id/uneroNameTv"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Joze Luí Miguè Alezàndeh"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:id="@+id/uneroDateTv"
+                        android:paddingTop="15dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="23.03.2026\n23.03.2027"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/canteadoLayout"
+                    android:layout_width="match_parent"                    android:padding="5dp"
+                    android:visibility="gone"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/uneroLayout"
+                    android:layout_marginTop="-1dp"
+                    android:background="@drawable/layout_border"                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/canteadoTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Canteado: "
+                        android:textColor="@color/white"
+                        tools:ignore="MissingConstraints"
+
+                        />
+
+
+                    <TextView
+                        android:paddingTop="15dp"
+                        android:id="@+id/canteadoNameTv"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Joze Luí Miguè Alezàndeh"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:id="@+id/canteadoDateTv"
+                        android:paddingTop="15dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="23.03.2026\n23.03.2027"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/mecanizadoLayout"                    android:padding="5dp"
+                    android:visibility="gone"
+
+                    android:layout_below="@id/canteadoLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-1dp"
+                    android:background="@drawable/layout_border"                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/mecanizadoTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="Mecanizado: "
+                        android:textColor="@color/white"
+                        tools:ignore="MissingConstraints"
+
+                        />
+
+
+                    <TextView
+                        android:paddingTop="15dp"
+                        android:id="@+id/mecanizadoNameTv"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingStart="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Joze Luí Miguè Alezàndeh"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:id="@+id/mecanizadoDateTv"
+                        android:paddingTop="15dp"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="23.03.2026\n23.03.2027"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lacaLayout"
+                    android:layout_width="match_parent"                    android:padding="5dp"
+                    android:visibility="gone"
+
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/mecanizadoLayout"
+                    android:layout_marginTop="-1dp"
+                    android:background="@drawable/layout_border"                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/lacaTv"
+                        android:text="Laca: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/white"
+                        tools:ignore="MissingConstraints"
+
+                        />
+
+
+                    <TextView
+                        android:paddingTop="15dp"
+
+                        android:id="@+id/lacaNameTv"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="10dp"
+                        android:text="Joze Luí Miguè Alezàndeh"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:id="@+id/lacaDateTv"
+                        android:layout_width="wrap_content"
+                        android:paddingTop="15dp"
+
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="23.03.2026\n23.03.2027"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/montajeLayout"
+                    android:layout_below="@id/lacaLayout"                    android:padding="5dp"
+                    android:visibility="gone"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-1dp"
+                    android:background="@drawable/layout_border"                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/montajeTv"
+                        android:text="Montaje: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:textColor="@color/white"
+                        tools:ignore="MissingConstraints"
+
+                        />
+
+
+                    <TextView
+                        android:paddingTop="10dp"
+
+                        android:id="@+id/montajeNameTv"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:paddingLeft="10dp"
+                        android:paddingBottom="5dp"
+                        android:text="Joze Luí Miguè Alezàndeh"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0"
+                        tools:ignore="MissingConstraints"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <TextView
+                        android:id="@+id/montajeDateTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_bold"
+                        android:text="23.03.2026\n23.03.2027"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:paddingTop="10dp"
+
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="MissingConstraints" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/embalajeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_below="@id/montajeLayout"
+                        android:layout_marginTop="-1dp"
+                        android:background="@drawable/layout_border"
+                        android:padding="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/embalajeTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="Embalaje: "
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+
+                            />
+
+
+                        <TextView
+                            android:paddingTop="15dp"
+
+                            android:id="@+id/embalajeNameTv"
+                            android:layout_width="150dp"
+                            android:paddingBottom="5dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:paddingLeft="10dp"
+                            android:text="Joze Luí Miguè Alezàndeh"
+                            android:textColor="@color/white"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="0.0"
+                            tools:ignore="MissingConstraints"
+                            tools:layout_editor_absoluteX="0dp" />
+
+                        <TextView
+                            android:paddingTop="15dp"
+                            android:id="@+id/embalajeDateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/transporteLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+
+                        android:layout_below="@id/embalajeLayout"
+                        android:layout_marginTop="-1dp"
+                        android:background="@drawable/layout_border"
+                        android:padding="5dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="MissingConstraints">
+
+                            <TextView
+                                android:id="@+id/transporteTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="Montaje: "
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+
+                                />
+
+
+                            <TextView
+                                android:id="@+id/transporteNameTv"
+
+                                android:layout_width="150dp"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:paddingLeft="10dp"
+                                android:paddingTop="15dp"
+                                android:paddingBottom="5dp"
+                                android:text="Joze Luí Miguè Alezàndeh"
+                                android:textColor="@color/white"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="0.0"
+                                tools:ignore="MissingConstraints"
+                                tools:layout_editor_absoluteX="0dp" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/transporteDateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+
+                            android:paddingTop="15dp"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/adminLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+
+                            android:layout_below="@id/transporteLayout"
+                            android:layout_marginTop="-1dp"
+                            android:background="@drawable/layout_border"
+                            android:padding="5dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                        <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                tools:ignore="MissingConstraints">
+
+                            <TextView
+                                    android:id="@+id/adminTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:text="Administrador: "
+                                    android:textColor="@color/white"
+                                    tools:ignore="MissingConstraints"
+
+                            />
+
+
+                            <TextView
+                                    android:id="@+id/adminNameTv"
+
+                                    android:layout_width="150dp"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_bold"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="15dp"
+                                    android:paddingBottom="5dp"
+                                    android:text="Joze Luí Miguè Alezàndeh"
+                                    android:textColor="@color/white"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintVertical_bias="0.0"
+                                    tools:ignore="MissingConstraints"
+                                    tools:layout_editor_absoluteX="0dp" />
+                        </RelativeLayout>
+
+                        <TextView
+                                android:id="@+id/adminDateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+
+                                android:paddingTop="15dp"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                tools:ignore="MissingConstraints" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </RelativeLayout>
+
+                <ImageButton
+                    android:id="@+id/deleteBtn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_delete" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

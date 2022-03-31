@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "88093443045",
+    "project_id": "fabrica-vidrebany",
+    "storage_bucket": "fabrica-vidrebany.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88093443045:android:8ffe0b1cf343fa9ebde50c",
+        "android_client_info": {
+          "package_name": "com.android.vidrebany"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88093443045-ejolve9o5penojarmet8r2sbfdfrn2q9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.vidrebany",
+            "certificate_hash": "f51848020065c967f6e01711f6e29502d35d8559"
+          }
+        },
+        {
+          "client_id": "88093443045-at96bhsh15mc45ooubnsm8vnoafreocs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiaE4E3v2DKtem7yd4GKcNvKjfRq0fEo4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88093443045-at96bhsh15mc45ooubnsm8vnoafreocs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

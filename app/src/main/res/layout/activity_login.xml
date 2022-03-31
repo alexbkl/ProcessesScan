@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".LoginActivity">
+    <!--TextView: Label Login-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Inici de sessió"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:layout_centerHorizontal="true"
+        android:paddingTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_vidrebany" />
+    <!--EditText: Input Email-->
+    <!--EditText: Input Password-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/passwordTIL"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:background="@color/white"
+            android:id="@+id/passwordEt"
+            android:inputType="textPassword"
+            android:hint="Contrasenya"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints="password" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <!--Button: Register User-->
+    <Button
+        android:id="@+id/loginBtn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordTIL"
+        android:layout_centerHorizontal="true"
+        android:text="INICIAR SESSIÓ" />
+
+    <!--TextView: Show dialog to recover password-->
+
+
+
+
+</RelativeLayout>

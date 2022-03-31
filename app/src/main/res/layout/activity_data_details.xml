@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent"
+    tools:context=".DataDetailsActivity">
+
+
+    <TextView
+        android:id="@+id/dateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Data"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/nomTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dateTv"
+        android:text="Nom: "
+        android:textSize="30sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/nameTv"
+        android:layout_toEndOf="@+id/nomTv"
+        android:layout_below="@+id/dateTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="30sp"
+        />
+    <TextView
+        android:id="@+id/procTv"
+        android:layout_below="@+id/nomTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Procès: "
+        android:textSize="30sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/processTv"
+        android:layout_toEndOf="@+id/procTv"
+        android:layout_below="@+id/nomTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="30sp"
+        />
+
+    <TextView
+        android:id="@+id/numberTv"
+        android:layout_below="@id/procTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:text="Número"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="30dp"
+        android:id="@+id/detailsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/numberTv" />
+
+
+
+
+</RelativeLayout>

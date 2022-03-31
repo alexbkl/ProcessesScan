@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   android:layout_marginTop="12dp"
+                                   android:layout_marginLeft="16dp"
+                                   android:backgroundTint="#C9252525"
+                                   android:background="#C9252525"
+                                   android:layout_marginRight="16dp"
+                                   android:id="@+id/card_pertanyaan"
+                                   app:cardBackgroundColor="#FFFF"
+                                   app:cardCornerRadius="8dp"
+                                   app:contentPadding="10dp"
+                                   android:foreground="?selectableItemBackground"
+                                   android:clickable="true"
+                                   android:focusable="true"
+>
+
+
+    <LinearLayout
+            android:id="@+id/ordersLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+
+            <TextView
+                    android:id="@+id/codeTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/processTv"
+                    android:text="740"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+            <TextView
+                    android:id="@+id/startedTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:layout_below="@+id/codeTv"
+                    android:text="COMENÇAT: "
+                    android:textSize="20sp"
+            />
+
+            <TextView
+                    android:id="@+id/endedTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="@string/acabat"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="20sp"
+            />
+
+
+        </LinearLayout>
+        <!--Create a delete imagebutton-->
+        <ImageButton
+                android:id="@+id/deleteBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_delete"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/eliminar_proc_s_a_una_data"/>
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>
