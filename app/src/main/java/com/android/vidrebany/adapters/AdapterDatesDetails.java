@@ -41,9 +41,9 @@ public class AdapterDatesDetails extends FirebaseRecyclerAdapter<ModelDatesDetai
     @Override
     protected void onBindViewHolder(@NonNull MyHolder myHolder, int i, @NonNull ModelDatesDetails modelDatesDetails) {
 
-        String code = "Codi: "+modelDatesDetails.getCode(),
+        String code = modelDatesDetails.getCode(),
                 temp1 = modelDatesDetails.getStarted(),
-                temp3 = modelDatesDetails.getEnded(), codeNumber = "s/n";
+                temp3 = modelDatesDetails.getEnded();
         if (temp1 == null) {
             String temp2 = "a un altre dia o sense començar";
             String temp4 = temp3.substring(temp3.lastIndexOf(" ")+1);
@@ -60,7 +60,7 @@ public class AdapterDatesDetails extends FirebaseRecyclerAdapter<ModelDatesDetai
             } else {
                 puntuacio = "s/p";
             }
-            codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
+            String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
 
 
             myHolder.codeTv.setText(codeNumber);
@@ -69,6 +69,17 @@ public class AdapterDatesDetails extends FirebaseRecyclerAdapter<ModelDatesDetai
             String temp4 = "a un altre dia o sense acabar";
             String started = "Començat: "+temp2,
                     ended = "Acabat: "+temp4;
+
+            String[] codeparts = code.split("X");
+
+            String puntuacio;
+            if (isValidIndex(codeparts, 1)) {
+                puntuacio = codeparts[1];
+            } else {
+                puntuacio = "s/p";
+            }
+            String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
+
             myHolder.startedTv.setText(started);
             myHolder.endedTv.setText(ended);
             myHolder.codeTv.setText(codeNumber);
@@ -79,9 +90,23 @@ public class AdapterDatesDetails extends FirebaseRecyclerAdapter<ModelDatesDetai
             String temp4 = temp3.substring(temp3.lastIndexOf(" ")+1);
             String started = "Començat: \n"+temp2,
                     ended = "Acabat: \n"+temp4;
+            String[] codeparts = code.split("X");
+
+            String puntuacio;
+            if (isValidIndex(codeparts, 1)) {
+                puntuacio = codeparts[1];
+            } else {
+                puntuacio = "s/p";
+            }
+
+
+
+            String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
+
+
             myHolder.startedTv.setText(started);
             myHolder.endedTv.setText(ended);
-            myHolder.codeTv.setText(code);
+            myHolder.codeTv.setText(codeNumber);
 
 
 
