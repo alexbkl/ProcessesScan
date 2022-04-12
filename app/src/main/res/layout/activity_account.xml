@@ -7,26 +7,33 @@
     android:layout_height="match_parent"
     tools:context=".AccountActivity">
 
-    <TextView
-        android:id="@+id/nameTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="NOM"
-        android:padding="10dp"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#E4171212"
+                app:layout_scrollFlags="scroll|enterAlways|snap" />
+
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
         android:id="@+id/errorTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/nameTv"
+        android:layout_below="@+id/appbar"
         android:layout_centerHorizontal="true"
         android:background="#FFE0E0"
         android:padding="10dp"
+        android:paddingTop="10dp"
         android:text="Error: el procés existeix o\n no s'ha complert l'anterior"
         android:textAlignment="center"
         android:textSize="15sp"
@@ -35,6 +42,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--TextView to display user name-->
+    <TextView
+            android:id="@+id/nameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/errorTv"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:text="Nom d'usuari"
+            android:background="@drawable/layout_border_name"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     <Button
         android:id="@+id/cancelBtn"
         android:layout_width="wrap_content"
@@ -104,14 +127,14 @@
  />
 
     <TextView
-        android:id="@+id/endedTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/startedTv"
-        android:paddingLeft="50dp"
-        android:text="ACABAT: "
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            android:id="@+id/endedTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/startedTv"
+            android:paddingLeft="50dp"
+            android:text="ACABAT: "
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/numberTv"

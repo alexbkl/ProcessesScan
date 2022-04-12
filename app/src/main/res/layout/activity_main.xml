@@ -5,35 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UsersActivity">
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/titleTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:text="Usuaris"
-        android:textSize="30sp" />
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:paddingTop="30dp"
-        android:id="@+id/usersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTv" />
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#E4171212"
+                app:layout_scrollFlags="scroll|enterAlways|snap" />
 
-    <Button
-        android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/usersRecyclerView"
-        android:layout_margin="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="#CAF9FF"
-        android:padding="10dp"
-        android:text="Afegir usuari nou" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/usersRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+               />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
 
 </RelativeLayout>
