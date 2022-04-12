@@ -60,7 +60,7 @@ public class AdapterDatesDetails extends FirebaseRecyclerAdapter<ModelDatesDetai
             } else {
                 puntuacio = "s/p";
             }
-            String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
+            String codeNumber = "CODI: "+codeparts[0]+"\n PUNTUACIÓ: "+puntuacio;
 
 
             myHolder.codeTv.setText(codeNumber);

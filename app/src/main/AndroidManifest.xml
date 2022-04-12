@@ -15,9 +15,6 @@
             android:name=".ProcessesActivity"
             android:exported="false" />
         <activity
-            android:name=".OrdersActivity"
-            android:exported="false" />
-        <activity
             android:name=".DataDetailsActivity"
             android:exported="false" />
         <activity
@@ -31,10 +28,6 @@
         </activity>
         <activity
             android:name=".AccountActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".AdminUsersActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

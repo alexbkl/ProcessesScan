@@ -4,6 +4,7 @@ import static android.text.TextUtils.isEmpty;
 
 import android.os.Bundle;
 
+import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -83,76 +84,6 @@ public class AdminOrdersFragment extends Fragment {
 
                     ModelOrders modelOrders = ds.getValue(ModelOrders.class);
                     assert modelOrders != null;
-
-
-
-
-
-
-                    final String[] inded = {""};
-
-                    //path of all posts
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("codes");
-                    //get all data from this ref
-                    ref.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            int n = 0;
-
-                            for (DataSnapshot ds: snapshot.getChildren()) {
-
-                                if (ds.hasChild("process")) {
-                                    if (ds.child("process").hasChild("Corte")) {
-                                        if (ds.child("process").child("Corte").child("ended").getValue() != null) {
-                                            String ended = Objects.requireNonNull(ds.child("process").child("Corte").child("ended").getValue()).toString();
-                                            if (!isEmpty(ended)) {
-                                                System.out.println("ended:" +ended);
-                                                System.out.println("indid:"+inded[n]);
-                                                n++;
-
-
-                                            } else {
-                                                //          System.out.println("ended: a un altre dia o sense acabar");
-                                            }
-                                        }
-
-
-
-                                        //  hashMap.put("corteDateTv", Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString());
-                                        //  System.out.println("started:" + Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString());
-                                      //  corteDateTv = Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString();
-
-                                    }
-
-                                    //     String started = Objects.requireNonNull(snapshot.child("process").child("Corte").child("started").getValue()).toString();
-                                    //     String ended = Objects.requireNonNull(dsa.child("Corte").child("ended").getValue()).toString();
-                                    //    System.out.println("Started: "+started+"\nEnded: "+ended);
-
-
-                                }
-
-
-
-
-
-                            }
-                            //   adapterOrders.setProcessMap(hashMap);
-                            //  adapterOrders.notifyDataSetChanged();
-                            System.out.println("inded:" + Arrays.toString(inded));
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            //in case of error
-
-                        }
-                    });
-
-
-
-
-
                     ordersList.add(modelOrders);
                     adapterOrders = new AdapterOrders(getActivity(), ordersList, ordersRecyclerView);
                     adapterOrders.setHasStableIds(true);
@@ -162,7 +93,7 @@ public class AdminOrdersFragment extends Fragment {
                         if (ds.child("process").hasChild("Corte")) {
                             Object ended = ds.child("process").child("Corte").child("ended").getValue();
                             if (ended != null) {
-                                System.out.println("ended:" +ended.toString());
+                                System.out.println("ended:" + ended);
 
 
 
@@ -172,7 +103,7 @@ public class AdminOrdersFragment extends Fragment {
 
 
                             //  hashMap.put("corteDateTv", Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString());
-                            System.out.println("started:" + Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString());
+                            System.out.println("started:" + Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()));
                    //         corteDateTv = Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString();
 
                         }
@@ -221,6 +152,8 @@ public class AdminOrdersFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 if (!isEmpty(s)) {
                     searchOrders(s);
+                } else {
+                    loadOrders();
                 }
                 return false;
             }
@@ -235,51 +168,7 @@ public class AdminOrdersFragment extends Fragment {
     }
 
     private void searchOrders(String s) {
-
         //path of all posts
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("codes");
-        //get all data from this ref
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ds: snapshot.getChildren()) {
-                    if (ds.hasChild("process")) {
-                        if (ds.child("process").hasChild("Corte")) {
-                            Object ended = ds.child("process").child("Corte").child("ended").getValue();
-                            if (ended != null) {
-                                System.out.println("ended:" +ended.toString());
-
-
-                            } else {
-                                System.out.println("ended: a un altre dia o sense acabar");
-                            }
-                            System.out.println("started:" + Objects.requireNonNull(ds.child("process").child("Corte").child("started").getValue()).toString());
-
-                        }
-
-                            //     String started = Objects.requireNonNull(snapshot.child("process").child("Corte").child("started").getValue()).toString();
-                            //     String ended = Objects.requireNonNull(dsa.child("Corte").child("ended").getValue()).toString();
-                            //    System.out.println("Started: "+started+"\nEnded: "+ended);
-
-
-                    }
-
-
-
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //in case of error
-
-            }
-        });
-
-        /*
-        //path of all orders
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("codes");
         //get all data from this ref
         ref.addValueEventListener(new ValueEventListener() {
@@ -288,16 +177,139 @@ public class AdminOrdersFragment extends Fragment {
                 ordersList.clear();
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     ModelOrders modelOrders = ds.getValue(ModelOrders.class);
-
                     assert modelOrders != null;
-                    if(modelOrders.getCode().toLowerCase().contains(s.toLowerCase())
-                       //     || modelOrders.getpDescr().toLowerCase().contains(s.toLowerCase().toLowerCase()
-                    ) {
-                        ordersList.add(modelOrders);
+                    long adminStartedLong = modelOrders.getAdminStarted();
+                    long adminEndedLong = modelOrders.getAdminEnded();
+                    long corteStartedLong = modelOrders.getCorteStarted();
+                    long corteEndedLong = modelOrders.getCorteEnded();
+                    long canteadoStartedLong = modelOrders.getCanteadoStarted();
+                    long canteadoEndedLong = modelOrders.getCanteadoEnded();
+                    long mecanizadoStartedLong = modelOrders.getMecanizadoStarted();
+                    long mecanizadoEndedLong = modelOrders.getMecanizadoEnded();
+                    long lacaStartedLong = modelOrders.getLacaStarted();
+                    long lacaEndedLong = modelOrders.getLacaEnded();
+                    long montajeStartedLong = modelOrders.getMontajeStarted();
+                    long montajeEndedLong = modelOrders.getMontajeEnded();
+                    long embalajeStartedLong = modelOrders.getEmbalajeStarted();
+                    long embalajeEndedLong = modelOrders.getEmbalajeEnded();
+                    long transporteStartedLong = modelOrders.getTransporteStarted();
+                    long transporteEndedLong = modelOrders.getTransporteEnded();
+                    long cajonesStartedLong = modelOrders.getCajonesStarted();
+                    long cajonesEndedLong = modelOrders.getCajonesEnded();
+                    long espejosStartedLong = modelOrders.getEspejosStarted();
+                    long espejosEndedLong = modelOrders.getEspejosEnded();
+                    long uneroStartedLong = modelOrders.getUneroStarted();
+                    long uneroEndedLong = modelOrders.getUneroEnded();
 
+                    Date adminStartedDate = new Date(adminStartedLong);
+                    Date adminEndedDate = new Date(adminEndedLong);
+                    Date corteStartedDate = new Date(corteStartedLong);
+                    Date corteEndedDate = new Date(corteEndedLong);
+                    Date canteadoStartedDate = new Date(canteadoStartedLong);
+                    Date canteadoEndedDate = new Date(canteadoEndedLong);
+                    Date mecanizadoStartedDate = new Date(mecanizadoStartedLong);
+                    Date mecanizadoEndedDate = new Date(mecanizadoEndedLong);
+                    Date lacaStartedDate = new Date(lacaStartedLong);
+                    Date lacaEndedDate = new Date(lacaEndedLong);
+                    Date montajeStartedDate = new Date(montajeStartedLong);
+                    Date montajeEndedDate = new Date(montajeEndedLong);
+                    Date embalajeStartedDate = new Date(embalajeStartedLong);
+                    Date embalajeEndedDate = new Date(embalajeEndedLong);
+                    Date transporteStartedDate = new Date(transporteStartedLong);
+                    Date transporteEndedDate = new Date(transporteEndedLong);
+                    Date cajonesStartedDate = new Date(cajonesStartedLong);
+                    Date cajonesEndedDate = new Date(cajonesEndedLong);
+                    Date espejosStartedDate = new Date(espejosStartedLong);
+                    Date espejosEndedDate = new Date(espejosEndedLong);
+                    Date uneroStartedDate = new Date(uneroStartedLong);
+                    Date uneroEndedDate = new Date(uneroEndedLong);
+
+                    DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
+
+                    String adminStarted = df.format(adminStartedDate);
+                    String adminEnded = df.format(adminEndedDate);
+                    String corteStarted = df.format(corteStartedDate);
+                    String corteEnded = df.format(corteEndedDate);
+                    String canteadoStarted = df.format(canteadoStartedDate);
+                    String canteadoEnded = df.format(canteadoEndedDate);
+                    String mecanizadoStarted = df.format(mecanizadoStartedDate);
+                    String mecanizadoEnded = df.format(mecanizadoEndedDate);
+                    String lacaStarted = df.format(lacaStartedDate);
+                    String lacaEnded = df.format(lacaEndedDate);
+                    String montajeStarted = df.format(montajeStartedDate);
+                    String montajeEnded = df.format(montajeEndedDate);
+                    String embalajeStarted = df.format(embalajeStartedDate);
+                    String embalajeEnded = df.format(embalajeEndedDate);
+                    String transporteStarted = df.format(transporteStartedDate);
+                    String transporteEnded = df.format(transporteEndedDate);
+                    String cajonesStarted = df.format(cajonesStartedDate);
+                    String cajonesEnded = df.format(cajonesEndedDate);
+                    String espejosStarted = df.format(espejosStartedDate);
+                    String espejosEnded = df.format(espejosEndedDate);
+                    String uneroStarted = df.format(uneroStartedDate);
+                    String uneroEnded = df.format(uneroEndedDate);
+
+
+
+                List<String> list = new ArrayList<>();
+                List<String> repeating = new ArrayList<>();
+                List<String> nonRepeating = new ArrayList<>();
+                list.add(modelOrders.getCode());
+                list.add(modelOrders.getAdminUser());
+                list.add(modelOrders.getCorteUser());
+                list.add(modelOrders.getCanteadoUser());
+                list.add(modelOrders.getMecanizadoUser());
+                list.add(modelOrders.getLacaUser());
+                list.add(modelOrders.getMontajeUser());
+                list.add(modelOrders.getEmbalajeUser());
+                list.add(modelOrders.getTransporteUser());
+                list.add(modelOrders.getCajonesUser());
+                list.add(modelOrders.getEspejosUser());
+                list.add(modelOrders.getUneroUser());
+                list.add(adminStarted);
+                list.add(adminEnded);
+                list.add(corteStarted);
+                list.add(corteEnded);
+                list.add(canteadoStarted);
+                list.add(canteadoEnded);
+                list.add(mecanizadoStarted);
+                list.add(mecanizadoEnded);
+                list.add(lacaStarted);
+                list.add(lacaEnded);
+                list.add(montajeStarted);
+                list.add(montajeEnded);
+                list.add(embalajeStarted);
+                list.add(embalajeEnded);
+                list.add(transporteStarted);
+                list.add(transporteEnded);
+                list.add(cajonesStarted);
+                list.add(cajonesEnded);
+                list.add(espejosStarted);
+                list.add(espejosEnded);
+                list.add(uneroStarted);
+                list.add(uneroEnded);
+
+                for (String i: list) {
+                    if (!repeating.contains(i)) {
+                        if (nonRepeating.contains(i)) {
+                            nonRepeating.remove(i);
+                            repeating.add(i);
+                        } else {
+                            nonRepeating.add(i);
+                        }
                     }
+                }
+
+                    for (String value : nonRepeating) {
+                        if (value != null) {
+                            if (value.toLowerCase().contains(s.toLowerCase())) {
+                                ordersList.add(modelOrders);
+                            }
+                        }
+                    }
+
                     //adapter
-                    adapterOrders = new AdapterOrders(options);
+                    adapterOrders = new AdapterOrders(getActivity(), ordersList, ordersRecyclerView);
                     //set adapter to recyclerview
                     ordersRecyclerView.setAdapter(adapterOrders);
                 }
@@ -308,7 +320,8 @@ public class AdminOrdersFragment extends Fragment {
                 //in case of error
                 Toast.makeText(getActivity(), ""+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });*/
+        });
+
 
     }
 

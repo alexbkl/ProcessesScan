@@ -1,6 +1,7 @@
 package com.android.vidrebany.adapters;
 
 import static android.text.TextUtils.isEmpty;
+import static com.android.vidrebany.AccountActivity.isValidIndex;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -334,12 +335,24 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
 
 
         String code = ordersList.get(position).getCode();
-        holder.order.setText(code);
+
+        String[] codeparts = code.split("X");
+
+        String puntuacio;
+        if (isValidIndex(codeparts, 1)) {
+            puntuacio = codeparts[1];
+        } else {
+            puntuacio = "s/p";
+        }
+        String codeNumber = "CODI: "+codeparts[0]+"\n PUNTUACIÓ: "+puntuacio;
+
+
+        holder.order.setText(codeNumber);
 
 
 
 
-        holder.ordersLayout.setOnClickListener(new View.OnClickListener() {
+   /*     holder.ordersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, ProcessesActivity.class);
@@ -347,7 +360,7 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
                 context.startActivity(intent);
             }
         });
-
+*/
         holder.deleteBtn.setOnClickListener(view -> {
             new AlertDialog.Builder(context)
                     .setTitle("Eliminar ordre")
@@ -411,6 +424,9 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             espejosLayout = itemView.findViewById(R.id.espejosLayout);
             mecanizadoLayout = itemView.findViewById(R.id.mecanizadoLayout);
             lacaLayout = itemView.findViewById(R.id.lacaLayout);
+            lacaTv = itemView.findViewById(R.id.lacaTv);
+            lacaNameTv = itemView.findViewById(R.id.lacaNameTv);
+            lacaDateTv = itemView.findViewById(R.id.lacaDateTv);
             montajeLayout = itemView.findViewById(R.id.montajeLayout);
             embalajeLayout = itemView.findViewById(R.id.embalajeLayout);
             transporteLayout = itemView.findViewById(R.id.transporteLayout);

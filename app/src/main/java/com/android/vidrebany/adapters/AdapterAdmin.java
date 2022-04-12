@@ -17,6 +17,8 @@ import com.android.vidrebany.models.ModelUsers;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import static com.android.vidrebany.AccountActivity.isValidIndex;
+
 public class AdapterAdmin extends FirebaseRecyclerAdapter<ModelUsers, AdapterAdmin.MyHolder> {
 
     private Context context;
@@ -26,7 +28,19 @@ public class AdapterAdmin extends FirebaseRecyclerAdapter<ModelUsers, AdapterAdm
     @Override
     protected void onBindViewHolder(@NonNull MyHolder myHolder, int i, @NonNull ModelUsers modelUsers) {
 
-        String code = "Codi: "+modelUsers.getCode();
+        String codeRaw = modelUsers.getCode();
+
+        String[] codeparts = codeRaw.split("X");
+
+        String puntuacio;
+        if (isValidIndex(codeparts, 1)) {
+            puntuacio = codeparts[1];
+        } else {
+            puntuacio = "s/p";
+        }
+        String code = "CODI: "+codeparts[0]+"\n PUNTUACIÓ: "+puntuacio;
+
+
         String process = "Procès: "+modelUsers.getProcess();
 
         myHolder.name.setText(modelUsers.getName());

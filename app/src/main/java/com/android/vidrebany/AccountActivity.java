@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +33,7 @@ public class AccountActivity extends AppCompatActivity {
     private DatabaseReference dr;
     TextView codeTv, processTv, startedTv, nameTv, endedTv, numberTv, errorTv;
     Button scanBtn, cancelBtn;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,14 @@ public class AccountActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_account);
+
+        toolbar = findViewById(R.id.toolbar_main);
+
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Compte");
+
         codeTv = findViewById(R.id.codeTv);
         processTv = findViewById(R.id.processTv);
         startedTv = findViewById(R.id.startedTv);
@@ -88,7 +98,13 @@ public class AccountActivity extends AppCompatActivity {
     private void setContent(String name, String process, String number){
         errorTv.setVisibility(View.GONE);
         String processState = "PROCÈS: "+process;
-
+        String currentProcess = process.toLowerCase();
+        boolean fastProcesses = !currentProcess.equals("corte") &&
+                !currentProcess.equals("admin") &&
+                !currentProcess.equals("canteado") &&
+                !currentProcess.equals("mecanizado") &&
+                !currentProcess.equals("laca") &&
+                !currentProcess.equals("embalaje");
         dr = FirebaseDatabase.getInstance().getReference("users").child(number);
 
         dr.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -116,10 +132,14 @@ public class AccountActivity extends AppCompatActivity {
 
 
                             }
+                            String endedOn = "FINALITZAT: sense finalitzar";
+                            if (!fastProcesses) {
+                                endedOn = "";
+                            } else {
+                                cancelBtn.setVisibility(View.VISIBLE);
+                            }
 
 
-
-                            cancelBtn.setVisibility(View.VISIBLE);
                             cancelBtn.setOnClickListener(view -> cancelOrder(barcode, process, number));
                         }
 
@@ -135,7 +155,12 @@ public class AccountActivity extends AppCompatActivity {
                     String startedOn = "COMENÇAT: sense començar";
                     startedTv.setText(startedOn);
                 }
-                String endedOn = "ACABAT: sense acabar";
+                String endedOn = "FINALITZAT: sense finalitzar";
+                if (!fastProcesses) {
+                    endedOn = "";
+                } else {
+                    endedOn = "ACABAT: sense acabar";
+                }
 
                 nameTv.setText(name);
 
@@ -194,8 +219,13 @@ public class AccountActivity extends AppCompatActivity {
     }
 
     private void endProcess(String process, String code) {
-
-
+        String currentProcess = process.toLowerCase();
+        boolean fastProcesses = !currentProcess.equals("corte") &&
+                !currentProcess.equals("admin") &&
+                !currentProcess.equals("canteado") &&
+                !currentProcess.equals("mecanizado") &&
+                !currentProcess.equals("laca") &&
+                !currentProcess.equals("embalaje");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy-HH:mm", Locale.GERMANY);
         String currentDateAndTime = sdf.format(new Date());
@@ -212,8 +242,14 @@ public class AccountActivity extends AppCompatActivity {
         } else {
             puntuacio = "s/p";
         }
+        String endedOn = "FINALITZAT: sense finalitzar";
+        if (!fastProcesses) {
+            endedOn = "";
+        } else {
+            endedOn = "ACABAT: \n"+currentDateAndTime;
+        }
+
         String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
-        String endedOn = "ACABAT: \n"+currentDateAndTime;
         String number = numberTv.getText().toString();
 
 
@@ -251,7 +287,13 @@ public class AccountActivity extends AppCompatActivity {
     private void currentProcess(String code,
                                 String process, String user
                                 ) {
-
+        String currentProcess = process.toLowerCase();
+        boolean fastProcesses = !currentProcess.equals("corte") &&
+                !currentProcess.equals("admin") &&
+                !currentProcess.equals("canteado") &&
+                !currentProcess.equals("mecanizado") &&
+                !currentProcess.equals("laca") &&
+                !currentProcess.equals("embalaje");
         errorTv.setVisibility(View.GONE);
 
 
@@ -272,11 +314,18 @@ public class AccountActivity extends AppCompatActivity {
         }
         String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
         String startedOn = "COMENÇAT: \n"+currentDateAndTime;
-        String endedOn = "ACABAT: \nsense acabar";
+
+        String endedOn;
+        if (!fastProcesses) {
+            endedOn = "";
+        } else {
+            endedOn = "ACABAT: sense acabar";
+            cancelBtn.setVisibility(View.VISIBLE);
+        }
+
         String number = numberTv.getText().toString();
 
 
-        cancelBtn.setVisibility(View.VISIBLE);
         startedTv.setSingleLine(false);
         startedTv.setText(startedOn);
 
@@ -327,35 +376,38 @@ public class AccountActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                    // boolean corte = snapshot.child("corte").getValue();
                     String currentProcess = process.toLowerCase();
+                    boolean fastProcesses = !currentProcess.equals("corte") &&
+                            !currentProcess.equals("admin") &&
+                            !currentProcess.equals("canteado") &&
+                            !currentProcess.equals("mecanizado") &&
+                            !currentProcess.equals("laca") &&
+                            !currentProcess.equals("embalaje");
 
-
-                    if (currentProcess.equals("corte") && !snapshot.child("corteStarted").exists()
-                            && snapshot.child("adminEnded").exists()||
-                            currentProcess.equals("canteado") && !snapshot.child("canteadoStarted").exists()
-                            && snapshot.child("corteEnded").exists()||
-                            currentProcess.equals("mecanizado") && !snapshot.child("mecanizadoStarted").exists()
-                                    && snapshot.child("canteadoEnded").exists()||
-                            currentProcess.equals("laca") && !snapshot.child("lacaStarted").exists()
-                                    && snapshot.child("mecanizadoEnded").exists()||
+                    if (currentProcess.equals("corte") && snapshot.child("adminStarted").exists()||
+                            currentProcess.equals("canteado") && snapshot.child("corteStarted").exists() ||
+                            currentProcess.equals("mecanizado") && snapshot.child("canteadoStarted").exists() ||
+                            currentProcess.equals("laca") && snapshot.child("mecanizadoStarted").exists() ||
                             currentProcess.equals("montaje") && !snapshot.child("montajeStarted").exists()
-                                    && snapshot.child("lacaEndedEnded").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists()||
+                                    && snapshot.child("lacaStarted").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists()||
                             currentProcess.equals("montaje") && !snapshot.child("montajeStarted").exists()
-                                    && snapshot.child("mecanizadoEnded").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists()  ||
-                            currentProcess.equals("embalaje") && !snapshot.child("embalajeStarted").exists()
-                                    && snapshot.child("montajeEnded").exists()&&snapshot.child("espejosEnded").exists()||
+                                    && snapshot.child("mecanizadoStarted").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists()  ||
+                            currentProcess.equals("embalaje")
+                                    && snapshot.child("montajeEnded").exists()&&snapshot.child("espejosEnded").exists()
+                           /* ||
                             currentProcess.equals("transporte") && !snapshot.child("transporteStarted").exists()
-                                    && snapshot.child("embalajeEnded").exists()
+                                    && snapshot.child("embalajeEnded").exists()*/
                     ) {
                         currentProcess(barcode, process, name);
 
-                    } else if (snapshot.child(currentProcess+"Started").exists() && Objects.equals(Objects.requireNonNull(snapshot.child(currentProcess + "User").getValue()).toString(), nameTv.getText().toString())) {
+                    } else if (fastProcesses && snapshot.child(currentProcess+"Started").exists() && Objects.equals(Objects.requireNonNull(snapshot.child(currentProcess + "User").getValue()).toString(), nameTv.getText().toString())) {
                         endProcess(process, barcode);
-                    } else if (currentProcess.equals("admin") && !snapshot.child("adminStarted").exists()||
+
+                    } else if (currentProcess.equals("admin")||
                             currentProcess.equals("cajones") && !snapshot.child("cajonesStarted").exists()||
                             currentProcess.equals("unero") && !snapshot.child("uneroStarted").exists()||
                             currentProcess.equals("espejos") && !snapshot.child("espejosStarted").exists()) {
                         currentProcess(barcode, process, name);
-                    } else if (currentProcess.equals("admin")||currentProcess.equals("cajones")||currentProcess.equals("unero")||currentProcess.equals("espejos")) {
+                    } else if (currentProcess.equals("cajones")||currentProcess.equals("unero")||currentProcess.equals("espejos")) {
                         endProcess(process, barcode);
                     }
 
@@ -375,5 +427,11 @@ public class AccountActivity extends AppCompatActivity {
         } else {
             Toast.makeText(AccountActivity.this, "Ups! No has escanejat res", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

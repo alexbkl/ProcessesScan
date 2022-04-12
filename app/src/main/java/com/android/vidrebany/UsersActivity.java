@@ -2,6 +2,7 @@ package com.android.vidrebany;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,30 +23,32 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class UsersActivity extends AppCompatActivity {
 
     RecyclerView usersRecyclerView;
     AdapterUsers adapterUsers;
-    Button addBtn;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = findViewById(R.id.toolbar_main);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Escollir usuari:");
+
+
         usersRecyclerView = findViewById(R.id.usersRecyclerView);
-        addBtn = findViewById(R.id.addBtn);
-        addBtn.setVisibility(View.GONE);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         usersRecyclerView.setLayoutManager(layoutManager);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(UsersActivity.this, "Afegir usuari", Toast.LENGTH_SHORT).show();
-            }
-        });
+
         FirebaseRecyclerOptions<ModelUsers> options = new FirebaseRecyclerOptions.Builder<ModelUsers>()
                 .setQuery(FirebaseDatabase.getInstance().getReference().child("users"), ModelUsers.class)
                 .build();
@@ -66,6 +69,10 @@ public class UsersActivity extends AppCompatActivity {
         super.onStop();
         adapterUsers.stopListening();
     }
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }

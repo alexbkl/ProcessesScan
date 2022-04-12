@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border.xml" value="0.184375" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border_name.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_scan_border.xml" value="0.184375" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_account.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_admin.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_data_details.xml" value="0.33" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_orders.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_processes.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>

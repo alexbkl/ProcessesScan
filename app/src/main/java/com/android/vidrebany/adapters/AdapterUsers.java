@@ -15,6 +15,8 @@ import com.android.vidrebany.models.ModelUsers;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
+import static com.android.vidrebany.AccountActivity.isValidIndex;
+
 public class AdapterUsers extends FirebaseRecyclerAdapter<ModelUsers, AdapterUsers.MyHolder> {
 
 
@@ -26,7 +28,18 @@ public class AdapterUsers extends FirebaseRecyclerAdapter<ModelUsers, AdapterUse
         if (modelUsers.getCode() == null) {
             code = "sense codi actiu";
         } else {
-            code = "Codi: " + modelUsers.getCode();
+            String codeRaw = modelUsers.getCode();
+
+            String[] codeparts = codeRaw.split("X");
+
+            String puntuacio;
+            if (isValidIndex(codeparts, 1)) {
+                puntuacio = codeparts[1];
+            } else {
+                puntuacio = "s/p";
+            }
+            code = "CODI: "+codeparts[0]+"\n PUNTUACIÓ: "+puntuacio;
+
         }
 
 

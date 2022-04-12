@@ -41,6 +41,8 @@ public class AdminActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Panel administrador");
 
         //home fragment transaction (default, on start)
@@ -80,7 +82,7 @@ public class AdminActivity extends AppCompatActivity {
                             //        toolbar.setVisibility(View.GONE);
 
                             //home fragment transaction
-                            toolbar.setTitle("Usuaris"); //change actionbar title
+                            toolbar.setTitle("Dades usuaris"); //change actionbar title
                             AdminUsersFragment fragment1 = new AdminUsersFragment();
                             FragmentTransaction ft1 = getSupportFragmentManager().beginTransaction();
                             ft1.replace(R.id.content, fragment1, "");
@@ -102,4 +104,9 @@ public class AdminActivity extends AppCompatActivity {
                     return false;
                 }
             };
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }
