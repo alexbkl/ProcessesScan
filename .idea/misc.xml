@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_admin.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_adminusers.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_user_order_dates.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/fragment_admin_users.xml" value="0.1" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border.xml" value="0.184375" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border_name.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_scan_border.xml" value="0.184375" />

@@ -317,12 +317,10 @@ public class AccountActivity extends AppCompatActivity {
             endedOn = "";
             dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
             dr.child(process.toLowerCase()+"Ended").setValue(System.currentTimeMillis());
-            Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
         } else {
             endedOn = "ACABAT: sense acabar";
             cancelBtn.setVisibility(View.VISIBLE);
             dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
-            Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
         }
 
         String number = numberTv.getText().toString();
