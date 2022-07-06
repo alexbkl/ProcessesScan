@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
             fd = FirebaseDatabase.getInstance();
             dr = fd.getReference("pass");
 
-            dr.addListenerForSingleValueEvent(new ValueEventListener() {
+            dr.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     String input = passwordEt.getText().toString();
