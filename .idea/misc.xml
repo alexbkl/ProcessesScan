@@ -3,20 +3,49 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_account.xml" value="0.33" />
         <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_admin.xml" value="0.1" />
         <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_adminusers.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_orders.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_processes.xml" value="0.11666666666666667" />
         <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/activity_user_order_dates.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/fragment_admin_orders.xml" value="0.25" />
         <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/fragment_admin_users.xml" value="0.1" />
+        <entry key="..\:/Users/Alexander Baikalov/Desktop/tenp2/app/src/main/res/layout/row_users.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/Amit/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.1" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/ic_orders_white.xml" value="0.3769230769230769" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/ic_processes.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border.xml" value="0.184375" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_border_name.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/drawable/layout_scan_border.xml" value="0.184375" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_account.xml" value="0.27291666666666664" />
-        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_admin.xml" value="0.1" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_admin.xml" value="0.15" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_admin_process.xml" value="0.18" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_data_details.xml" value="0.2421875" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_process_date_details.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_processes.xml" value="0.1648148148148148" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/activity_user_order_dates.xml" value="0.2421875" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/fragment_admin_orders.xml" value="0.1648148148148148" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/fragment_admin_processes.xml" value="0.1940928270042194" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/fragment_admin_users.xml" value="0.1" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_data_details.xml" value="0.33" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_orders.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_process_dates.xml" value="0.1" />
         <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_processes.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_processes_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_user_order_dates.xml" value="0.3363914373088685" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_users.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/layout/row_users_admin.xml" value="0.365625" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/menu/menu_main.xml" value="0.16574074074074074" />
+        <entry key="..\:/Users/Amit/Desktop/VidreBany/app/src/main/res/menu/menu_nav.xml" value="0.38125" />
+        <entry key="..\:/Users/Amit/Desktop/tenp2/app/src/main/res/layout/activity_account.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/Amit/Desktop/tenp2/app/src/main/res/layout/activity_data_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/tenp2/app/src/main/res/layout/activity_user_order_dates.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/tenp2/app/src/main/res/layout/row_processes.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Amit/Desktop/tenp2/app/src/main/res/layout/row_users.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

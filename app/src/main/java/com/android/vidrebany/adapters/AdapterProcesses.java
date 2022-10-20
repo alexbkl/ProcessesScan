@@ -4,12 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.vidrebany.R;
@@ -19,29 +17,25 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 public class AdapterProcesses extends FirebaseRecyclerAdapter<ModelProcesses, AdapterProcesses.MyHolder> {
 
-    private Context context;
-    private String code;
-
     public AdapterProcesses(@NonNull FirebaseRecyclerOptions<ModelProcesses> options) {
         super(options);
     }
 
     public AdapterProcesses(FirebaseRecyclerOptions<ModelProcesses> options, String code) {
         super(options);
-        this.code = code;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull MyHolder myHolder, int i, @NonNull ModelProcesses modelProcesses) {
         String started = "Començat: "+modelProcesses.getStarted();
+        String ended;
         if (modelProcesses.getEnded() == null) {
-            String ended = "Acabat: sense acabar";
-            myHolder.endedTv.setText(ended);
+            ended = "Acabat: sense acabar";
 
         } else {
-            String ended = "Acabat: "+modelProcesses.getEnded();
-            myHolder.endedTv.setText(ended);
+            ended = "Acabat: " + modelProcesses.getEnded();
         }
+        myHolder.endedTv.setText(ended);
 
 
         myHolder.processTv.setText(modelProcesses.getProcess());
@@ -54,7 +48,7 @@ public class AdapterProcesses extends FirebaseRecyclerAdapter<ModelProcesses, Ad
     public MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_processes, parent, false);
 
-        context = parent.getContext();
+        Context context = parent.getContext();
 
         return new MyHolder(view);
 
@@ -62,9 +56,12 @@ public class AdapterProcesses extends FirebaseRecyclerAdapter<ModelProcesses, Ad
         }
 
 
-    class MyHolder extends RecyclerView.ViewHolder {
-        TextView processTv, userTv, startedTv, endedTv;
-        LinearLayout processesLayout;
+    static class MyHolder extends RecyclerView.ViewHolder {
+        final TextView processTv;
+        final TextView userTv;
+        final TextView startedTv;
+        final TextView endedTv;
+        final LinearLayout processesLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);

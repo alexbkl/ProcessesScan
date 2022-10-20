@@ -3,26 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:layout_height="match_parent"
     tools:context=".UserOrderDatesActivity">
 
 
-    <TextView
-        android:id="@+id/titleTv"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_main"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="#E4171212"
+                app:layout_scrollFlags="scroll|enterAlways|snap"/>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+<RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Dates d'ordres"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <TextView
         android:id="@+id/nomTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/titleTv"
-        android:text="Nom: "
+        android:text="Usuari: "
         android:textSize="30sp"
         android:textStyle="bold" />
     <TextView
@@ -35,13 +50,13 @@
         android:textSize="30sp"
          />
     <TextView
-        android:id="@+id/procTv"
-        android:layout_below="@+id/nameTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Procès: "
-        android:textSize="30sp"
-        android:textStyle="bold" />
+            android:id="@+id/procTv"
+            android:layout_below="@+id/nameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Procés actual: "
+            android:textSize="30sp"
+            android:textStyle="bold"/>
     <TextView
         android:id="@+id/processTv"
         android:layout_toEndOf="@+id/procTv"
@@ -51,26 +66,24 @@
         android:text=""
         android:textSize="30sp"
         />
-
     <TextView
-        android:id="@+id/numberTv"
-        android:layout_below="@id/procTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text="Número"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+            android:id="@+id/numberTv"
+            android:layout_below="@id/procTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="Número"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/datesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/numberTv"
-        android:paddingTop="30dp" />
-
-
+            android:id="@+id/datesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/processTv"/>
+</RelativeLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </RelativeLayout>

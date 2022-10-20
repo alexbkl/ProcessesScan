@@ -1,11 +1,18 @@
 package com.android.vidrebany.models;
 
 public class ModelDatesDetails {
-    String code, started, ended;
-
-
+    String code, process, started, ended, user;
 
     public ModelDatesDetails() {
+
+    }
+
+    public ModelDatesDetails(String code, String process, String started, String ended, String user) {
+        this.code = code;
+        this.started = started;
+        this.ended = ended;
+        this.user = user;
+        this.process = process;
     }
 
     public String getCode() {
@@ -20,16 +27,24 @@ public class ModelDatesDetails {
         return started;
     }
 
-    public void setStarted(String started) {
-        this.started = started;
+    public String getProcess() {
+        return process;
+    }
+
+    public void setProcess(String process) {
+        this.process = process;
     }
 
     public String getEnded() {
         return ended;
     }
 
-    public void setEnded(String ended) {
-        this.ended = ended;
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
 

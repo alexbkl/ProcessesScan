@@ -1,74 +1,65 @@
 package com.android.vidrebany;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-import com.android.vidrebany.adapters.AdapterDates;
+import com.android.vidrebany.adapters.*;
 import com.android.vidrebany.models.ModelDates;
 import com.google.firebase.database.*;
 import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import static android.text.TextUtils.isEmpty;
 
-public class UserOrderDatesActivity extends AppCompatActivity {
+public class AdminProcessActivity extends AppCompatActivity {
 
+    private String process;
     private RecyclerView datesRecyclerView;
-    private AdapterDates adapterDates;
-    private TextView nameTv, processTv, numberTv;
+    private AdapterProcessDates adapterProcessDates;
     private List<ModelDates> datesList;
-    private String name, process, number;
+    private TextView ordersTotalTv;
+    private int sum = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_order_dates);
+        setContentView(R.layout.activity_admin_process);
+        ordersTotalTv = findViewById(R.id.ordersTotalTv);
 
-        nameTv = findViewById(R.id.nameTv);
-        processTv = findViewById(R.id.processTv);
-        numberTv = findViewById(R.id.numberTv);
-
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if(extras == null) {
-                Intent intent = new Intent(UserOrderDatesActivity.this, LoginActivity.class);
-                startActivity(intent);
-            } else {
-                name = extras.getString("name");
-                process = extras.getString("process");
-                number = extras.getString("number");
-                setContent();
-            }
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         } else {
-            name = (String) savedInstanceState.getSerializable("name");
-            process = (String) savedInstanceState.getSerializable("process");
-            number = (String) savedInstanceState.getSerializable("number");
-            setContent();
+            process = extras.getString("process");
         }
 
+        //Actionbar and its title
         Toolbar toolbar = findViewById(R.id.toolbar_main);
+
+
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Dates d'ordres");
-        toolbar.setTitle("Dates d'ordres"); //change actionbar title
+        getSupportActionBar().setTitle("Dates "+process);
 
-        number = numberTv.getText().toString();
-
-
+        //home fragment transaction (default, on start)
+        toolbar.setTitle("Dates "+process); //change actionbar title
 
         datesRecyclerView = findViewById(R.id.datesRecyclerView);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
         datesRecyclerView.setLayoutManager(layoutManager);
@@ -78,14 +69,29 @@ public class UserOrderDatesActivity extends AppCompatActivity {
         loadDates();
 
 
+        DatabaseReference processesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process);
+        processesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                for(DataSnapshot data: snapshot.getChildren()){
+                    for (DataSnapshot data1: data.getChildren()) {
+                        sum += data1.getChildrenCount();
+                    }
 
+                }
+                ordersTotalTv.setText("Total ordres: "+sum);
+            }
 
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
 
+            }
+        });
 
     }
 
     private void loadDates() {
-        DatabaseReference datesRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders");
+        DatabaseReference datesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process);
         datesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -93,11 +99,13 @@ public class UserOrderDatesActivity extends AppCompatActivity {
 
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     ModelDates modelDates = ds.getValue(ModelDates.class);
-                    assert modelDates != null;
-                    datesList.add(modelDates);
-                    adapterDates = new AdapterDates(UserOrderDatesActivity.this, datesList, process, name, number);
-                    adapterDates.setHasStableIds(true);
-                    datesRecyclerView.setAdapter(adapterDates);
+                    if (modelDates != null) {
+                        datesList.add(modelDates);
+                        adapterProcessDates = new AdapterProcessDates(AdminProcessActivity.this, datesList, process);
+                        adapterProcessDates.setHasStableIds(true);
+                        datesRecyclerView.setAdapter(adapterProcessDates);
+                    }
+
                 }
             }
 
@@ -141,7 +149,7 @@ public class UserOrderDatesActivity extends AppCompatActivity {
     }
 
     private void searchDates(String s) {
-        DatabaseReference datesRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders");
+        DatabaseReference datesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process);
         datesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -149,14 +157,16 @@ public class UserOrderDatesActivity extends AppCompatActivity {
 
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     ModelDates modelDates = ds.getValue(ModelDates.class);
-                    assert modelDates != null;
-                    String date = modelDates.getDate();
-                    if (date.contains(s)) {
-                        datesList.add(modelDates);
+                    if (modelDates != null) {
+                        String date = modelDates.getDate();
+                        if (date.contains(s)) {
+                            datesList.add(modelDates);
+                        }
+                        adapterProcessDates = new AdapterProcessDates(AdminProcessActivity.this, datesList, process);
+                        adapterProcessDates.setHasStableIds(true);
+                        datesRecyclerView.setAdapter(adapterProcessDates);
                     }
-                    adapterDates = new AdapterDates(UserOrderDatesActivity.this, datesList, process, name, number);
-                    adapterDates.setHasStableIds(true);
-                    datesRecyclerView.setAdapter(adapterDates);
+
                 }
             }
 
@@ -167,17 +177,10 @@ public class UserOrderDatesActivity extends AppCompatActivity {
         });
     }
 
-    private void setContent() {
-        nameTv.setText(name);
-        processTv.setText(process);
-        numberTv.setText(number);
-    }
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
 
 }

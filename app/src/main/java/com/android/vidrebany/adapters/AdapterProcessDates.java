@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.android.vidrebany.DataDetailsActivity;
+
+import com.android.vidrebany.ProcessDateDetailsActivity;
 import com.android.vidrebany.R;
 import com.android.vidrebany.models.ModelDates;
 import com.google.firebase.database.*;
@@ -22,42 +24,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
+public class AdapterProcessDates extends RecyclerView.Adapter<AdapterProcessDates.MyHolder> {
 
     private final Context context;
     private final List<ModelDates> datesList;
-    private final String name, process, number;
+    private final String process;
+    private String code;
     private int sum = 0;
 
-    public AdapterDates(Context context, List<ModelDates> datesList, String process, String name, String number)
-    {
+    public AdapterProcessDates(Context context, List<ModelDates> datesList, String process) {
         this.context = context;
         this.datesList = datesList;
         this.process = process;
-        this.name = name;
-        this.number = number;
     }
 
     @NonNull
     @Override
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.row_user_order_dates, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.row_process_dates, viewGroup, false);
         return new MyHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder myHolder, int i) {
-
         final int[] suma = {0};
 
-        DatabaseReference processesRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders").child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
+        DatabaseReference processesRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
         processesRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                 for(DataSnapshot data: snapshot.getChildren()){
-                    if (data != null) {
-                        String code = Objects.requireNonNull(data.child("code").getValue()).toString();
+                    if (data.child("code").getValue() != null) {
+                        code = Objects.requireNonNull(data.child("code").getValue()).toString();
                         String[] codeparts = code.split("X");
                         int puntuacio;
                         if (isValidIndex(codeparts, 1)) {
@@ -65,8 +64,6 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
                         } else {
                             puntuacio = 0;
                         }
-
-
                         suma[0] += puntuacio;
 
                     }
@@ -83,16 +80,13 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
             }
         });
 
-
-        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders").child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
+        DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(datesList.get(i).getDate()).child(datesList.get(i).getDate());
         ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 sum = 0;
                 sum += snapshot.getChildrenCount();
-
-                String orders = "Total ordres: "+sum;
-                myHolder.orders.setText(orders);
+                myHolder.ordersTotalTv.setText("Nº ordres: "+sum);
             }
 
             @Override
@@ -101,15 +95,12 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
             }
         });
 
-
         myHolder.date.setText(datesList.get(i).getDate());
 
         myHolder.datesLayout.setOnClickListener(view -> {
-                Intent intent = new Intent(context, DataDetailsActivity.class);
-                intent.putExtra("name", name);
-                intent.putExtra("process", process);
-                intent.putExtra("number", number);
+                Intent intent = new Intent (context, ProcessDateDetailsActivity.class);
                 intent.putExtra("date", datesList.get(i).getDate());
+                intent.putExtra("process", process);
                 intent.putExtra("puntuacio", Arrays.toString(suma).substring(1, Arrays.toString(suma).length() - 1));
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(intent);
@@ -126,7 +117,7 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
     static class MyHolder extends RecyclerView.ViewHolder {
         final TextView date;
         final TextView puntuacio;
-        final TextView orders;
+        final TextView ordersTotalTv;
         final LinearLayout datesLayout;
 
         public MyHolder(@NonNull View itemView) {
@@ -134,7 +125,7 @@ public class AdapterDates extends RecyclerView.Adapter<AdapterDates.MyHolder> {
             date = itemView.findViewById(R.id.dateTv);
             puntuacio = itemView.findViewById(R.id.puntuacio);
             datesLayout = itemView.findViewById(R.id.datesLayout);
-            orders = itemView.findViewById(R.id.orders);
+            ordersTotalTv = itemView.findViewById(R.id.ordersTotalTv);
         }
     }
 }

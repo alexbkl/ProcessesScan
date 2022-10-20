@@ -31,7 +31,7 @@ public class AccountActivity extends AppCompatActivity {
 
     private FirebaseDatabase fd;
     private DatabaseReference dr;
-    TextView codeTv, processTv, startedTv, nameTv, endedTv, numberTv, errorTv;
+    TextView codeTv, processTv, startedTv, nameTv, endedTv, numberTv, errorTv, infoTv;
     Button scanBtn, cancelBtn;
     Toolbar toolbar;
 
@@ -58,6 +58,7 @@ public class AccountActivity extends AppCompatActivity {
         endedTv = findViewById(R.id.endedTv);
         numberTv = findViewById(R.id.numberTv);
         errorTv = findViewById(R.id.errorTv);
+        infoTv = findViewById(R.id.infoTv);
         cancelBtn = findViewById(R.id.cancelBtn);
         scanBtn.setOnClickListener(view -> scan());
         errorTv.setVisibility(View.GONE);
@@ -97,14 +98,18 @@ public class AccountActivity extends AppCompatActivity {
 
     private void setContent(String name, String process, String number){
         errorTv.setVisibility(View.GONE);
-        String processState = "PROCÈS: "+process;
+        String processState = "PROCÉS: "+process;
         String currentProcess = process.toLowerCase();
-        boolean fastProcesses = currentProcess.equals("corte") ||
+        boolean fastProcesses =
+                currentProcess.equals("corte") ||
                 currentProcess.equals("admin") ||
                 currentProcess.equals("canteado") ||
                 currentProcess.equals("mecanizado") ||
                 currentProcess.equals("laca") ||
-                currentProcess.equals("embalaje");
+                currentProcess.equals("embalaje") ||
+                currentProcess.equals("cajones") ||
+                currentProcess.equals("espejos") ||
+                currentProcess.equals("unero");
         dr = FirebaseDatabase.getInstance().getReference("users").child(number);
 
         dr.addValueEventListener(new ValueEventListener() {
@@ -113,62 +118,117 @@ public class AccountActivity extends AppCompatActivity {
 
                 String barcode = snapshot.child("code").getValue(String.class);
 
-                String codeNumber = "CODI: "+barcode;
-                codeTv.setText(codeNumber);
+                if (barcode != null) {
+                    String[] codeparts = barcode.split("X");
 
-                assert barcode != null;
-                if (!barcode.equals("sense codi")) {
-                    dr = FirebaseDatabase.getInstance().getReference("codes").child(barcode);
+                    String puntuacio;
+                    if (isValidIndex(codeparts, 1)) {
+                        puntuacio = codeparts[1];
+                    } else {
+                        puntuacio = "s/p";
+                    }
 
-                    dr.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.child(process.toLowerCase()+"Started").getValue(Long.class) != null) {
-                                long started = snapshot.child(process.toLowerCase()+"Started").getValue(Long.class);
-                                Date startedDate = new Date(started);
-                                @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
-                                String startedOn = "COMENÇAT: \n"+df.format(startedDate);
-                                startedTv.setText(startedOn);
+                    String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
 
+
+
+                    codeTv.setText(codeNumber);
+
+                    if (!barcode.equals("sense codi")) {
+                        dr = FirebaseDatabase.getInstance().getReference("codes").child(barcode);
+
+                        dr.addValueEventListener(new ValueEventListener() {
+                            @SuppressLint("SetTextI18n")
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if (snapshot.child(process.toLowerCase()+"Started").getValue(Long.class) != null) {
+                                    long started = snapshot.child(process.toLowerCase()+"Started").getValue(Long.class);
+                                    Date startedDate = new Date(started);
+                                    try {
+                                        long ended = snapshot.child(process.toLowerCase()+"Ended").getValue(Long.class);
+                                        Date endedDate = null;
+                                        if (ended != 0) {
+                                            ended = snapshot.child(process.toLowerCase()+"Ended").getValue(Long.class);
+                                            endedDate = new Date(ended);
+                                        }
+                                        String endedOn;
+                                        if (fastProcesses && ended != 0) {
+                                            endedOn = "";
+                                        } else {
+                                            endedOn = "ACABAT: "+endedDate;
+
+                                        }
+                                        endedTv.setText(endedOn);
+
+                                    } catch (NullPointerException e) {
+                                        String endedOn;
+
+                                        endedOn = "";
+                                        endedTv.setText(endedOn);
+
+                                    }
+
+
+                                    @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
+                                    @SuppressLint("SimpleDateFormat") DateFormat df2 = new SimpleDateFormat("dd MM yyyy");
+                                    String startedOn;
+                                    if (fastProcesses) {
+                                        startedOn = "PROCESSAT: \n"+df.format(startedDate);
+                                    } else {
+                                        startedOn = "COMENÇAT: "+df.format(startedDate);
+                                    }
+                                    String startedDateFormatted = df2.format(startedDate);
+                                    startedTv.setText(startedOn);
+                                    if (currentProcess.equals("montaje")
+                                            && !snapshot.child("cajonesEnded").exists()
+                                            && !snapshot.child("montajeEnded").exists()) {
+                                        infoTv.setText("El procés cajones NO és present.");
+                                        infoTv.setVisibility(View.VISIBLE);}
+                                    else if (currentProcess.equals("montaje")
+                                            && snapshot.child("cajonesEnded").exists()
+                                            && !snapshot.child("montajeEnded").exists()) {
+                                        infoTv.setText("El procés cajones SÍ és present.");
+                                        infoTv.setVisibility(View.VISIBLE);
+                                    } else {
+                                        infoTv.setVisibility(View.GONE);
+                                    }
+
+
+
+                                    cancelBtn.setVisibility(View.VISIBLE);
+                                    cancelBtn.setOnClickListener(view -> cancelOrder(barcode, process, number, startedDateFormatted));
+                                }
 
                             }
-                            String endedOn = "ACABAT: sense acabar";
-                            if (fastProcesses) {
-                                endedOn = "";
-                                cancelBtn.setVisibility(View.GONE);
-                            } else {
-                                cancelBtn.setVisibility(View.VISIBLE);
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
                             }
-
-                            endedTv.setText(endedOn);
-                            cancelBtn.setOnClickListener(view -> cancelOrder(barcode, process, number));
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
+                        });
 
 
 
-                } else {
-                    String startedOn = "COMENÇAT: sense començar";
-                    startedTv.setText(startedOn);
-                    endedTv.setText("");
-                    cancelBtn.setVisibility(View.GONE);
+                    } else {
+                        String startedOn = "COMENÇAT: sense començar";
+                        startedTv.setText(startedOn);
+                        endedTv.setText("");
+                        errorTv.setVisibility(View.GONE);
+                        cancelBtn.setVisibility(View.GONE);
+                    }
+
+
+                    nameTv.setText(name);
+
+                    startedTv.setSingleLine(false);
+                    endedTv.setSingleLine(false);
+
+
+
+                    processTv.setText(processState);
+                    numberTv.setText(number);
                 }
 
-
-                nameTv.setText(name);
-
-                startedTv.setSingleLine(false);
-                endedTv.setSingleLine(false);
-
-
-
-                processTv.setText(processState);
-                numberTv.setText(number);
             }
 
             @Override
@@ -181,25 +241,32 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
-    private void cancelOrder(String barcode, String process, String number) {
+    private void cancelOrder(String barcode, String process, String number, String startedDate) {
+        cancelBtn.setVisibility(View.GONE);
 
         String codeNumber = "CODI: sense codi";
         String started = "COMENÇAT: sense començar";
         codeTv.setText(codeNumber);
         startedTv.setText(started);
-        cancelBtn.setVisibility(View.GONE);
 
        fd = FirebaseDatabase.getInstance();
        dr = fd.getReference("codes").child(barcode);
-
        dr.child(process.toLowerCase()).removeValue();
        dr.child(process.toLowerCase()+"Started").removeValue();
        dr.child(process.toLowerCase()+"Ended").removeValue();
        dr.child(process.toLowerCase()+"User").removeValue();
 
-       DatabaseReference ordersRef = FirebaseDatabase.getInstance().getReference("users").child(number);
-        ordersRef.child("code").setValue("sense codi");
+        fd = FirebaseDatabase.getInstance();
+            DatabaseReference processesRef = fd.getReference("processes").child(process.toLowerCase()).child(""+startedDate).child(""+startedDate).child(barcode);
 
+        processesRef.removeValue();
+
+
+        fd = FirebaseDatabase.getInstance();
+        DatabaseReference userRef = fd.getReference("users").child(number).child("orders").child(""+startedDate).child(""+startedDate).child(barcode);
+        userRef.removeValue();
+
+        cancelBtn.setVisibility(View.GONE);
     }
 
     private void scan() {
@@ -215,23 +282,30 @@ public class AccountActivity extends AppCompatActivity {
 
     }
 
-    private void endProcess(String process, String code) {
+    private void endProcess(String process, String code, boolean fastProcess) {
         String currentProcess = process.toLowerCase();
-        boolean fastProcesses = currentProcess.equals("corte") ||
-                !currentProcess.equals("admin") ||
-                !currentProcess.equals("canteado") ||
-                !currentProcess.equals("mecanizado") ||
-                !currentProcess.equals("laca") ||
-                !currentProcess.equals("embalaje");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy-HH:mm", Locale.GERMANY);
         String currentDateAndTime = sdf.format(new Date());
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd MM yyyy", Locale.GERMANY);
         String currentDate = sdf1.format(new Date());
         errorTv.setVisibility(View.GONE);
-        String processState = "PROCÈS: "+process;
+        String processState = "PROCÉS: "+process;
 
         String[] codeparts = code.split("X");
+
+
+        String endedOn;
+        if (fastProcess) {
+            endedOn = "";
+        } else {
+            endedOn = "ACABAT: \n"+currentDateAndTime;
+        }
+
+
+
+        cancelBtn.setVisibility(View.GONE);
+
 
         String puntuacio;
         if (isValidIndex(codeparts, 1)) {
@@ -239,15 +313,6 @@ public class AccountActivity extends AppCompatActivity {
         } else {
             puntuacio = "s/p";
         }
-        String endedOn = "FINALITZAT: sense finalitzar";
-        if (fastProcesses) {
-            endedOn = "";
-            cancelBtn.setVisibility(View.GONE);
-        } else {
-            endedOn = "ACABAT: \n"+currentDateAndTime;
-            cancelBtn.setVisibility(View.GONE);
-        }
-
         String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
         String number = numberTv.getText().toString();
 
@@ -273,26 +338,34 @@ public class AccountActivity extends AppCompatActivity {
         cancelBtn.setVisibility(View.GONE);
         processTv.setText(processState);
 
-
+        infoTv.setVisibility(View.GONE);
         DatabaseReference ordersRef = fd.getReference("users").child(number);
+        DatabaseReference processesRef = fd.getReference("processes").child(process.toLowerCase());
+
+
+
         ordersRef.child("code").setValue("sense codi");
         ordersRef.child("orders").child(currentDate).child(currentDate).child(code).child("ended").setValue(currentDateAndTime);
 
+        processesRef.child(currentDate).child(currentDate).child(code).child("ended").setValue(currentDateAndTime);
 
     }
     public static boolean isValidIndex(String[] arr, int index) {
         return index >= 0 && index < arr.length;
     }
     private void currentProcess(String code,
-                                String process, String user
-                                ) {
+                                String process, String user,
+                                String number, boolean fastProcess) {
         String currentProcess = process.toLowerCase();
         boolean fastProcesses = currentProcess.equals("corte") ||
                 currentProcess.equals("admin") ||
                 currentProcess.equals("canteado") ||
                 currentProcess.equals("mecanizado") ||
                 currentProcess.equals("laca") ||
-                currentProcess.equals("embalaje");
+                currentProcess.equals("embalaje") ||
+                currentProcess.equals("cajones") ||
+                currentProcess.equals("espejos") ||
+                currentProcess.equals("unero");
 
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy-HH:mm", Locale.GERMANY);
@@ -300,7 +373,7 @@ public class AccountActivity extends AppCompatActivity {
         SimpleDateFormat sdf1 = new SimpleDateFormat("dd MM yyyy", Locale.GERMANY);
         String currentDate = sdf1.format(new Date());
         errorTv.setVisibility(View.GONE);
-        String processState = "PROCÈS: "+process;
+        String processState = "PROCÉS: "+process;
 
         String[] codeparts = code.split("X");
 
@@ -310,29 +383,14 @@ public class AccountActivity extends AppCompatActivity {
         } else {
             puntuacio = "s/p";
         }
-        String codeNumber = "CODI: "+codeparts[0]+" PUNTUACIÓ: "+puntuacio;
-        String startedOn = "COMENÇAT: \n"+currentDateAndTime;
-        String endedOn;
-        if (fastProcesses) {
-            endedOn = "";
-            dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
-            dr.child(process.toLowerCase()+"Ended").setValue(System.currentTimeMillis());
+        String codeNumber = "CODI: "+codeparts[0]+"\nPUNTUACIÓ: "+puntuacio;
+        String startedOn;
+        if (fastProcess) {
+            startedOn = "PROCESSAT: \n"+currentDateAndTime;
         } else {
-            endedOn = "ACABAT: sense acabar";
-            cancelBtn.setVisibility(View.VISIBLE);
-            dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
+            startedOn = "COMENÇAT: \n"+currentDateAndTime;
         }
-
-        String number = numberTv.getText().toString();
-
-
-        startedTv.setSingleLine(false);
-        startedTv.setText(startedOn);
-
-        processTv.setText(processState);
-        endedTv.setText(endedOn);
-        codeTv.setText(codeNumber);
-        cancelBtn.setOnClickListener(view -> cancelOrder(code, process, number));
+        String endedOn;
 
         // Write a message to the database
         fd = FirebaseDatabase.getInstance();
@@ -340,16 +398,41 @@ public class AccountActivity extends AppCompatActivity {
         dr.child("code").setValue(code);
         dr.child(process.toLowerCase()+"User").setValue(user);
         dr.child(process.toLowerCase(Locale.ROOT)).setValue(true);
-
-
-
         DatabaseReference ordersRef = fd.getReference("users").child(number);
+        DatabaseReference processesRef = fd.getReference("processes").child(process.toLowerCase());
+        if (fastProcesses) {
+            endedOn = "";
+            dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
+            dr.child(process.toLowerCase()+"Ended").setValue(System.currentTimeMillis());
+            ordersRef.child("code").setValue(code);
+            ordersRef.child("orders").child(currentDate).child(currentDate).child(code).child("ended").setValue(currentDateAndTime);
 
-        ordersRef.child("code").setValue(code);
+            processesRef.child(currentDate).child(currentDate).child(code).child("ended").setValue(currentDateAndTime);
+        } else {
+
+            endedOn = "ACABAT: sense acabar";
+            cancelBtn.setVisibility(View.VISIBLE);
+            dr.child(process.toLowerCase()+"Started").setValue(System.currentTimeMillis());
+            ordersRef.child("code").setValue(code);
+        }
+
+        startedTv.setSingleLine(false);
+        startedTv.setText(startedOn);
+
+        processTv.setText(processState);
+        endedTv.setText(endedOn);
+        codeTv.setText(codeNumber);
+        cancelBtn.setOnClickListener(view -> cancelOrder(code, process, number, currentDate));
+
         ordersRef.child("orders").child(currentDate).child(currentDate).child(code).child("started").setValue(currentDateAndTime);
         ordersRef.child("orders").child(currentDate).child("date").setValue(currentDate);
         ordersRef.child("orders").child(currentDate).child(currentDate).child(code).child("code").setValue(code);
+        ordersRef.child("orders").child(currentDate).child(currentDate).child(code).child("process").setValue(process);
 
+        processesRef.child(currentDate).child(currentDate).child(code).child("started").setValue(currentDateAndTime);
+        processesRef.child(currentDate).child("date").setValue(currentDate);
+        processesRef.child(currentDate).child(currentDate).child(code).child("code").setValue(code);
+        processesRef.child(currentDate).child(currentDate).child(code).child("user").setValue(user);
     }
 
     private String intentResult(String contents) {
@@ -371,6 +454,7 @@ public class AccountActivity extends AppCompatActivity {
             dr = fd.getReference("codes").child(barcode);
 
             dr.addListenerForSingleValueEvent(new ValueEventListener() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                    // boolean corte = snapshot.child("corte").getValue();
@@ -380,37 +464,109 @@ public class AccountActivity extends AppCompatActivity {
                             currentProcess.equals("canteado") ||
                             currentProcess.equals("mecanizado") ||
                             currentProcess.equals("laca") ||
-                            currentProcess.equals("embalaje");
+                            currentProcess.equals("embalaje") ||
+                            currentProcess.equals("cajones") ||
+                            currentProcess.equals("espejos") ||
+                            currentProcess.equals("unero");
+                    if (
+                            currentProcess.equals("montaje")
+                            && snapshot.child("cajonesEnded").exists()
+                            && !snapshot.child("montajeStarted").exists()
+                            && snapshot.child("lacaEnded").exists()||
+                            currentProcess.equals("montaje")
+                            && !snapshot.child("montajeStarted").exists()
+                            && snapshot.child("mecanizadoEnded").exists()
+                            && snapshot.child("cajonesEnded").exists()
+                    ) {
+                            infoTv.setText("El procés cajones SÍ és present.");
 
-                    if (currentProcess.equals("corte") && snapshot.child("adminEnded").exists()||
-                            currentProcess.equals("canteado") && snapshot.child("corteEnded").exists() ||
-                            currentProcess.equals("mecanizado") && snapshot.child("canteadoEnded").exists() ||
-                            currentProcess.equals("laca") && snapshot.child("mecanizadoEnded").exists() ||
-                            currentProcess.equals("montaje") && !snapshot.child("montajeStarted").exists()
+                        infoTv.setVisibility(View.VISIBLE);
+                            currentProcess(barcode,process,name, numberTv.getText().toString(), false);
+                    }
+                    else if (
+                            currentProcess.equals("montaje")
+                            && !snapshot.child("cajonesEnded").exists()
+                            && !snapshot.child("montajeStarted").exists()
+                            && snapshot.child("lacaEnded").exists()||
+                            currentProcess.equals("montaje")
+                            && !snapshot.child("montajeStarted").exists()
+                            && snapshot.child("mecanizadoEnded").exists()
+                            && !snapshot.child("cajonesEnded").exists()) {
+                        infoTv.setText("El procés cajones NO és present.");
+                        infoTv.setVisibility(View.VISIBLE);
+                        currentProcess(barcode,process,name, numberTv.getText().toString(), false);
+                    }
+                    else if (currentProcess.equals("montaje")
+                    && !snapshot.child("cajonesEnded").exists()
+                    && snapshot.child("montajeStarted").exists()
+                    && snapshot.child("lacaEnded").exists()||
+                    currentProcess.equals("montaje")
+                    && snapshot.child("montajeStarted").exists()
+                    && snapshot.child("mecanizadoEnded").exists()
+                    && !snapshot.child("cajonesEnded").exists()) {
+                        infoTv.setText("El procés cajones NO és present.");
+                        infoTv.setVisibility(View.GONE);
+                        endProcess(process, barcode, false);
+
+                    } else if (
+                            currentProcess.equals("montaje")
+                                    && snapshot.child("cajonesEnded").exists()
+                                    && snapshot.child("montajeStarted").exists()
                                     && snapshot.child("lacaEnded").exists()||
-                            currentProcess.equals("montaje") && !snapshot.child("montajeStarted").exists()
-                                    && snapshot.child("mecanizadoEnded").exists()||
+                                    currentProcess.equals("montaje")
+                                            && snapshot.child("montajeStarted").exists()
+                                            && snapshot.child("mecanizadoEnded").exists()
+                                            && snapshot.child("cajonesEnded").exists()
+                    ) {
+                        infoTv.setText("El procés cajones SÍ és present.");
+
+                        infoTv.setVisibility(View.GONE);
+                        endProcess(process, barcode, false);
+                    }
+                    else if (currentProcess.equals("corte") && snapshot.child("adminEnded").exists() && !snapshot.child("corteStarted").exists()||
+                            currentProcess.equals("canteado") && snapshot.child("corteEnded").exists() && !snapshot.child("canteadoStarted").exists()||
+                            currentProcess.equals("mecanizado") && snapshot.child("canteadoEnded").exists() && !snapshot.child("mecanizadoStarted").exists()||
+                            currentProcess.equals("laca") && snapshot.child("mecanizadoEnded").exists() && !snapshot.child("lacaStarted").exists()||
                             currentProcess.equals("embalaje")
-                                    && snapshot.child("montajeEnded").exists()&&snapshot.child("espejosEnded").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists()
+                                    && snapshot.child("montajeEnded").exists()&&snapshot.child("espejosEnded").exists() && snapshot.child("cajonesEnded").exists() && snapshot.child("uneroEnded").exists() && !snapshot.child("embalajeStarted").exists()
                            /* ||
                             currentProcess.equals("transporte") && !snapshot.child("transporteStarted").exists()
                                     && snapshot.child("embalajeEnded").exists()*/
                     ) {
-                        currentProcess(barcode, process, name);
+                        currentProcess(barcode, process, name, numberTv.getText().toString(), true);
 
                     } else if (!fastProcesses && snapshot.child(currentProcess+"Started").exists() && Objects.equals(Objects.requireNonNull(snapshot.child(currentProcess + "User").getValue()).toString(), nameTv.getText().toString())) {
-                        endProcess(process, barcode);
+                        endProcess(process, barcode, false);
 
-                    } else if (currentProcess.equals("admin")||
-                            currentProcess.equals("cajones") && !snapshot.child("cajonesStarted").exists()||
+
+
+
+
+                    } else if (currentProcess.equals("admin") && !snapshot.child("adminStarted").exists()||
                             currentProcess.equals("unero") && !snapshot.child("uneroStarted").exists()||
                             currentProcess.equals("espejos") && !snapshot.child("espejosStarted").exists()) {
-                        currentProcess(barcode, process, name);
-                    } else if (currentProcess.equals("cajones")||currentProcess.equals("unero")||currentProcess.equals("espejos")) {
-                        endProcess(process, barcode);
+                        currentProcess(barcode, process, name, numberTv.getText().toString(), true);
+                    } else if (currentProcess.equals("cajones") && !snapshot.child("cajonesStarted").exists()||
+                            currentProcess.equals("unero") && !snapshot.child("uneroStarted").exists() ||
+                            currentProcess.equals("espejos") && !snapshot.child("espejosStarted").exists()) {
+                        currentProcess(barcode, process, name, numberTv.getText().toString(), true);
                     }
 
-                    else {
+                    else if (currentProcess.equals("admin") && snapshot.child("adminStarted").exists()||
+                            currentProcess.equals("corte") && snapshot.child("corteStarted").exists()||
+                            currentProcess.equals("canteado") && snapshot.child("canteadoStarted").exists()||
+                            currentProcess.equals("mecanizado") && snapshot.child("mecanizadoStarted").exists()||
+                            currentProcess.equals("laca") && snapshot.child("lacaStarted").exists()||
+                            currentProcess.equals("embalaje") && snapshot.child("embalajeStarted").exists()||
+                            currentProcess.equals("transporte") && snapshot.child("transporteStarted").exists()||
+                            currentProcess.equals("cajones") && snapshot.child("cajonesStarted").exists()||
+                            currentProcess.equals("unero") && snapshot.child("uneroStarted").exists()||
+                            currentProcess.equals("espejos") && snapshot.child("espejosStarted").exists())
+                    {
+                        errorTv.setText("El procés ja ha començat.");
+                        errorTv.setVisibility(View.VISIBLE);
+                    } else {
+                        errorTv.setText("El procés anterior no s'ha complert.");
                         errorTv.setVisibility(View.VISIBLE);
                     }
 

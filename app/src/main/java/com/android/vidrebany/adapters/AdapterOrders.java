@@ -1,54 +1,35 @@
 package com.android.vidrebany.adapters;
 
-import static android.text.TextUtils.isEmpty;
 import static com.android.vidrebany.AccountActivity.isValidIndex;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.android.vidrebany.ProcessesActivity;
 import com.android.vidrebany.R;
 import com.android.vidrebany.models.ModelOrders;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> {
 
-    private Context context;
-    List<ModelOrders> ordersList;
-    RecyclerView ordersRecyclerView;
+    private final Context context;
+    private final List<ModelOrders> ordersList;
 
-    public AdapterOrders(Context context, List<ModelOrders> ordersList, RecyclerView ordersRecyclerView) {
+    public AdapterOrders(Context context, List<ModelOrders> ordersList) {
         this.context = context;
         this.ordersList = ordersList;
-        this.ordersRecyclerView = ordersRecyclerView;
-
-
     }
     @NonNull
     public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -64,7 +45,7 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
         if (ordersList.get(position).isCorte()) {
 
             String corteName = ordersList.get(position).getCorteUser();
-            Long corteStartedLong = ordersList.get(position).getCorteStarted();
+            long corteStartedLong = ordersList.get(position).getCorteStarted();
             long corteEndedLong = ordersList.get(position).getCorteEnded();
             Date corteStartedDate = new Date(corteStartedLong);
             DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
@@ -85,9 +66,18 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.corteNameTv.setText(corteName);
 
             holder.corteDateTv.setText(corteDate);
+
+            holder.corteDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteCorte(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isCanteado()) {
+        else if (ordersList.get(position).isCanteado()) {
             String canteadoName = ordersList.get(position).getCanteadoUser();
             long canteadoStartedLong = ordersList.get(position).getCanteadoStarted();
             long canteadoEndedLong = ordersList.get(position).getCanteadoEnded();
@@ -110,9 +100,18 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.canteadoNameTv.setText(canteadoName);
 
             holder.canteadoDateTv.setText(canteadoDate);
+
+            holder.canteadoDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteCanteado(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isMecanizado()) {
+        else if (ordersList.get(position).isMecanizado()) {
             String mecanizadoName = ordersList.get(position).getMecanizadoUser();
             long mecanizadoStartedLong = ordersList.get(position).getMecanizadoStarted();
             long mecanizadoEndedLong = ordersList.get(position).getMecanizadoEnded();
@@ -135,9 +134,18 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.mecanizadoNameTv.setText(mecanizadoName);
 
             holder.mecanizadoDateTv.setText(mecanizadoDate);
+
+            holder.mecanizadoDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteMecanizado(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isLaca()) {
+        else if (ordersList.get(position).isLaca()) {
             String lacaName = ordersList.get(position).getLacaUser();
             long lacaStartedLong = ordersList.get(position).getLacaStarted();
             long lacaEndedLong = ordersList.get(position).getLacaEnded();
@@ -160,9 +168,18 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.lacaNameTv.setText(lacaName);
 
             holder.lacaDateTv.setText(lacaDate);
+
+            holder.lacaDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteLaca(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isMontaje()) {
+        else if (ordersList.get(position).isMontaje()) {
             String montajeName = ordersList.get(position).getMontajeUser();
             long montajeStartedLong = ordersList.get(position).getMontajeStarted();
             long montajeEndedLong = ordersList.get(position).getMontajeEnded();
@@ -185,9 +202,18 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.montajeNameTv.setText(montajeName);
 
             holder.montajeDateTv.setText(montajeDate);
+
+            holder.montajeDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteMontaje(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isEmbalaje()) {
+        else if (ordersList.get(position).isEmbalaje()) {
             String embalajeName = ordersList.get(position).getEmbalajeUser();
             long embalajeStartedLong = ordersList.get(position).getEmbalajeStarted();
             long embalajeEndedLong = ordersList.get(position).getEmbalajeEnded();
@@ -210,34 +236,17 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.embalajeNameTv.setText(embalajeName);
 
             holder.embalajeDateTv.setText(embalajeDate);
+
+            holder.embalajeDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteEmbalaje(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
-
-        if (ordersList.get(position).isTransporte()) {
-            String transporteName = ordersList.get(position).getTransporteUser();
-            long transporteStartedLong = ordersList.get(position).getTransporteStarted();
-            long transporteEndedLong = ordersList.get(position).getTransporteEnded();
-            Date transporteStartedDate = new Date(transporteStartedLong);
-            DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
-
-            String transporteStarted = df.format(transporteStartedDate);
-            String transporteEnded;
-
-            if (transporteEndedLong == 0) {
-                transporteEnded = "s/a";
-            } else {
-                Date transporteEndedDate = new Date(transporteEndedLong);
-                transporteEnded = df.format(transporteEndedDate);
-            }
-            String transporteDate = transporteStarted+"\n"+transporteEnded;
-
-            holder.transporteLayout.setVisibility(View.VISIBLE);
-            holder.transporteTv.setText("Transporte");
-            holder.transporteNameTv.setText(transporteName);
-
-            holder.transporteDateTv.setText(transporteDate);
-        }
-
-        if (ordersList.get(position).isCajones()) {
+        else if (ordersList.get(position).isCajones()) {
             String cajonesName = ordersList.get(position).getCajonesUser();
             long cajonesStartedLong = ordersList.get(position).getCajonesStarted();
             long cajonesEndedLong = ordersList.get(position).getCajonesEnded();
@@ -260,30 +269,54 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.cajonesNameTv.setText(cajonesName);
 
             holder.cajonesDateTv.setText(cajonesDate);
+
+            holder.cajonesDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteCajones(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isEspejo()) {
-            String espejoName = ordersList.get(position).getEspejosUser();
-            long espejoStartedLong = ordersList.get(position).getEspejosStarted();
-            long espejoEndedLong = ordersList.get(position).getEspejosEnded();
-            Date espejoStartedDate = new Date(espejoStartedLong);
+        //isEspejos
+
+        else if (ordersList.get(position).isEspejos()) {
+            String espejosName = ordersList.get(position).getEspejosUser();
+            long espejosStartedLong = ordersList.get(position).getEspejosStarted();
+            long espejosEndedLong = ordersList.get(position).getEspejosEnded();
+            Date espejosStartedDate = new Date(espejosStartedLong);
             DateFormat df = new SimpleDateFormat("dd/MM/yy-HH:mm");
-            String espejoStarted = df.format(espejoStartedDate);
-            String espejoEnded;
 
-            if (espejoEndedLong == 0) {
-                espejoEnded = "s/a";
+            String espejosStarted = df.format(espejosStartedDate);
+            String espejosEnded;
+
+            if (espejosEndedLong == 0) {
+                espejosEnded = "s/a";
             } else {
-                Date espejoEndedDate = new Date(espejoEndedLong);
-                espejoEnded = df.format(espejoEndedDate);
+                Date espejosEndedDate = new Date(espejosEndedLong);
+                espejosEnded = df.format(espejosEndedDate);
             }
-            String espejoDate = espejoStarted+"\n"+espejoEnded;
+            String espejosDate = espejosStarted+"\n"+espejosEnded;
+
             holder.espejosLayout.setVisibility(View.VISIBLE);
-            holder.espejosTv.setText("Espejo");
-            holder.espejosNameTv.setText(espejoName);
-            holder.espejosDateTv.setText(espejoDate);
+            holder.espejosTv.setText("Espejos");
+            holder.espejosNameTv.setText(espejosName);
+
+            holder.espejosDateTv.setText(espejosDate);
+
+            holder.espejosDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteEspejos(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
+        //isUnero
 
         if (ordersList.get(position).isUnero()) {
             String uneroName = ordersList.get(position).getUneroUser();
@@ -302,13 +335,24 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
                 uneroEnded = df.format(uneroEndedDate);
             }
             String uneroDate = uneroStarted+"\n"+uneroEnded;
+
             holder.uneroLayout.setVisibility(View.VISIBLE);
             holder.uneroTv.setText("Unero");
             holder.uneroNameTv.setText(uneroName);
+
             holder.uneroDateTv.setText(uneroDate);
+
+            holder.uneroDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteUnero(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
         }
 
-        if (ordersList.get(position).isAdmin()) {
+        else if (ordersList.get(position).isAdmin()) {
             String adminName = ordersList.get(position).getAdminUser();
             long adminStartedLong = ordersList.get(position).getAdminStarted();
             long adminEndedLong = ordersList.get(position).getAdminEnded();
@@ -331,6 +375,15 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             holder.adminNameTv.setText(adminName);
             holder.adminDateTv.setText(adminDate);
 
+            holder.adminDeleteBtn.setOnClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Eliminar");
+                builder.setMessage("¿Está seguro de eliminar el corte?");
+                builder.setPositiveButton("Eliminar", (dialog, which) -> deleteAdmin(position));
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.dismiss());
+                builder.show();
+            });
+
         }
 
 
@@ -350,35 +403,71 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
         holder.order.setText(codeNumber);
 
 
+    }
 
+    private void deleteCorte(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("corte").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("corteStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("corteEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("corteUser").removeValue();
 
-   /*     holder.ordersLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ProcessesActivity.class);
-                intent.putExtra("code", ordersList.get(position).getCode());
-                context.startActivity(intent);
-            }
-        });
-*/
-        holder.deleteBtn.setOnClickListener(view -> {
-            new AlertDialog.Builder(context)
-                    .setTitle("Eliminar ordre")
-                    .setMessage("Estàs segur de que vols eliminar aquest número d'ordre?")
+    }
 
-                    .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).removeValue();
-                            Toast.makeText(context, "Eliminat!", Toast.LENGTH_SHORT).show();
-                        }
-                    })
+    private void deleteCanteado(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("canteado").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("canteadoStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("canteadoEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("canteadoUser").removeValue();
+    }
+    private void deleteMecanizado(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("mecanizado").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("mecanizadoStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("mecanizadoEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("mecanizadoUser").removeValue();
+    }
+    private void deleteLaca(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("laca").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("lacaStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("lacaEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("lacaUser").removeValue();
+    }
+    private void deleteEspejos(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("espejos").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("espejosStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("espejosEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("espejosUser").removeValue();
+    }
+    private void deleteCajones(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("cajones").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("cajonesStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("cajonesEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("cajonesUser").removeValue();
+    }
+    private void deleteEmbalaje(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("embalaje").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("embalajeStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("embalajeEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("embalajeUser").removeValue();
+    }
+    private void deleteUnero(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("unero").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("uneroStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("uneroEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("uneroUser").removeValue();
+    }
 
-                    .setNegativeButton("No", null)
-                    .setIcon(R.drawable.ic_delete)
-                    .show();
-        });
-
+    private void deleteMontaje(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("montaje").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("montajeStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("montajeEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("montajeUser").removeValue();
+    }
+    //deleteAdmin
+    private void deleteAdmin(int position) {
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("admin").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("adminStarted").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("adminEnded").removeValue();
+        FirebaseDatabase.getInstance().getReference("codes").child(ordersList.get(position).getCode()).child("adminUser").removeValue();
     }
 
     @Override
@@ -391,30 +480,81 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
 
 
 
-    class MyHolder extends RecyclerView.ViewHolder {
-        TextView order,
-                adminTv, adminNameTv, adminDateTv,
-                corteTv, corteNameTv, corteDateTv,
-                canteadoTv, canteadoNameTv, canteadoDateTv,
-                cajonesTv, cajonesNameTv, cajonesDateTv,
-                espejosTv, espejosNameTv, espejosDateTv,
-                mecanizadoTv, mecanizadoNameTv, mecanizadoDateTv,
-                embalajeTv, embalajeNameTv, embalajeDateTv,
-                transporteTv, transporteNameTv, transporteDateTv,
-                lacaTv, lacaNameTv, lacaDateTv,
-                montajeTv, montajeNameTv, montajeDateTv,
-                uneroTv, uneroNameTv, uneroDateTv;
+    static class MyHolder extends RecyclerView.ViewHolder {
+        final TextView order;
+        final TextView adminTv;
+        final TextView adminNameTv;
+        final TextView adminDateTv;
+        final TextView corteTv;
+        final TextView corteNameTv;
+        final TextView corteDateTv;
+        final TextView canteadoTv;
+        final TextView canteadoNameTv;
+        final TextView canteadoDateTv;
+        final TextView cajonesTv;
+        TextView cajonesNameTv;
+        final TextView cajonesDateTv;
+        final TextView espejosTv;
+        final TextView espejosNameTv;
+        final TextView espejosDateTv;
+        final TextView mecanizadoTv;
+        final TextView mecanizadoNameTv;
+        final TextView mecanizadoDateTv;
+        final TextView embalajeTv;
+        final TextView embalajeNameTv;
+        final TextView embalajeDateTv;
+        final TextView transporteTv;
+        final TextView transporteNameTv;
+        TextView transporteDateTv;
+        final TextView lacaTv;
+        final TextView lacaNameTv;
+        final TextView lacaDateTv;
+        final TextView montajeTv;
+        final TextView montajeNameTv;
+        final TextView montajeDateTv;
+        final TextView uneroTv;
+        final TextView uneroNameTv;
+        final TextView uneroDateTv;
 
-        ImageButton deleteBtn;
-        LinearLayout ordersLayout;
-        CardView cardPertanyaan;
-        ConstraintLayout adminLayout, corteLayout, canteadoLayout, cajonesLayout, espejosLayout,
-                mecanizadoLayout, lacaLayout, montajeLayout, embalajeLayout, transporteLayout, uneroLayout;
+        final ImageButton uneroDeleteBtn;
+        final ImageButton montajeDeleteBtn;
+        final ImageButton transporteDeleteBtn;
+        final ImageButton lacaDeleteBtn;
+        final ImageButton embalajeDeleteBtn;
+        final ImageButton mecanizadoDeleteBtn;
+        final ImageButton espejosDeleteBtn;
+        final ImageButton cajonesDeleteBtn;
+        final ImageButton adminDeleteBtn;
+        final ImageButton corteDeleteBtn;
+        final ImageButton canteadoDeleteBtn;
+        final LinearLayout ordersLayout;
+        final CardView cardPertanyaan;
+        final ConstraintLayout adminLayout;
+        final ConstraintLayout corteLayout;
+        final ConstraintLayout canteadoLayout;
+        final ConstraintLayout cajonesLayout;
+        final ConstraintLayout espejosLayout;
+        final ConstraintLayout mecanizadoLayout;
+        final ConstraintLayout lacaLayout;
+        final ConstraintLayout montajeLayout;
+        final ConstraintLayout embalajeLayout;
+        final ConstraintLayout transporteLayout;
+        final ConstraintLayout uneroLayout;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             order = itemView.findViewById(R.id.orderTv);
-            deleteBtn = itemView.findViewById(R.id.deleteBtn);
+            uneroDeleteBtn = itemView.findViewById(R.id.uneroDeleteBtn);
+            montajeDeleteBtn = itemView.findViewById(R.id.montajeDeleteBtn);
+            transporteDeleteBtn = itemView.findViewById(R.id.transporteDeleteBtn);
+            lacaDeleteBtn = itemView.findViewById(R.id.lacaDeleteBtn);
+            embalajeDeleteBtn = itemView.findViewById(R.id.embalajeDeleteBtn);
+            mecanizadoDeleteBtn = itemView.findViewById(R.id.mecanizadoDeleteBtn);
+            espejosDeleteBtn = itemView.findViewById(R.id.espejosDeleteBtn);
+            cajonesDeleteBtn = itemView.findViewById(R.id.cajonesDeleteBtn);
+            corteDeleteBtn = itemView.findViewById(R.id.corteDeleteBtn);
+            canteadoDeleteBtn = itemView.findViewById(R.id.canteadoDeleteBtn);
+            adminDeleteBtn = itemView.findViewById(R.id.adminDeleteBtn);
             ordersLayout = itemView.findViewById(R.id.ordersLayout);
             adminLayout = itemView.findViewById(R.id.adminLayout);
             cardPertanyaan = itemView.findViewById(R.id.card_pertanyaan);
@@ -463,13 +603,6 @@ public class AdapterOrders extends RecyclerView.Adapter<AdapterOrders.MyHolder> 
             uneroDateTv = itemView.findViewById(R.id.uneroDateTv);
             adminNameTv = itemView.findViewById(R.id.adminNameTv);
             adminDateTv = itemView.findViewById(R.id.adminDateTv);
-
-
-
-
-
-
-
         }
     }
 

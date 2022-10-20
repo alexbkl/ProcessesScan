@@ -4,7 +4,6 @@ import static android.text.TextUtils.isEmpty;
 
 import android.os.Bundle;
 
-import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,29 +21,24 @@ import android.widget.Toast;
 import com.android.vidrebany.R;
 import com.android.vidrebany.adapters.AdapterOrders;
 import com.android.vidrebany.models.ModelOrders;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class AdminOrdersFragment extends Fragment {
 
-    RecyclerView ordersRecyclerView;
-    AdapterOrders adapterOrders;
-    ModelOrders modelo = new ModelOrders();
-    List<ModelOrders> ordersList;
+    private RecyclerView ordersRecyclerView;
+    private AdapterOrders adapterOrders;
+    private List<ModelOrders> ordersList;
 
 
     public static AdminOrdersFragment newInstance() {
@@ -85,7 +79,7 @@ public class AdminOrdersFragment extends Fragment {
                     ModelOrders modelOrders = ds.getValue(ModelOrders.class);
                     assert modelOrders != null;
                     ordersList.add(modelOrders);
-                    adapterOrders = new AdapterOrders(getActivity(), ordersList, ordersRecyclerView);
+                    adapterOrders = new AdapterOrders(getActivity(), ordersList);
                     adapterOrders.setHasStableIds(true);
                     ordersRecyclerView.setAdapter(adapterOrders);
 
@@ -108,10 +102,6 @@ public class AdminOrdersFragment extends Fragment {
 
                         }
 
-                        //     String started = Objects.requireNonNull(snapshot.child("process").child("Corte").child("started").getValue()).toString();
-                        //     String ended = Objects.requireNonNull(dsa.child("Corte").child("ended").getValue()).toString();
-                        //    System.out.println("Started: "+started+"\nEnded: "+ended);
-
 
                     }
 
@@ -120,8 +110,6 @@ public class AdminOrdersFragment extends Fragment {
 
 
                 }
-                //   adapterOrders.setProcessMap(hashMap);
-                //  adapterOrders.notifyDataSetChanged();
             }
 
             @Override
@@ -309,7 +297,7 @@ public class AdminOrdersFragment extends Fragment {
                     }
 
                     //adapter
-                    adapterOrders = new AdapterOrders(getActivity(), ordersList, ordersRecyclerView);
+                    adapterOrders = new AdapterOrders(getActivity(), ordersList);
                     //set adapter to recyclerview
                     ordersRecyclerView.setAdapter(adapterOrders);
                 }

@@ -72,7 +72,6 @@
                             android:textColor="@color/white"
                             tools:ignore="MissingConstraints" />
 
-
                         <TextView
                             android:id="@+id/corteNameTv"
                             android:layout_width="150dp"
@@ -81,7 +80,7 @@
                             android:paddingLeft="10dp"
                             android:paddingTop="15dp"
                             android:paddingBottom="5dp"
-                            android:text="Joze Luí Miguè Alezàndeh"
+                            android:text="gregr Luí gergegrr egreggerrg"
                             android:textColor="@color/white"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -90,16 +89,24 @@
                             tools:layout_editor_absoluteX="0dp" />
 
                         <TextView
-                            android:id="@+id/corteDateTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:paddingTop="15dp"
-                            android:text="23.03.2026\n23.03.2027"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:ignore="MissingConstraints" />
+                                android:id="@+id/corteDateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:paddingTop="10dp"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+                                app:layout_constraintEnd_toStartOf="@+id/corteDeleteBtn"
+                                tools:layout_editor_absoluteY="5dp"/>
+                        <ImageButton
+                                android:id="@+id/corteDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -146,17 +153,26 @@
                             tools:layout_editor_absoluteX="0dp" />
 
                         <TextView
-                            android:id="@+id/cajonesDateTv"
-                            android:layout_width="wrap_content"
+                                android:id="@+id/cajonesDateTv"
+                                android:layout_width="wrap_content"
 
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:paddingTop="15dp"
-                            android:text="23.03.2026\n23.03.2027"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:ignore="MissingConstraints" />
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:paddingTop="10dp"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+                                tools:layout_editor_absoluteY="5dp"
+                                app:layout_constraintEnd_toStartOf="@+id/cajonesDeleteBtn"/>
+                        <ImageButton
+                                android:id="@+id/cajonesDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
+
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -204,17 +220,25 @@
                             tools:layout_editor_absoluteX="0dp" />
 
                         <TextView
-                            android:id="@+id/espejosDateTv"
-                            android:layout_width="wrap_content"
+                                android:id="@+id/espejosDateTv"
+                                android:layout_width="wrap_content"
 
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:paddingTop="15dp"
-                            android:text="23.03.2026\n23.03.2027"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:ignore="MissingConstraints" />
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:paddingTop="10dp"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+                                tools:layout_editor_absoluteY="5dp"
+                                app:layout_constraintEnd_toStartOf="@+id/espejosDeleteBtn"/>
+                        <ImageButton
+                                android:id="@+id/espejosDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -260,17 +284,26 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                     <TextView
-                        android:id="@+id/uneroDateTv"
-                        android:paddingTop="15dp"
+                            android:id="@+id/uneroDateTv"
+                            android:paddingTop="10dp"
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="23.03.2026\n23.03.2027"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+
+                            app:layout_constraintEnd_toStartOf="@+id/uneroDeleteBtn"
+                            tools:layout_editor_absoluteY="5dp"/>
+                    <ImageButton
+                            android:id="@+id/uneroDeleteBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@null"
+                            android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -315,17 +348,25 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                     <TextView
-                        android:id="@+id/canteadoDateTv"
-                        android:paddingTop="15dp"
+                            android:id="@+id/canteadoDateTv"
+                            android:paddingTop="10dp"
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="23.03.2026\n23.03.2027"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+                            app:layout_constraintEnd_toStartOf="@+id/canteadoDeleteBtn"
+                            tools:layout_editor_absoluteY="5dp"/>
+                    <ImageButton
+                            android:id="@+id/canteadoDeleteBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@null"
+                            android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -370,17 +411,25 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                     <TextView
-                        android:id="@+id/mecanizadoDateTv"
-                        android:paddingTop="15dp"
+                            android:id="@+id/mecanizadoDateTv"
+                            android:paddingTop="10dp"
 
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="23.03.2026\n23.03.2027"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
+                            app:layout_constraintEnd_toStartOf="@+id/mecanizadoDeleteBtn"
+                            tools:layout_editor_absoluteY="5dp"/>
+                    <ImageButton
+                            android:id="@+id/mecanizadoDeleteBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@null"
+                            android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -426,18 +475,27 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                     <TextView
-                        android:id="@+id/lacaDateTv"
-                        android:layout_width="wrap_content"
-                        android:paddingTop="15dp"
+                            android:id="@+id/lacaDateTv"
+                            android:layout_width="wrap_content"
+                            android:paddingTop="10dp"
 
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="23.03.2026\n23.03.2027"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            tools:ignore="MissingConstraints"
 
+                            app:layout_constraintEnd_toStartOf="@+id/lacaDeleteBtn"
+                            tools:layout_editor_absoluteY="5dp"/>
+
+                    <ImageButton
+                            android:id="@+id/lacaDeleteBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@null"
+                            android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -482,17 +540,24 @@
                         tools:layout_editor_absoluteX="0dp" />
 
                     <TextView
-                        android:id="@+id/montajeDateTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/lato_bold"
-                        android:text="23.03.2026\n23.03.2027"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:paddingTop="10dp"
-
-                        app:layout_constraintEnd_toEndOf="parent"
-                        tools:ignore="MissingConstraints" />
+                            android:id="@+id/montajeDateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_bold"
+                            android:text="23.03.2026\n23.03.2027"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            android:paddingTop="10dp"
+                            tools:ignore="MissingConstraints"
+                            app:layout_constraintEnd_toStartOf="@+id/montajeDeleteBtn"
+                            tools:layout_editor_absoluteY="5dp"/>
+                    <ImageButton
+                            android:id="@+id/montajeDeleteBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:background="@null"
+                            android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -539,16 +604,24 @@
                             tools:layout_editor_absoluteX="0dp" />
 
                         <TextView
-                            android:paddingTop="15dp"
-                            android:id="@+id/embalajeDateTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
-                            android:text="23.03.2026\n23.03.2027"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:ignore="MissingConstraints" />
+                                android:paddingTop="10dp"
+                                android:id="@+id/embalajeDateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+                                app:layout_constraintEnd_toStartOf="@+id/embalajeDeleteBtn"
+                                tools:layout_editor_absoluteY="5dp"/>
+                        <ImageButton
+                                android:id="@+id/embalajeDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -592,7 +665,7 @@
                                 android:paddingLeft="10dp"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="5dp"
-                                android:text="Joze Luí Miguè Alezàndeh"
+                                android:text="Nombre"
                                 android:textColor="@color/white"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -602,18 +675,27 @@
                         </RelativeLayout>
 
                         <TextView
-                            android:id="@+id/transporteDateTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/lato_bold"
+                                android:id="@+id/transporteDateTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/lato_bold"
 
-                            android:paddingTop="15dp"
-                            android:text="23.03.2026\n23.03.2027"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            tools:ignore="MissingConstraints" />
+                                android:paddingTop="10dp"
+                                android:text="23.03.2026\n23.03.2027"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                tools:ignore="MissingConstraints"
+                                app:layout_constraintEnd_toStartOf="@+id/transporteDeleteBtn"
 
+                                tools:layout_editor_absoluteY="5dp"/>
+
+                        <ImageButton
+                                android:id="@+id/transporteDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -656,7 +738,7 @@
                                     android:paddingLeft="10dp"
                                     android:paddingTop="15dp"
                                     android:paddingBottom="5dp"
-                                    android:text="Joze Luí Miguè Alezàndeh"
+                                    android:text="JoSe Luis"
                                     android:textColor="@color/white"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
@@ -677,6 +759,13 @@
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 tools:ignore="MissingConstraints" />
+                        <ImageButton
+                                android:id="@+id/adminDeleteBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                android:background="@null"
+                                android:src="@drawable/ic_delete" tools:layout_editor_absoluteY="5dp"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -685,15 +774,15 @@
                 </RelativeLayout>
 
                 <ImageButton
-                    android:id="@+id/deleteBtn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:background="@null"
-                    android:src="@drawable/ic_delete" />
+                        android:id="@+id/deleteBtn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginEnd="0dp"
+                        android:background="@null"
+                        android:src="@drawable/ic_delete"/>
             </RelativeLayout>
 
 

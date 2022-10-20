@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="16dp"
+        android:backgroundTint="#C9252525"
+        android:background="#C9252525"
+        android:layout_marginRight="16dp"
+        android:id="@+id/card_pertanyaan"
+        card_view:cardBackgroundColor="#FFFF"
+        card_view:cardCornerRadius="8dp"
+        card_view:contentPadding="10dp"
+        android:foreground="?selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+                android:id="@+id/usersLayout"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+                <ImageButton
+                        android:id="@+id/deleteBtn"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:src="@drawable/ic_delete"
+
+                        android:background="@null"
+                        android:scaleType="centerInside"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_gravity="end"
+                        android:contentDescription="@string/eliminar_proc_s_a_una_data"/>
+                <TextView
+                        android:id="@+id/nameTv"
+                        android:text="Nom i cognoms"
+                        android:textColor="@color/white"
+                        android:textSize="25sp"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                <TextView
+
+                        android:id="@+id/processTv"
+                        android:text="Procés:"
+                        android:fontFamily="@font/lato_bold"
+                        android:textAlignment="textStart"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

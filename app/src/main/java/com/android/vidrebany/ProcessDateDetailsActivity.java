@@ -1,80 +1,65 @@
 package com.android.vidrebany;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.TextView;
-
-import com.android.vidrebany.adapters.AdapterDatesDetails;
+import com.android.vidrebany.adapters.AdapterProcessDateDetails;
 import com.android.vidrebany.models.ModelDatesDetails;
 import com.google.firebase.database.*;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static android.text.TextUtils.isEmpty;
 
-public class DataDetailsActivity extends AppCompatActivity {
+public class ProcessDateDetailsActivity extends AppCompatActivity {
 
+    private TextView processTv, puntuacioTv;
     private RecyclerView detailsRecyclerView;
-    private AdapterDatesDetails adapterDatesDetails;
-    private TextView nameTv, processTv, numberTv, puntuacioTv;
+    private AdapterProcessDateDetails adapterProcessDateDetails;
     private List<ModelDatesDetails> datesDetailsList;
-    private String number, date = null, puntuacio, name, process;
-
-    public DataDetailsActivity() {
-    }
+    private String process = "s/p";
+    private String date = null;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_details);
+        setContentView(R.layout.activity_process_date_details);
 
-        nameTv = findViewById(R.id.nameTv);
         processTv = findViewById(R.id.processTv);
-        numberTv = findViewById(R.id.numberTv);
         puntuacioTv = findViewById(R.id.puntuacioTv);
-
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                Intent intent = new Intent(DataDetailsActivity.this, LoginActivity.class);
+                Intent intent = new Intent(ProcessDateDetailsActivity.this, LoginActivity.class);
                 startActivity(intent);
             } else {
-                name = extras.getString("name");
                 process = extras.getString("process");
-                number = extras.getString("number");
                 date = extras.getString("date");
-                puntuacio = extras.getString("puntuacio");
+                String puntuacio = extras.getString("puntuacio");
                 Objects.requireNonNull(getSupportActionBar()).setTitle(date);
                 toolbar.setTitle(date); //change actionbar title
-                setContent();
+                setContent(process, puntuacio);
             }
         } else {
-            number = (String) savedInstanceState.getSerializable("number");
+            process = (String) savedInstanceState.getSerializable("process");
             date = (String) savedInstanceState.getSerializable("date");
         }
 
-
-
-        number = numberTv.getText().toString();
 
 
         detailsRecyclerView = findViewById(R.id.detailsRecyclerView);
@@ -86,15 +71,9 @@ public class DataDetailsActivity extends AppCompatActivity {
         loadDatesDetails();
 
     }
-    private void setContent() {
-        nameTv.setText(name);
-        processTv.setText(process);
-        numberTv.setText(number);
-        puntuacioTv.setText(puntuacio);
-    }
 
     private void loadDatesDetails() {
-        DatabaseReference datesDetailsRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders").child(date).child(date);
+        DatabaseReference datesDetailsRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(date).child(date);
         datesDetailsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -102,11 +81,12 @@ public class DataDetailsActivity extends AppCompatActivity {
 
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     ModelDatesDetails modelDatesDetails = ds.getValue(ModelDatesDetails.class);
-                    assert modelDatesDetails != null;
-                    datesDetailsList.add(modelDatesDetails);
-                    adapterDatesDetails = new AdapterDatesDetails(DataDetailsActivity.this, datesDetailsList, date, number);
-                    adapterDatesDetails.setHasStableIds(true);
-                    detailsRecyclerView.setAdapter(adapterDatesDetails);
+                    if (modelDatesDetails != null) {
+                        datesDetailsList.add(modelDatesDetails);
+                        adapterProcessDateDetails = new AdapterProcessDateDetails(ProcessDateDetailsActivity.this, datesDetailsList, process, date);
+                        adapterProcessDateDetails.setHasStableIds(true);
+                        detailsRecyclerView.setAdapter(adapterProcessDateDetails);
+                    }
                 }
             }
 
@@ -115,6 +95,12 @@ public class DataDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setContent(String process, String puntuacio) {
+
+        processTv.setText(process);
+        puntuacioTv.setText(puntuacio);
     }
 
     @Override
@@ -148,28 +134,28 @@ public class DataDetailsActivity extends AppCompatActivity {
         return true;
     }
 
-
     private void searchDatesDetails(String s) {
-        DatabaseReference datesDetailsRef = FirebaseDatabase.getInstance().getReference().child("users").child(number).child("orders").child(date).child(date);        datesDetailsRef.addValueEventListener(new ValueEventListener() {
+        DatabaseReference datesDetailsRef = FirebaseDatabase.getInstance().getReference().child("processes").child(process).child(date).child(date);
+        datesDetailsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 datesDetailsList.clear();
 
                 for (DataSnapshot ds: snapshot.getChildren()) {
                     ModelDatesDetails modelDatesDetails = ds.getValue(ModelDatesDetails.class);
-                    assert modelDatesDetails != null;
-                    String code = modelDatesDetails.getCode();
-                    String started = modelDatesDetails.getStarted();
-                    String ended = modelDatesDetails.getEnded();
-                    String process = modelDatesDetails.getProcess();
-                        if (code.contains(s) || started.contains(s) || ended.contains(s) || process != null && process.contains(s)) {
+                    if (modelDatesDetails != null) {
+                        String code = modelDatesDetails.getCode();
+                        String started = modelDatesDetails.getStarted();
+                        String ended = modelDatesDetails.getEnded();
+                        String user = modelDatesDetails.getUser();
+                        if (code.contains(s) || started.contains(s) || ended.contains(s) || user.contains(s)) {
                             datesDetailsList.add(modelDatesDetails);
                         }
+                        adapterProcessDateDetails = new AdapterProcessDateDetails(ProcessDateDetailsActivity.this, datesDetailsList, process, date);
+                        adapterProcessDateDetails.setHasStableIds(true);
+                        detailsRecyclerView.setAdapter(adapterProcessDateDetails);
+                    }
 
-
-                    adapterDatesDetails = new AdapterDatesDetails(DataDetailsActivity.this, datesDetailsList, date, number);
-                    adapterDatesDetails.setHasStableIds(true);
-                    detailsRecyclerView.setAdapter(adapterDatesDetails);
                 }
             }
 
@@ -180,13 +166,9 @@ public class DataDetailsActivity extends AppCompatActivity {
         });
     }
 
-
-
-
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
     }
-
 }

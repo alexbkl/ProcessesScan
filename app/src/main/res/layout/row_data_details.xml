@@ -44,7 +44,16 @@
                     android:fontFamily="@font/lato_bold"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
-
+            <TextView
+                    android:id="@+id/processTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/processTv"
+                    android:text="Procés"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
             <TextView
                     android:id="@+id/startedTv"
                     android:layout_width="wrap_content"

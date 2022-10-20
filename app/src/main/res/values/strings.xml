@@ -2,4 +2,20 @@
     <string name="app_name">VidreBany</string>
     <string name="eliminar_proc_s_a_una_data">Eliminar procés a una data</string>
     <string name="acabat">ACABAT:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="processes_list">
+        <item>Admin</item>
+        <item>Montaje</item>
+        <item>Corte</item>
+        <item>Canteado</item>
+        <item>Cajones</item>
+        <item>Espejos</item>
+        <item>Mecanizado</item>
+        <item>Embalaje</item>
+        <item>Transporte</item>
+        <item>Laca</item>
+        <item>Espejo</item>
+        <item>Unero</item>
+    </string-array>
 </resources>
