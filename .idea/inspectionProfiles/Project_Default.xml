@@ -247,7 +247,6 @@
     <inspection_tool class="AndroidLintPrivateResource" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="AndroidLintProguard" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="AndroidLintProguardSplit" enabled="false" level="TYPO" enabled_by_default="false" />
-    <inspection_tool class="AndroidLintPropertyEscape" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="AndroidLintProtectedPermissions" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="AndroidLintProxyPassword" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="AndroidLintPxUsage" enabled="false" level="TYPO" enabled_by_default="false" />
