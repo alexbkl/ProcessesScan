@@ -1,5 +1,6 @@
 package com.android.vidrebany.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,9 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.android.vidrebany.ComandesTransporterActivity
 import com.android.vidrebany.R
+import com.android.vidrebany.TransporterActivity
 import com.android.vidrebany.models.TransporterModel
 import java.util.ArrayList
 
@@ -30,7 +33,11 @@ class TransporterAdapter(private val transportersList: ArrayList<TransporterMode
         holder.nameTv.text = transporter.name
         holder.userLayout.setOnClickListener {
             //handle click
-            Toast.makeText(holder.itemView.context, transporter.name+transporter.id, Toast.LENGTH_SHORT).show()
+            TransporterActivity.transporterUid = transporter.id
+            //go to ComandesTransporterActivity from intent
+            val intent = Intent(holder.itemView.context, ComandesTransporterActivity::class.java)
+            holder.itemView.context.startActivity(intent)
+            Toast.makeText(holder.itemView.context, transporter.name, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -13,6 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 class TransporterActivity : AppCompatActivity() {
     //create transportersList
     private val transportersList = ArrayList<TransporterModel>()
+    public val transporterUid = null;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transporter)
@@ -43,5 +44,9 @@ class TransporterActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    companion object {
+        lateinit var transporterUid: String
     }
 }
