@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.android.vidrebany.ComandaDadesActivity
 import com.android.vidrebany.PDFViewer
 import com.android.vidrebany.R
 import com.android.vidrebany.models.ComandaModel
@@ -35,16 +36,37 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
        holder.comandaTv.text = comanda.address
 
 
-        val url = comanda.pdfUrl
+        //val url = comanda.pdfUrl
 
 
         holder.comandaLayout.setOnClickListener {
-            //handle click
+            //go to comanda dades activity
+            val intent = Intent(holder.itemView.context, ComandaDadesActivity::class.java)
+
+            intent.putExtra("address", comanda.address)
+            intent.putExtra("clientNum", comanda.clientNum)
+            intent.putExtra("date", comanda.date)
+            intent.putExtra("firstTel", comanda.firstTel)
+            intent.putExtra("secondTel", comanda.secondTel)
+            intent.putExtra("id", comanda.id)
+            intent.putExtra("pdfUrl", comanda.pdfUrl)
+            intent.putExtra("observations", comanda.observations)
+            intent.putExtra("transporterId", comanda.transporterUid)
+            intent.putExtra("transName", comanda.transName)
+            intent.putExtra("status", comanda.status)
+            intent.putExtra("time", comanda.time)
+
+            holder.itemView.context.startActivity(intent)
+
+        /*
             //open PDF viewer activity intent
             Intent(holder.itemView.context, PDFViewer::class.java).also {
                 it.putExtra("url", url)
                 holder.itemView.context.startActivity(it)
             }
+
+            */
+
         }
     }
 

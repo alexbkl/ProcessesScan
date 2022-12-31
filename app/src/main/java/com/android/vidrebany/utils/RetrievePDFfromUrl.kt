@@ -1,7 +1,6 @@
 package com.android.vidrebany.utils
 
 import android.os.AsyncTask
-import android.os.Looper
 import com.github.barteksc.pdfviewer.PDFView
 import java.io.BufferedInputStream
 import java.io.IOException
