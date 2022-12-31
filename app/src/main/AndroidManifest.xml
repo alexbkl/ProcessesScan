@@ -12,6 +12,13 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.VidreBany">
         <activity
+                android:name=".SignatureActivity"
+                android:exported="false">
+            <meta-data
+                    android:name="android.app.lib_name"
+                    android:value=""/>
+        </activity>
+        <activity
                 android:name=".ComandaDadesActivity"
                 android:exported="false">
             <meta-data

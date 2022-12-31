@@ -15,6 +15,7 @@ internal class RetrievePDFfromUrl(// create a pdf view object
     private val pdfView: PDFView
 ) : AsyncTask<String?, Void?, InputStream?>() {
 
+    @Deprecated("Deprecated in Java")
     override fun doInBackground(vararg strings: String?): InputStream? {
         // we are using inputstream
         // for getting out PDF.
@@ -40,6 +41,7 @@ internal class RetrievePDFfromUrl(// create a pdf view object
         return inputStream
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onPostExecute(inputStream: InputStream?) {
         // after the execution of our async
         // task we are loading our pdf in our pdf view.

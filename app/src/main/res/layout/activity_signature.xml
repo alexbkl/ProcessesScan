@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:signature="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+
+                tools:context=".SignatureActivity">
+
+
+    <RelativeLayout
+            android:id="@+id/signature_pad_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/buttons_container">
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/signature_pad_description"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/darker_gray" />
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/signature_pad"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/darker_gray" />
+
+        <TextView
+                android:id="@+id/signature_pad_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="Accede RGPD"
+                android:textColor="@android:color/darker_gray" />
+        <TextView
+                android:id="@+id/tvDni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="DNI"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        <EditText
+                android:id="@+id/etDni"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDni"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="16dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="A12345678"
+                android:textColor="@android:color/black" />
+        <TextView
+                android:id="@+id/etFirmaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etDni"
+                android:layout_marginBottom="16dp"
+                android:text="Firma:" />
+
+        <se.warting.signatureview.views.SignaturePad
+                android:id="@+id/signature_pad"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/etFirmaTitle"
+                signature:clearOnDoubleClick="true" />
+    </RelativeLayout>
+
+    <LinearLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnClear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="BORRAR" />
+
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnSign"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="SIGNAR" />
+    </LinearLayout>
+
+</RelativeLayout>

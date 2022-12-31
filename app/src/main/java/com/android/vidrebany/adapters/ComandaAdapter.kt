@@ -43,18 +43,7 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
             //go to comanda dades activity
             val intent = Intent(holder.itemView.context, ComandaDadesActivity::class.java)
 
-            intent.putExtra("address", comanda.address)
-            intent.putExtra("clientNum", comanda.clientNum)
-            intent.putExtra("date", comanda.date)
-            intent.putExtra("firstTel", comanda.firstTel)
-            intent.putExtra("secondTel", comanda.secondTel)
-            intent.putExtra("id", comanda.id)
-            intent.putExtra("pdfUrl", comanda.pdfUrl)
-            intent.putExtra("observations", comanda.observations)
-            intent.putExtra("transporterId", comanda.transporterUid)
-            intent.putExtra("transName", comanda.transName)
-            intent.putExtra("status", comanda.status)
-            intent.putExtra("time", comanda.time)
+            intent.putExtra("comanda", comanda)
 
             holder.itemView.context.startActivity(intent)
 
