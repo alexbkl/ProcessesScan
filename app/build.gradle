@@ -54,5 +54,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
     implementation 'se.warting.signature:signature-view:0.0.21' // legacy android views
-
+    implementation 'com.itextpdf:itextg:5.5.10'
 }

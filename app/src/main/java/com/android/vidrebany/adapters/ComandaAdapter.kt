@@ -47,14 +47,14 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
 
             holder.itemView.context.startActivity(intent)
 
-        /*
+/*
             //open PDF viewer activity intent
             Intent(holder.itemView.context, PDFViewer::class.java).also {
-                it.putExtra("url", url)
+                it.putExtra("url", comanda.pdfUrl)
                 holder.itemView.context.startActivity(it)
             }
+*/
 
-            */
 
         }
     }
