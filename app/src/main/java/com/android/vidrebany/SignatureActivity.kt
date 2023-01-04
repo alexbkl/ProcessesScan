@@ -1,19 +1,23 @@
 package com.android.vidrebany
 
 
+import android.R.string
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ComandaModel
+import com.android.vidrebany.utils.ImageUtils
+import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Image
+import com.itextpdf.text.pdf.BaseFont
 import com.itextpdf.text.pdf.PdfContentByte
 import com.itextpdf.text.pdf.PdfReader
 import com.itextpdf.text.pdf.PdfStamper
@@ -33,8 +37,10 @@ class SignatureActivity : AppCompatActivity() {
         val comanda = intent.getParcelableExtra<ComandaModel>("comanda")
 
 
-        val signaturePad = findViewById<SignaturePad>(R.id.signature_pad)
 
+
+        val signaturePad = findViewById<SignaturePad>(R.id.signature_pad)
+        val dni = findViewById<EditText>(R.id.etDni).text
         val btnSign = findViewById<Button>(R.id.btnSign)
         val btnClear = findViewById<Button>(R.id.btnClear)
 
@@ -67,7 +73,13 @@ class SignatureActivity : AppCompatActivity() {
         }
 
         btnSign.setOnClickListener {
-            val transparentSignatureBitmap: Bitmap = signaturePad.getTransparentSignatureBitmap()
+            val transSignBitmap: Bitmap = signaturePad.getTransparentSignatureBitmap()
+
+            //make transparentSignatureBitmap smaller to fit in pdf
+            val transparentSignatureBitmap = ImageUtils().BITMAP_RESIZER(transSignBitmap, 100, 100)
+
+
+
             //ask for write and read files permissions to download from comanda?.pdfUrl
 
             val policy = ThreadPolicy.Builder().permitAll().build()
@@ -94,15 +106,55 @@ class SignatureActivity : AppCompatActivity() {
            //transform transparentSignatureBitmap to ByteArray!
 
             val stream = ByteArrayOutputStream()
-            transparentSignatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            transparentSignatureBitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream)
             val byteArray = stream.toByteArray()
 
             //get image from transparentSignatureBitmap
             val signature: Image = Image.getInstance(byteArray)
+
+
+
             val canvas: PdfContentByte? = pdfStamper.getOverContent(1)
+            canvas?.addImage(signature, 100f, 0f, 0f, 100f, 100f, 100f)
+            //put dni number on top of signature
+
+
+// the pdf content
+
+// the pdf content
+
+// select the font properties
+
+// select the font properties
+            val bf: BaseFont =
+                BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED)
+            canvas?.setColorFill(BaseColor.DARK_GRAY)
+            canvas?.setFontAndSize(bf, 8F)
+
+// write the text in the pdf content
+
+// write the text in the pdf content
+            canvas?.beginText()
+            var text: String = dni.toString()
+// put the alignment and coordinates here
+// put the alignment and coordinates here
+            canvas?.showTextAligned(1, text, 100f, 100f, 0f)
+            canvas?.endText()
+            canvas?.beginText()
+            text = "Other random blabla..."
+// put the alignment and coordinates here
+// put the alignment and coordinates here
+            canvas?.showTextAligned(2, text, 100f, 110f, 0f)
+            canvas?.endText()
+
+
+
+
+
+            /*
             signature.setAbsolutePosition(0F, 0F)
             canvas?.addImage(signature)
-
+*/
             pdfStamper.close()
             pdfReader.close()
 
@@ -127,23 +179,13 @@ class SignatureActivity : AppCompatActivity() {
 
 
 
-
-
-
-            //pdfFile.delete()
+            //pdfFile.deleteafterdasdasd()
             //modifiedPdfFile.delete()
             //delete tempa.pdf
             // resolver.delete(uri, null, null)
 
             //Toast the path of the file
             Toast.makeText(this, pdfFile.absolutePath.toString(), Toast.LENGTH_LONG).show()
-
-
-
-
-
-
-
 
 
 
