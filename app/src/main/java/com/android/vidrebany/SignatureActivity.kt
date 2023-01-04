@@ -1,7 +1,9 @@
 package com.android.vidrebany
 
 
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -9,6 +11,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ComandaModel
 import com.itextpdf.text.Image
 import com.itextpdf.text.pdf.PdfContentByte
@@ -16,9 +19,7 @@ import com.itextpdf.text.pdf.PdfReader
 import com.itextpdf.text.pdf.PdfStamper
 import se.warting.signatureview.views.SignaturePad
 import se.warting.signatureview.views.SignedListener
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 import java.net.URL
 import java.nio.channels.Channels
 import java.nio.channels.ReadableByteChannel
@@ -73,20 +74,24 @@ class SignatureActivity : AppCompatActivity() {
             StrictMode.setThreadPolicy(policy)
             val url = URL(comanda?.pdfUrl)
             val rbc: ReadableByteChannel = Channels.newChannel(url.openStream())
-            val pdfFile = File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "beaba.pdf")
+            //pdfFile in Documents folder
+            val pdfFile = File(Environment.getExternalStorageDirectory().toString() + "/Documents/faaarjomanda.pdf")
+
             val fos = FileOutputStream(pdfFile)
             fos.channel.transferFrom(rbc, 0, Long.MAX_VALUE)
             fos.close()
+
+
             rbc.close()
             //insert signature to pdfFile using itext
             Toast.makeText(this, "PDF saved to " + pdfFile.absolutePath, Toast.LENGTH_SHORT).show()
             val pdfReader = PdfReader(pdfFile.absolutePath)
             //pdfreader not opened with owner password, to solve it:
             PdfReader.unethicalreading = true
-
-            val modifiedPdfFile = File(Environment.getExternalStorageDirectory().toString() + "/Download/" + "modified.pdf")
+            val modifiedPdfFile = File(Environment.getExternalStorageDirectory().toString() + "/Documents/faaajrodified.pdf")
             val pdfStamper = PdfStamper(pdfReader, FileOutputStream(modifiedPdfFile))
-            //transform transparentSignatureBitmap to ByteArray!
+
+           //transform transparentSignatureBitmap to ByteArray!
 
             val stream = ByteArrayOutputStream()
             transparentSignatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -94,13 +99,50 @@ class SignatureActivity : AppCompatActivity() {
 
             //get image from transparentSignatureBitmap
             val signature: Image = Image.getInstance(byteArray)
-            val canvas: PdfContentByte = pdfStamper.getOverContent(1)
-            signature.setAbsolutePosition(0F, 0F);
-            canvas.addImage(signature)
-            pdfStamper.close();
-            pdfReader.close();
+            val canvas: PdfContentByte? = pdfStamper.getOverContent(1)
+            signature.setAbsolutePosition(0F, 0F)
+            canvas?.addImage(signature)
+
+            pdfStamper.close()
+            pdfReader.close()
+
+
+
+            // Use the FileProvider to generate a content URI for the file
+            val modifiedPdfUri = FileProvider.getUriForFile(
+                this,
+                "com.android.vidrebany.fileprovider",
+                modifiedPdfFile
+            )
+
+            //send modified file to email
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "application/pdf"
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("asederado@gmail.com"))
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Comanda")
+            intent.putExtra(Intent.EXTRA_TEXT, "Comanda")
+            intent.putExtra(Intent.EXTRA_STREAM, modifiedPdfUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(intent)
+
+
+
+
+
+
+            //pdfFile.delete()
+            //modifiedPdfFile.delete()
+            //delete tempa.pdf
+            // resolver.delete(uri, null, null)
+
             //Toast the path of the file
-            Toast.makeText(this, pdfFile.absolutePath, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, pdfFile.absolutePath.toString(), Toast.LENGTH_LONG).show()
+
+
+
+
+
+
 
 
 
@@ -108,6 +150,13 @@ class SignatureActivity : AppCompatActivity() {
 
         }
     }
+
+
+
+
+
+
+
 
 
 }
