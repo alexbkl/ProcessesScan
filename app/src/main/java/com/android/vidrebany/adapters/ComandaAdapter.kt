@@ -2,18 +2,20 @@ package com.android.vidrebany.adapters
 
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.vidrebany.ComandaDadesActivity
 import com.android.vidrebany.PDFViewer
 import com.android.vidrebany.R
 import com.android.vidrebany.models.ComandaModel
-import com.android.vidrebany.utils.RetrievePDFfromUrl
-import com.github.barteksc.pdfviewer.PDFView
-import java.util.ArrayList
+
 
 //create kotlin recyclerview adapter class
 
@@ -22,6 +24,7 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var comandaLayout = itemView.findViewById<LinearLayout>(R.id.comandaLayout);
         var comandaTv = itemView.findViewById<TextView>(R.id.comandaTv);
+        var moreBtn = itemView.findViewById<ImageButton>(R.id.moreBtn);
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,10 +36,36 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comanda = comandesList[position]
+
+
+
        holder.comandaTv.text = comanda.address
 
 
-        //val url = comanda.pdfUrl
+        holder.moreBtn.setOnClickListener(View.OnClickListener { view ->
+            val popup = PopupMenu(holder.itemView.context, view)
+            popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu())
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
+                when (item!!.getItemId()) {
+                    R.id.mostrar_pdf -> {
+                        val pdfUrl = comanda.pdfUrl
+
+                        //open PDF viewer activity intent
+                        Intent(holder.itemView.context, PDFViewer::class.java).also {
+                            it.putExtra("url", pdfUrl)
+                            holder.itemView.context.startActivity(it)
+                        }
+                    }
+                    R.id.menu_item_2 -> {
+                        Toast.makeText(holder.itemView.context, "Item 2", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                true
+            })
+            popup.show()
+
+        })
+
 
 
         holder.comandaLayout.setOnClickListener {
@@ -48,11 +77,7 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
             holder.itemView.context.startActivity(intent)
 
 /*
-            //open PDF viewer activity intent
-            Intent(holder.itemView.context, PDFViewer::class.java).also {
-                it.putExtra("url", comanda.pdfUrl)
-                holder.itemView.context.startActivity(it)
-            }
+
 */
 
 
