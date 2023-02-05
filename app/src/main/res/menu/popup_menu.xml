@@ -4,9 +4,9 @@
         android:id="@+id/mostrar_pdf"
         android:title="Mostrar PDF"/>
     <item
-        android:id="@+id/menu_item_2"
-        android:title="Item 2"/>
+        android:id="@+id/mostrar_dades"
+        android:title="Mostrar Dades"/>
     <item
-        android:id="@+id/menu_item_3"
-        android:title="Item 3"/>
+        android:id="@+id/generar_firma"
+        android:title="Generar Firma"/>
 </menu>

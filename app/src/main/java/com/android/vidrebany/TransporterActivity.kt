@@ -13,12 +13,16 @@ import com.google.firebase.database.FirebaseDatabase
 class TransporterActivity : AppCompatActivity() {
     //create transportersList
     private val transportersList = ArrayList<TransporterModel>()
-    public val transporterUid = null;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_transporter)
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         toolbar.title = "Transports"
+
+        //get "transporterUid" from shared preferences
+        val sharedPreferences = getSharedPreferences("transporterUid", MODE_PRIVATE)
+        transporterUid = sharedPreferences.getString("transporterUid", "null").toString()
+
 
         val transportersRv: RecyclerView = findViewById(R.id.transportersRv) as RecyclerView;
 

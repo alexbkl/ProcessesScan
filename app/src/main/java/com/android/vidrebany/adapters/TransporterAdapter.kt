@@ -1,6 +1,8 @@
 package com.android.vidrebany.adapters
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +14,7 @@ import com.android.vidrebany.ComandesTransporterActivity
 import com.android.vidrebany.R
 import com.android.vidrebany.TransporterActivity
 import com.android.vidrebany.models.TransporterModel
-import java.util.ArrayList
+
 
 //create kotlin recyclerview adapter class
 
@@ -34,6 +36,14 @@ class TransporterAdapter(private val transportersList: ArrayList<TransporterMode
         holder.userLayout.setOnClickListener {
             //handle click
             TransporterActivity.transporterUid = transporter.id
+
+
+            val sharedPref = holder.itemView.context.getSharedPreferences("transporterUid", Context.MODE_PRIVATE)
+            val editor = sharedPref.edit()
+            editor.putString("transporterUid", transporter.id)
+            editor.apply()
+
+
             //go to ComandesTransporterActivity from intent
             val intent = Intent(holder.itemView.context, ComandesTransporterActivity::class.java)
             holder.itemView.context.startActivity(intent)

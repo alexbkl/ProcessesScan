@@ -5,6 +5,7 @@ import android.os.Parcelable
 
 class ComandaModel(var id: String,
                    var address: String,
+                   var albaraNum: String,
                    var clientNum: String,
                    var date: String,
                    var firstTel: String,
@@ -27,12 +28,14 @@ class ComandaModel(var id: String,
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readString()!!
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
         parcel.writeString(address)
+        parcel.writeString(albaraNum)
         parcel.writeString(clientNum)
         parcel.writeString(date)
         parcel.writeString(firstTel)

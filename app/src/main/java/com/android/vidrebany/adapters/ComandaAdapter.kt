@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.vidrebany.ComandaDadesActivity
 import com.android.vidrebany.PDFViewer
 import com.android.vidrebany.R
+import com.android.vidrebany.SignatureActivity
 import com.android.vidrebany.models.ComandaModel
 
 
@@ -38,8 +39,8 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
         val comanda = comandesList[position]
 
 
-
-       holder.comandaTv.text = comanda.address
+        val comandaText = comanda.albaraNum + "\n" + comanda.date + "-" + comanda.time + "\n" + comanda.address
+       holder.comandaTv.text = comandaText
 
 
         holder.moreBtn.setOnClickListener(View.OnClickListener { view ->
@@ -56,8 +57,19 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
                             holder.itemView.context.startActivity(it)
                         }
                     }
-                    R.id.menu_item_2 -> {
-                        Toast.makeText(holder.itemView.context, "Item 2", Toast.LENGTH_SHORT).show()
+                    R.id.mostrar_dades -> {
+                        //go to comanda dades activity
+                        val intent = Intent(holder.itemView.context, ComandaDadesActivity::class.java)
+
+                        intent.putExtra("comanda", comanda)
+
+                        holder.itemView.context.startActivity(intent)
+                    }
+                    R.id.generar_firma -> {
+                        //go to SignatureActivity
+                        val intent = Intent(holder.itemView.context, SignatureActivity::class.java)
+                        intent.putExtra("comanda", comanda)
+                        holder.itemView.context.startActivity(intent)
                     }
                 }
                 true
