@@ -37,7 +37,7 @@ class ComandesTransporterActivity : AppCompatActivity() {
             val intent2 = Intent(Intent.ACTION_SEND)
 
             val extraText = "Núm. albarà: " + comanda!!.albaraNum + "\nNúm. client: " + comanda.clientNum +
-                    "\nData: " + comanda.date + "-" +comanda.time
+                    "\nData: " + comanda.date + "-" +comanda.time +
                     "\nPrimer tel.: " + comanda.firstTel +
                     "\nSegon tel.: " + comanda.secondTel +
                     "\nAdreça: " + comanda.address +

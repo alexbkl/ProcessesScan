@@ -265,7 +265,7 @@ class SignatureActivity : AppCompatActivity() {
         //set comanda status to "finalizada" inside firebase realtime database
         val database = FirebaseDatabase.getInstance()
         val myRef = database.getReference("transport").child(comanda?.id.toString()).child("status")
-        //myRef.setValue("finalizada")
+        myRef.setValue("finalizada")
 
 
 
@@ -277,12 +277,12 @@ class SignatureActivity : AppCompatActivity() {
         pdfFile?.delete()
 
 
-       /* //go to ComandesTransporterActivity
+        //go to ComandesTransporterActivity
         val comandesIntent = Intent(this, ComandesTransporterActivity::class.java)
         comandesIntent.putExtra("hasPdf", true)
         comandesIntent.putExtra("modifiedPdfUri", modifiedPdfUri)
         comandesIntent.putExtra("comanda", comanda)
-        startActivity(comandesIntent)*/
+        startActivity(comandesIntent)
         println("o")
 
     }
