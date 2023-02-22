@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.vidrebany.ComandaDadesActivity
 import com.android.vidrebany.PDFViewer
@@ -23,9 +22,9 @@ import com.android.vidrebany.models.ComandaModel
 class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
     RecyclerView.Adapter<ComandaAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var comandaLayout = itemView.findViewById<LinearLayout>(R.id.comandaLayout);
-        var comandaTv = itemView.findViewById<TextView>(R.id.comandaTv);
-        var moreBtn = itemView.findViewById<ImageButton>(R.id.moreBtn);
+        var comandaLayout: LinearLayout = itemView.findViewById(R.id.comandaLayout)
+        var comandaTv: TextView = itemView.findViewById(R.id.comandaTv)
+        var moreBtn: ImageButton = itemView.findViewById(R.id.moreBtn)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -43,11 +42,11 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
        holder.comandaTv.text = comandaText
 
 
-        holder.moreBtn.setOnClickListener(View.OnClickListener { view ->
+        holder.moreBtn.setOnClickListener { view ->
             val popup = PopupMenu(holder.itemView.context, view)
-            popup.getMenuInflater().inflate(R.menu.popup_menu, popup.getMenu())
-            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
-                when (item!!.getItemId()) {
+            popup.menuInflater.inflate(R.menu.comanda_popup_menu, popup.menu)
+            popup.setOnMenuItemClickListener { item: MenuItem? ->
+                when (item!!.itemId) {
                     R.id.mostrar_pdf -> {
                         val pdfUrl = comanda.pdfUrl
 
@@ -57,6 +56,7 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
                             holder.itemView.context.startActivity(it)
                         }
                     }
+
                     R.id.mostrar_dades -> {
                         //go to comanda dades activity
                         val intent = Intent(holder.itemView.context, ComandaDadesActivity::class.java)
@@ -65,6 +65,7 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
 
                         holder.itemView.context.startActivity(intent)
                     }
+
                     R.id.generar_firma -> {
                         //go to SignatureActivity
                         val intent = Intent(holder.itemView.context, SignatureActivity::class.java)
@@ -73,10 +74,10 @@ class ComandaAdapter(private val comandesList: ArrayList<ComandaModel>) :
                     }
                 }
                 true
-            })
+            }
             popup.show()
 
-        })
+        }
 
 
 

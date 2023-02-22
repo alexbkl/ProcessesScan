@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/mostrar_dades"
+            android:title="Mostrar Dades"/>
+    <item
+            android:id="@+id/mostrar_documents"
+            android:title="Mostrar Documents"/>
+    <item
+            android:id="@+id/confirmacio"
+            android:title="Confirmació"/>
+</menu>

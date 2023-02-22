@@ -44,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
                     String adminpassword = Objects.requireNonNull(snapshot.child("adminpassword").getValue()).toString();
                     String userpassword = Objects.requireNonNull(snapshot.child("userpassword").getValue()).toString();
                     String transporterpassword = Objects.requireNonNull(snapshot.child("transporterpassword").getValue()).toString();
+                    String serveipassword = Objects.requireNonNull(snapshot.child("serveipassword").getValue()).toString();
                     if (input.equals(userpassword)) {
                         Intent intent = new Intent(LoginActivity.this, UsersActivity.class);
                         intent.putExtra("role","user");
@@ -57,6 +58,11 @@ public class LoginActivity extends AppCompatActivity {
                     } else if (input.equals(transporterpassword)) {
                         Intent intent = new Intent(LoginActivity.this, TransporterActivity.class);
                         intent.putExtra("role","transporter");
+                        startActivity(intent);
+
+                    } else if (input.equals(serveipassword)) {
+                        Intent intent = new Intent(LoginActivity.this, ServeiTecnicActivity.class);
+                        intent.putExtra("role","serveitecnic");
                         startActivity(intent);
 
                     } else {

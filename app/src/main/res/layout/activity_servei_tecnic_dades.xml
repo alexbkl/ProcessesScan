@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        tools:context=".ServeiTecnicDadesActivity">
+    <TextView
+            android:id="@+id/tvComandaTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Dades servei"
+            android:textColor="#000000"
+            android:textSize="30sp" app:layout_constraintTop_toTopOf="parent"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Tipus:"
+              android:textStyle="bold"
+              android:textSize="18sp"
+              android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle"
+              android:id="@+id/typeTitleTv"/>
+    <TextView
+            android:id="@+id/typeTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:text="Instal·lació" app:layout_constraintTop_toBottomOf="@+id/typeTitleTv"/>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Dates:"
+              android:textStyle="bold"
+              android:textSize="18sp"
+              android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/typeTv"
+              android:id="@+id/datesTv"/>
+    <LinearLayout
+            android:id="@+id/llDates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/datesTv"
+            android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp"
+                      android:background="@drawable/bg_custom"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
+            <TextView
+                    android:id="@+id/tvCreationDateTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data creació servei"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="02/12/2023 11:00"
+                    android:textSize="18sp"
+                    android:textFontWeight="500"
+                    app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:padding="2dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/tvActionDateTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Data d'acció"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="02/12/2023 11:00"
+                    android:textSize="18sp"
+                    android:textFontWeight="500"
+                    app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Distribuidor:"
+              android:textStyle="bold"
+              android:textSize="18sp"
+              android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/llDates"
+              android:id="@+id/distributorTv"/>
+    <LinearLayout
+            android:id="@+id/llDistributor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/distributorTv"
+            android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp"
+                      android:background="@drawable/bg_custom"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="0.4"
+                      android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
+            <TextView
+                    android:id="@+id/distributorCodeTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Codi"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1234"
+                    android:textFontWeight="500"
+                    app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="0.8"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/distributorNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom distribuidor"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom Cognoms"
+                    android:textFontWeight="500"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:padding="2dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/distributorEmailTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mail distribuidor"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="distribuidor@mail.com"
+                    android:textFontWeight="500"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Client final:"
+              android:textStyle="bold"
+              android:textSize="18sp"
+              android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/llDistributor"
+              android:id="@+id/clientTv"/>
+    <LinearLayout
+            android:id="@+id/llFinalClient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/clientTv"
+            android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp"
+                      android:background="@drawable/bg_custom"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
+            <TextView
+                    android:id="@+id/finalClientNameTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nom Cognoms"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/finalClientPhoneTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Telèfon"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="666666666"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:padding="2dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/finalClientAdress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Adreça"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Avda Pau Piferrer 56"
+                    android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:text="Informació albarà:"
+              android:textStyle="bold"
+              android:textSize="18sp"
+              android:textColor="@color/black" app:layout_constraintTop_toBottomOf="@+id/llFinalClient"
+              android:id="@+id/albaraTv"/>
+    <LinearLayout
+            android:id="@+id/llAlbaraInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/albaraTv"
+            android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp"
+                      android:background="@drawable/bg_custom"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
+            <TextView
+                    android:id="@+id/albaraTypeTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tipus"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Albaran"/>
+        </LinearLayout>
+        <LinearLayout android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:background="@drawable/bg_custom"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:id="@+id/albaraNumberTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Número"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="1234"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/llDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/llAlbaraInfo"
+            android:orientation="horizontal">
+        <LinearLayout android:layout_width="0dp"
+                      android:padding="2dp"
+                      android:translationX="1dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripció tasca"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:id="@+id/descriptionTv"
+                    android:background="@drawable/bg_custom"
+                    android:padding="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripcion\nalbaran\n\nprueba."/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Document albarà"
+                    android:textColor="@color/black"/>
+            <TextView
+                    android:id="@+id/albaraDocumentTv"
+                    android:background="@drawable/bg_custom"
+                    android:padding="2dp"
+                    android:textColor="#0000FF"
+                    android:layout_width="match_parent"
+                    android:autoLink="web"
+
+                    android:layout_height="wrap_content"
+                    android:text="document.pdf"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
