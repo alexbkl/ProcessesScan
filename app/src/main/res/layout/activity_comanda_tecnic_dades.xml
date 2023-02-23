@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        tools:context=".ServeiTecnicDadesActivity">
+        tools:context=".ComandesTecnicActivity">
     <TextView
             android:id="@+id/tvComandaTitle"
             android:layout_width="match_parent"
@@ -29,7 +29,12 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textAlignment="center"
-            android:text="Instal·lació" app:layout_constraintTop_toBottomOf="@+id/typeTitleTv"/>
+            android:text="Instal·lació"
+            app:layout_constraintTop_toBottomOf="@+id/typeTitleTv"
+            android:enabled="true"
+            android:textIsSelectable="true"
+            android:focusable="true"
+            android:longClickable="true"/>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
               android:text="Dates:"
               android:textStyle="bold"
@@ -56,11 +61,16 @@
                     android:text="Data creació servei"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/creationDateTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="02/12/2023 11:00"
                     android:textSize="18sp"
                     android:textFontWeight="500"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"
                     app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
@@ -76,11 +86,15 @@
                     android:text="Data d'acció"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/actionDateTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="02/12/2023 11:00"
                     android:textSize="18sp"
-                    android:textFontWeight="500"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"
                     app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
         </LinearLayout>
     </LinearLayout>
@@ -104,16 +118,19 @@
                       android:layout_weight="0.4"
                       android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
             <TextView
-                    android:id="@+id/distributorCodeTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Codi"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/distributorCodeTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="1234"
-                    android:textFontWeight="500"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"
                     app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
@@ -124,16 +141,19 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/distributorNameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nom distribuidor"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/distributorNameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nom Cognoms"
-                    android:textFontWeight="500"/>
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
                       android:layout_weight="1"
@@ -142,16 +162,19 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/distributorEmailTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Mail distribuidor"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/distributorEmailTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="distribuidor@mail.com"
-                    android:textFontWeight="500"/>
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
     </LinearLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -174,15 +197,19 @@
                       android:layout_weight="1"
                       android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
             <TextView
-                    android:id="@+id/finalClientNameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nom"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/finalClientNameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nom Cognoms"/>
+                    android:text="Nom Cognoms"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
                       android:layout_weight="1"
@@ -192,15 +219,19 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/finalClientPhoneTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Telèfon"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/finalClientPhoneTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="666666666"/>
+                    android:text="666666666"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
                       android:layout_weight="1"
@@ -209,16 +240,20 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/finalClientAdress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Adreça"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/finalClientAdress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Avda Pau Piferrer 56"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
     </LinearLayout>
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -241,15 +276,19 @@
                       android:layout_weight="1"
                       android:orientation="vertical" app:layout_constraintTop_toBottomOf="@+id/tvComandaTitle">
             <TextView
-                    android:id="@+id/albaraTypeTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tipus"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/albaraTypeTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Albaran"/>
+                    android:text="Albaran"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
         <LinearLayout android:layout_width="0dp"
                       android:layout_weight="1"
@@ -259,15 +298,19 @@
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
             <TextView
-                    android:id="@+id/albaraNumberTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Número"
                     android:textColor="@color/black"/>
             <TextView
+                    android:id="@+id/albaraNumberTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="1234"/>
+                    android:text="1234"
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -294,7 +337,11 @@
                     android:padding="2dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Descripcion\nalbaran\n\nprueba."/>
+                    android:text="Descripcion\nalbaran\n\nprueba."
+                    android:enabled="true"
+                    android:textIsSelectable="true"
+                    android:focusable="true"
+                    android:longClickable="true"/>
             <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -307,9 +354,32 @@
                     android:textColor="#0000FF"
                     android:layout_width="match_parent"
                     android:autoLink="web"
-
                     android:layout_height="wrap_content"
                     android:text="document.pdf"/>
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Documents aportats per administrador"
+                    android:textColor="@color/black"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/documentsRv"
+                    android:background="@drawable/bg_custom"
+                    android:padding="2dp"
+                    android:textColor="#0000FF"
+                    android:layout_width="match_parent"
+                    android:autoLink="web"
+
+                    android:layout_height="50dp"
+                    android:text="document.pdf"/>
+            <Button android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CONFIRMAR"
+                    android:background="@drawable/bg_custom"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:padding="5dp"
+                    android:textColor="@color/black"/>
         </LinearLayout>
     </LinearLayout>
 

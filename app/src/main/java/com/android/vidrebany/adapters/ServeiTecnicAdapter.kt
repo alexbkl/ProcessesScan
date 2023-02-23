@@ -12,8 +12,6 @@ import com.android.vidrebany.R
 import android.content.Intent
 import android.view.MenuItem
 import android.widget.PopupMenu
-import com.android.vidrebany.ComandaDadesActivity
-import com.android.vidrebany.PDFViewer
 import com.android.vidrebany.ServeiTecnicDadesActivity
 
 

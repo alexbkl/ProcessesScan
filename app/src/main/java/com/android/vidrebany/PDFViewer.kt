@@ -16,6 +16,7 @@ class PDFViewer : AppCompatActivity() {
         //init pdfView
         val pdfView = findViewById<PDFView>(R.id.pdfView)
 
+        //get pdf from url
         RetrievePDFfromUrl(pdfView).execute(url)
 
     }

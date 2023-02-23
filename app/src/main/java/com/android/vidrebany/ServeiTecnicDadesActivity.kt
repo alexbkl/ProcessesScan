@@ -1,11 +1,88 @@
 package com.android.vidrebany
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.android.vidrebany.adapters.DocumentsAdapter
+import com.android.vidrebany.models.ServeiTecnicModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ServeiTecnicDadesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_servei_tecnic_dades)
+        setContentView(R.layout.activity_comanda_tecnic_dades)
+
+        val serveiTecnic = if (Build.VERSION.SDK_INT >= 33) {
+            intent.getParcelableExtra("serveiTecnic", ServeiTecnicModel::class.java)
+        } else {
+            intent.getParcelableExtra("serveiTecnic")
+        }
+
+        val documentsNames = serveiTecnic?.documentsNames
+        val documentsUrls = serveiTecnic?.documents
+
+        val typeTv = findViewById<TextView>(R.id.typeTv)
+        val creationDateTv = findViewById<TextView>(R.id.creationDateTv)
+        val distributorCodeTv = findViewById<TextView>(R.id.distributorCodeTv)
+        val distributorNameTv = findViewById<TextView>(R.id.distributorNameTv)
+        val distributorEmailTv = findViewById<TextView>(R.id.distributorEmailTv)
+        val finalClientNameTv = findViewById<TextView>(R.id.finalClientNameTv)
+        val finalClientPhoneTv = findViewById<TextView>(R.id.finalClientPhoneTv)
+        val finalClientAdress = findViewById<TextView>(R.id.finalClientAdress)
+        val albaraTypeTv = findViewById<TextView>(R.id.albaraTypeTv)
+        val albaraNumberTv = findViewById<TextView>(R.id.albaraNumberTv)
+        val descriptionTv = findViewById<TextView>(R.id.descriptionTv)
+        val albaraDocumentTv = findViewById<TextView>(R.id.albaraDocumentTv)
+        val documentsRv = findViewById<RecyclerView>(R.id.documentsRv)
+
+
+
+        typeTv.text = if (serveiTecnic?.isMesura == true) "Mesura" else "Instal·lació"
+        //serveiTecnic?.currentDate is a timestamp, so we need to convert it to a date
+        creationDateTv.text = serveiTecnic?.currentDate?.let { convertTimestampToDateTime(it) }
+
+        distributorCodeTv.text = serveiTecnic?.codeDistributor
+        distributorNameTv.text = serveiTecnic?.nameDistributor
+        distributorEmailTv.text = serveiTecnic?.emailDistributor
+        finalClientNameTv.text = serveiTecnic?.finalClientName
+        finalClientPhoneTv.text = serveiTecnic?.finalClientPhone
+        finalClientAdress.text = serveiTecnic?.finalClientAddress
+        albaraTypeTv.text = serveiTecnic?.albaraType
+        albaraNumberTv.text = serveiTecnic?.albaraNumber
+        descriptionTv.text = serveiTecnic?.description
+        albaraDocumentTv.text = serveiTecnic?.albaraFileName
+
+        //albaraDocumentTv on click, opens the file in the url of albaraFile
+        albaraDocumentTv.setOnClickListener {
+            val intent = Intent(this, PDFViewer::class.java)
+            intent.putExtra("url", serveiTecnic?.albaraFile)
+            startActivity(intent)
+        }
+        Toast.makeText(this, "test2", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "documentsNames: "+ (documentsNames?.get(0) ?: "suka"), Toast.LENGTH_SHORT).show()
+
+        //populate documentsRv with documentsNames and documentsUrls
+        val layoutManager = LinearLayoutManager(this)
+        documentsRv.layoutManager = layoutManager
+
+        val adapter = DocumentsAdapter(this, documentsNames, documentsUrls)
+        documentsRv.adapter = adapter
+        println("2")
+
+
+
+
+    }
+
+    fun convertTimestampToDateTime(timestamp: Long): String {
+        val date = Date(timestamp)
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
+        return format.format(date)
     }
 }
