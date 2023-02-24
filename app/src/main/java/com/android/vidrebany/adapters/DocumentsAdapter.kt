@@ -1,7 +1,9 @@
 package com.android.vidrebany.adapters
 
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.android.vidrebany.PDFViewer
 import com.android.vidrebany.R
+
 
 class DocumentsAdapter(
     private val context: Context,
@@ -25,25 +28,39 @@ class DocumentsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.row_document, parent, false)
-        Toast.makeText(context, "suka", Toast.LENGTH_SHORT).show()
-        println("suchka")
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        println("position: $position")
-        println("piska")
 
         val document = documentsNames?.get(position)
         val documentUrl = documentsUrls?.get(position)
-        println("documentsName: $document")
+
         Toast.makeText(context, document, Toast.LENGTH_SHORT).show()
         holder.documentNameTv.text = document
 
         holder.documentLayout.setOnClickListener {
-            val intent = Intent(context, PDFViewer::class.java)
-            intent.putExtra("url", documentUrl)
-            context.startActivity(intent)
+            //if document contains .pdf, open it in the pdf viewer
+            if (document?.contains(".pdf") == true) {
+                val intent = Intent(context, PDFViewer::class.java)
+                intent.putExtra("url", documentUrl)
+                context.startActivity(intent)
+            } else {
+                //download file from url
+                val request = DownloadManager.Request(documentUrl?.let { it1 -> android.net.Uri.parse(it1) })
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                request.setTitle(document)
+                request.setDescription("Descarregant document...")
+                request.allowScanningByMediaScanner()
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, document)
+                val manager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                manager.enqueue(request)
+                Toast.makeText(context, "Descarregant document...", Toast.LENGTH_SHORT).show()
+
+            }
+
+
         }
     }
 

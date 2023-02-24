@@ -64,8 +64,6 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
             intent.putExtra("url", serveiTecnic?.albaraFile)
             startActivity(intent)
         }
-        Toast.makeText(this, "test2", Toast.LENGTH_SHORT).show()
-        Toast.makeText(this, "documentsNames: "+ (documentsNames?.get(0) ?: "suka"), Toast.LENGTH_SHORT).show()
 
         //populate documentsRv with documentsNames and documentsUrls
         val layoutManager = LinearLayoutManager(this)

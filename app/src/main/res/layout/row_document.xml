@@ -11,7 +11,7 @@
             android:textColor="#0000FF"
             android:layout_width="match_parent"
             android:autoLink="web"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="document.pdf" app:layout_constraintTop_toTopOf="parent"/>
 
 </LinearLayout>
