@@ -31,7 +31,6 @@ class ComandesTransporterActivity : AppCompatActivity() {
         if (hasPdf) {
             val modifiedPdfUri: Uri? = intent.getParcelableExtra("modifiedPdfUri")
             val comanda = intent.getParcelableExtra<ComandaModel>("comanda")
-            println("p")
 
             //send modified file to email
             val intent2 = Intent(Intent.ACTION_SEND)

@@ -40,6 +40,7 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
         val descriptionTv = findViewById<TextView>(R.id.descriptionTv)
         val albaraDocumentTv = findViewById<TextView>(R.id.albaraDocumentTv)
         val documentsRv = findViewById<RecyclerView>(R.id.documentsRv)
+        val confirmBtn = findViewById<TextView>(R.id.confirmBtn)
 
 
 
@@ -71,7 +72,19 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
 
         val adapter = DocumentsAdapter(this, documentsNames, documentsUrls)
         documentsRv.adapter = adapter
-        println("2")
+
+        //confirmBtn on click, sends the serveiTecnic to confirmarServeiTecnicActivity
+        confirmBtn.setOnClickListener {
+            //if isMesura is false:
+            if (!serveiTecnic?.isMesura!!) {
+                val intent = Intent(this, ConfirmarServeiTecnicActivity::class.java)
+                intent.putExtra("serveiTecnic", serveiTecnic)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Mesura encara no implementat", Toast.LENGTH_SHORT).show()
+            }
+
+        }
 
 
 

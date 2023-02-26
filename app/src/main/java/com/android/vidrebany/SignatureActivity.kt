@@ -5,7 +5,6 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.StrictMode
@@ -36,21 +35,21 @@ import java.nio.channels.ReadableByteChannel
 
 class SignatureActivity : AppCompatActivity() {
 
-    val REQUEST_PERMISSION_CODE = 200
-    var pdfFile: File? = null
-    var modifiedPdfFile: File? = null
-    var transparentSignatureBitmap: Bitmap? = null
-    var comanda: ComandaModel? = null
+    private val REQUEST_PERMISSION_CODE = 200
+    private var pdfFile: File? = null
+    private var modifiedPdfFile: File? = null
+    private var transparentSignatureBitmap: Bitmap? = null
+    private var comanda: ComandaModel? = null
     //dni and nom variables CharSequence: can be null
-    var dni: CharSequence? = null
-    var nom: CharSequence? = null
-    var transSignBitmap: Bitmap? = null
+    private var dni: CharSequence? = null
+    private var nom: CharSequence? = null
+    private var transSignBitmap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signature)
 
-        comanda = intent.getParcelableExtra<ComandaModel>("comanda")
+        comanda = intent.getParcelableExtra("comanda")
 
 
 
@@ -81,7 +80,7 @@ class SignatureActivity : AppCompatActivity() {
 
         btnClear.setOnClickListener {
             if (signaturePad.isEmpty) {
-                Toast.makeText(this, "Please sign first", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "No hi ha firma", Toast.LENGTH_SHORT).show()
             } else {
                 //save signature
                 signaturePad.clear()
@@ -99,29 +98,19 @@ class SignatureActivity : AppCompatActivity() {
 
             if (!checkPermissionForReadWriteExtertalStorage()) {
                 requestPermissionForReadWriteExtertalStorage()
-                println("0")
             } else {
                 try {
-                    println("a")
                     createPdfFile(transSignBitmap!!)
-                    println("1")
                 } catch (e: FileNotFoundException) {
                     e.printStackTrace()
-                    println("2")
 
                     val parentDirectory = pdfFile?.parentFile
 
-                    println("e"+parentDirectory)
 
                     if (!pdfFile?.exists()!!) {
-                        println("5")
                         parentDirectory?.mkdirs()
                         pdfFile?.createNewFile()
-                        println("6")
-                    } else {
-                        println("d")
-
-                    };
+                    }
 
                     createPdfFile(transSignBitmap!!)
                 }
@@ -163,16 +152,12 @@ class SignatureActivity : AppCompatActivity() {
         val rbc: ReadableByteChannel = Channels.newChannel(url.openStream())
 
 
-        println("3")
-        println(pdfFile)
         val fos = FileOutputStream(pdfFile)
-        println("4")
 
 
         fos.channel.transferFrom(rbc, 0, Long.MAX_VALUE)
         fos.close()
 
-        println("b")
 
         rbc.close()
         //insert signature to pdfFile using itext
@@ -182,14 +167,6 @@ class SignatureActivity : AppCompatActivity() {
         //pdfreader not opened with owner password, to solve it:
         PdfReader.unethicalreading = true
         val pdfStamper = PdfStamper(pdfReader, FileOutputStream(modifiedPdfFile))
-        //print pdfStamper
-        println("PDF STAMPER: ")
-        println(pdfStamper)
-
-
-
-
-        println("g")
 
         val canvas: PdfContentByte? = pdfStamper.getOverContent(1)
         canvas?.addImage(signature, 100f, 0f, 0f, 100f, 100f, 100f)
@@ -207,26 +184,21 @@ class SignatureActivity : AppCompatActivity() {
             BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, BaseFont.NOT_EMBEDDED)
         canvas?.setColorFill(BaseColor.DARK_GRAY)
         canvas?.setFontAndSize(bf, 8F)
-        println("h")
 
 // write the text in the pdf content
 
 // write the text in the pdf content
         canvas?.beginText()
         val dniText: String = "Identificació: " + dni.toString();
-        println("dniText: "+dniText)
 // put the alignment and coordinates here
         canvas?.showTextAligned(1, dniText, 90f, 90f, 0f)
         canvas?.endText()
         canvas?.beginText()
-        println("i")
         val nomText: String = "Nom i cognoms: " + nom.toString();
-        println("nomtext: "+nomText)
         canvas?.showTextAligned(1, nomText, 100f, 80f, 0f)
         canvas?.endText()
 
 
-        println("j")
 
 
 
@@ -235,13 +207,11 @@ class SignatureActivity : AppCompatActivity() {
         canvas?.addImage(signature)
 */
         pdfStamper.close()
-        println("k")
 
         pdfReader.close()
 
         Toast.makeText(this, "PDF guardat a " + modifiedPdfFile!!.absolutePath, Toast.LENGTH_SHORT).show()
 
-        println("l")
         // Use the FileProvider to generate a content URI for the file
         val modifiedPdfUri = FileProvider.getUriForFile(
             this,
@@ -249,16 +219,7 @@ class SignatureActivity : AppCompatActivity() {
             modifiedPdfFile!!
         )
 
-        println("m")
 
-
-
-
-
-        //pdfFile.deleteafterdasdasd()
-        //modifiedPdfFile.delete()
-        //delete tempa.pdf
-        // resolver.delete(uri, null, null)
 
 
 
@@ -269,7 +230,6 @@ class SignatureActivity : AppCompatActivity() {
 
 
 
-        println("n")
 
 
 
@@ -283,7 +243,6 @@ class SignatureActivity : AppCompatActivity() {
         comandesIntent.putExtra("modifiedPdfUri", modifiedPdfUri)
         comandesIntent.putExtra("comanda", comanda)
         startActivity(comandesIntent)
-        println("o")
 
     }
 
@@ -312,10 +271,7 @@ class SignatureActivity : AppCompatActivity() {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() &&
                             grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // Permission is granted. Continue the action or workflow
-                    // in your app.
 
-                    println("requespermission")
                     try {
                         //create pdf file
                         transSignBitmap?.let { createPdfFile(it) }

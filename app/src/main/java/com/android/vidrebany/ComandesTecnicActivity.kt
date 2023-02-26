@@ -1,5 +1,7 @@
 package com.android.vidrebany
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
@@ -20,6 +22,31 @@ class ComandesTecnicActivity : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("tecnicUid", MODE_PRIVATE)
         tecnicUid = sharedPreferences.getString("tecnicUid", "null").toString()
+
+        val intent = intent
+        val hasSignature: Boolean = intent.getBooleanExtra("hasSignature", false)
+
+        if (hasSignature) {
+            val signatureUri: Uri? = intent.getParcelableExtra("signatureUri")
+            val serveiTecnic = intent.getParcelableExtra<ServeiTecnicModel>("serveiTecnic")
+
+            //send signature to email
+            val intent2 = Intent(Intent.ACTION_SEND)
+
+            val extraText = "Núm. albarà: " + serveiTecnic!!.albaraNumber + "\nNúm. client: " + serveiTecnic.codeDistributor +
+                    "\nData: " + serveiTecnic.currentDate +
+                    "\nPrimer tel.: " + serveiTecnic.description +
+                    "\nSegon tel.: " + serveiTecnic.description +
+                    "\nAdreça: " + serveiTecnic.description +
+                    "\nObservacions: " + serveiTecnic.description +
+                    "\nTransportista: " + serveiTecnic.description;
+
+            intent2.type = "image/*"
+            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("asederado@gmail.com"))
+
+
+            //https://stackoverflow.com/questions/69002142/adding-multiple-images-as-an-email-attachment
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)
         toolbar.title = "Tècnic VidreBany"

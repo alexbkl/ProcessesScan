@@ -371,7 +371,9 @@
 
                     android:layout_height="50dp"
                     android:text="document.pdf"/>
-            <Button android:layout_width="wrap_content"
+            <Button
+                    android:id="@+id/confirmBtn"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CONFIRMAR"
                     android:background="@drawable/bg_custom"

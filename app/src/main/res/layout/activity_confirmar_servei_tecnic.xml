@@ -1,0 +1,162 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:signature="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+
+                tools:context=".ConfirmarServeiTecnicActivity">
+
+
+    <RelativeLayout
+            android:id="@+id/signature_pad_container"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/signature_pad_description"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/darker_gray" />
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_above="@+id/signature_pad"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/darker_gray" />
+
+        <TextView
+                android:id="@+id/signature_pad_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:text="Accede RGPD"
+                android:textColor="@android:color/darker_gray" />
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/topLayout"
+                android:orientation="horizontal">
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/tvDni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="DNI"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+                <EditText
+                        android:id="@+id/etDni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="16dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="A12345678"
+                        android:textColor="@android:color/black" />
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:id="@+id/tvNom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:text="Nom i cognoms"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/black" />
+                <EditText
+                        android:id="@+id/etNom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginRight="16dp"
+                        android:ems="10"
+                        android:inputType="textPersonName"
+                        android:hint="Nom firmant"
+                        android:textColor="@android:color/black" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+                android:id="@+id/etFirmaTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topLayout"
+                android:layout_marginBottom="16dp"
+                android:text="Firma:" />
+
+        <se.warting.signatureview.views.SignaturePad
+                android:id="@+id/signature_pad"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_below="@+id/etFirmaTitle"
+                signature:clearOnDoubleClick="true" />
+        <!--Comentaris tecnic -->
+        <TextView
+                android:id="@+id/tvComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Comentaris tècnic"
+                android:layout_below="@id/signature_pad"
+                android:textSize="16sp"
+                android:textColor="@android:color/black" />
+        <EditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_below="@id/tvComment"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:gravity="top|start"
+                android:lines="8"
+                android:scrollbars="vertical"
+                android:hint="Comentaris sobre el muntatge"
+
+                android:textColor="@android:color/black" />
+    </RelativeLayout>
+
+    <LinearLayout
+            android:id="@+id/buttons_container"
+            android:layout_width="fill_parent"
+            android:layout_below="@+id/signature_pad_container"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:paddingTop="16dp">
+
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnClear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="BORRAR" />
+
+        <Button
+                style="?android:attr/buttonBarButtonStyle"
+                android:id="@+id/btnSign"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:text="SIGNAR" />
+    </LinearLayout>
+
+</RelativeLayout>
