@@ -1,6 +1,7 @@
 package com.android.vidrebany
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -8,12 +9,19 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ServeiTecnicModel
+import com.google.firebase.database.FirebaseDatabase
 import se.warting.signatureview.views.SignaturePad
 import se.warting.signatureview.views.SignedListener
 import java.io.File
@@ -27,12 +35,16 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
     private var transparentSignatureBitmap: Bitmap? = null
     private var signatureUri: Uri? = null
     private var serveiTecnic: ServeiTecnicModel? = null
-    private var dni: String? = null
+    private var dniEt: EditText? = null
+    private var nomEt: EditText? = null
     private var nom: String? = null
+    private var dni: String? = null
+    private var comentaris: String? = null
     private var imageUris: ArrayList<Uri> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmar_servei_tecnic)
+        val comentarisEt: EditText? = findViewById(R.id.etComment)
 
         serveiTecnic = if (Build.VERSION.SDK_INT >= 33) {
             intent.getParcelableExtra("serveiTecnic", ServeiTecnicModel::class.java)
@@ -42,8 +54,17 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
 
 
         val signaturePad = findViewById<SignaturePad>(R.id.signature_pad)
-        dni = findViewById<EditText>(R.id.etDni).text.toString()
-        nom = findViewById<EditText>(R.id.etNom).text.toString()
+        val selectImages = findViewById<Button>(R.id.selectImages)
+        val selectedImagesTv = findViewById<TextView>(R.id.selectedImagesTv)
+
+        dniEt = findViewById(R.id.etDni)
+        nomEt = findViewById(R.id.etNom)
+
+        if (comentarisEt != null) {
+            comentarisEt.setText(serveiTecnic?.comentarisTecnic)
+        }
+
+
         val btnSign = findViewById<android.widget.Button>(R.id.btnSign)
         val btnClear = findViewById<android.widget.Button>(R.id.btnClear)
 
@@ -76,16 +97,70 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
         }
 
         btnSign.setOnClickListener {
+            dni = dniEt?.text.toString()
+            nom = nomEt?.text.toString()
+            comentaris = comentarisEt?.text.toString()
+            serveiTecnic?.comentarisTecnic = comentaris as String
+
             transparentSignatureBitmap = signaturePad.getSignatureBitmap()
             if (!checkPermissionForReadWriteExtertalStorage()) {
                 requestPermissionForReadWriteExtertalStorage()
             } else {
-                createSignatureContent()
+                if (dni != "" && nom != "") {
+                    createSignatureContent()
+                } else {
+                    Toast.makeText(this, "Has d'introduir el DNI i el nom.", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                // There are no request codes
+                val data: Intent? = result.data
+                if (data != null) {
+                    if (data.clipData != null) {
+                        val count: Int = data.clipData!!.itemCount
+                        for (i in 0 until count) {
+                            val imageUri: Uri = data.clipData!!.getItemAt(i).uri
+                            imageUris.add(imageUri)
+                            //set number of imageUris
+                            val imagesText = imageUris.size.toString() + " imatges seleccionades"
+                            selectedImagesTv.text = imagesText
+
+                        }
+                    } else if (data.data != null) {
+                        val imageUri: Uri = data.data!!
+                        imageUris.add(imageUri)
+                        val imagesText = imageUris.size.toString() + " imatges seleccionades"
+                        selectedImagesTv.text = imagesText
+                    }
+                }
+                //Toast the names of the selected images
+                Toast.makeText(this, "Imatges sel·leccionades: " + imageUris.size, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        selectImages.setOnClickListener {
+
+            // initialising intent
+            val intent = Intent()
+
+            // setting type to select to be image
+            intent.type = "image/*"
+
+
+            // allowing multiple image to be selected
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            intent.action = Intent.ACTION_GET_CONTENT
+            resultLauncher.launch(intent)
+        }
+
+
 
     }
+
+
 
     private fun createSignatureContent() {
         // Create the file directory
@@ -93,7 +168,7 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() + "/firmes"
         )
         signatureDir.mkdirs()
-        val signFileName: String = serveiTecnic!!.key + "_" + dni + "_" + nom + ".jpg"
+        val signFileName: String = "firma_"+serveiTecnic!!.albaraNumber + "_" + dni + "_" + nom + ".jpg"
         val signFile = File(signatureDir, signFileName)
 
         try {
@@ -107,14 +182,27 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
         } catch (ex: IOException) {
             Toast.makeText(this, "Error al guardar la firma: " + ex, Toast.LENGTH_SHORT).show()
         }
-        signatureUri = Uri.fromFile(signFile)
+
+        // Use the FileProvider to generate a content URI for the file
+        signatureUri = FileProvider.getUriForFile(
+            this,
+            "com.android.vidrebany.fileprovider",
+            signFile
+        )
+
+
 
         //go to ComandesTransporterActivity
         val comandesIntentTecnic = Intent(this, ComandesTecnicActivity::class.java)
         comandesIntentTecnic.putExtra("hasSignature", true)
         comandesIntentTecnic.putExtra("signatureUri", signatureUri)
         comandesIntentTecnic.putExtra("serveiTecnic", serveiTecnic)
-        startActivity(comandesIntentTecnic)
+        comandesIntentTecnic.putParcelableArrayListExtra("imageUris", imageUris)
+        if (signatureUri != null) {
+            startActivity(comandesIntentTecnic)
+        } else {
+            Toast.makeText(this, "Error al guardar la firma", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun checkPermissionForReadWriteExtertalStorage(): Boolean {
@@ -146,7 +234,11 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     try {
-                        createSignatureContent()
+                        if (dni != null && nom != null) {
+                            createSignatureContent()
+                        } else {
+                            Toast.makeText(this, "Has d'introduir el DNI i el nom.", Toast.LENGTH_SHORT).show()
+                        }
                     } catch (e: FileNotFoundException) {
                         Toast.makeText(this, "Error al guardar la firma: " + e, Toast.LENGTH_SHORT).show()
                     }

@@ -82,4 +82,7 @@ class ComandaDadesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    private fun test() {
+        Toast.makeText(this, "test", Toast.LENGTH_SHORT).show()
+    }
 }

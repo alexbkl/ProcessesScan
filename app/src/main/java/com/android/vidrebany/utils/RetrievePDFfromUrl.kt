@@ -25,7 +25,7 @@ internal class RetrievePDFfromUrl(// create a pdf view object
             // below is the step where we are
             // creating our connection.
             val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
-            if (urlConnection.getResponseCode() === 200) {
+            if (urlConnection.responseCode == 200) {
                 // response is success.
                 // we are getting input stream from url
                 // and storing it in our variable.

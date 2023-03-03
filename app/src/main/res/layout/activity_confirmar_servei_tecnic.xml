@@ -101,7 +101,7 @@
         <se.warting.signatureview.views.SignaturePad
                 android:id="@+id/signature_pad"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="300dp"
                 android:layout_below="@+id/etFirmaTitle"
                 signature:clearOnDoubleClick="true" />
         <!--Comentaris tecnic -->
@@ -124,23 +124,40 @@
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:gravity="top|start"
-                android:lines="8"
+                android:lines="6"
                 android:scrollbars="vertical"
                 android:hint="Comentaris sobre el muntatge"
 
                 android:textColor="@android:color/black" />
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etComment"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/selectImages"
+                android:layout_below="@id/etComment"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Afegir imatges" />
+            <TextView
+                android:id="@+id/selectedImagesTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:text="0 imatges seleccionades" />
+        </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:id="@+id/buttons_container"
             android:layout_width="fill_parent"
-            android:layout_below="@+id/signature_pad_container"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:paddingTop="16dp">
 
-        <Button
+            <Button
                 style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnClear"
                 android:layout_width="0dp"
@@ -149,7 +166,7 @@
                 android:enabled="false"
                 android:text="BORRAR" />
 
-        <Button
+            <Button
                 style="?android:attr/buttonBarButtonStyle"
                 android:id="@+id/btnSign"
                 android:layout_width="0dp"
@@ -157,6 +174,9 @@
                 android:layout_weight="1"
                 android:enabled="false"
                 android:text="SIGNAR" />
-    </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

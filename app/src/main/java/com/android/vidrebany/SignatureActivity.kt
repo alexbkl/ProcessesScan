@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ComandaModel
-import com.android.vidrebany.utils.ImageUtils
 import com.google.firebase.database.FirebaseDatabase
 import com.itextpdf.text.BaseColor
 import com.itextpdf.text.Image

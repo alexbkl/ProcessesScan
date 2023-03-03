@@ -23,6 +23,7 @@ class ServeiTecnicModel(
     var nameDistributor: String,
     var tecnicName: String,
     var tecnicId: String,
+    var comentarisTecnic: String?,
     var stateServei: String) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -44,6 +45,7 @@ class ServeiTecnicModel(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString(),
         parcel.readString()!!
     )
 
@@ -67,6 +69,7 @@ class ServeiTecnicModel(
         parcel.writeString(nameDistributor)
         parcel.writeString(tecnicName)
         parcel.writeString(tecnicId)
+        parcel.writeString(comentarisTecnic)
         parcel.writeString(stateServei)
     }
 

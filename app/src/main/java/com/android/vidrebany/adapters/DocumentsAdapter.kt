@@ -36,7 +36,6 @@ class DocumentsAdapter(
         val document = documentsNames?.get(position)
         val documentUrl = documentsUrls?.get(position)
 
-        Toast.makeText(context, document, Toast.LENGTH_SHORT).show()
         holder.documentNameTv.text = document
 
         holder.documentLayout.setOnClickListener {
