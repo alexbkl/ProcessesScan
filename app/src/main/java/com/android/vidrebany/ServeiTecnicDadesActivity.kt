@@ -3,6 +3,7 @@ package com.android.vidrebany
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +30,7 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
 
         val typeTv = findViewById<TextView>(R.id.typeTv)
         val creationDateTv = findViewById<TextView>(R.id.creationDateTv)
+        val actionDateTv = findViewById<TextView>(R.id.actionDateTv)
         val distributorCodeTv = findViewById<TextView>(R.id.distributorCodeTv)
         val distributorNameTv = findViewById<TextView>(R.id.distributorNameTv)
         val distributorEmailTv = findViewById<TextView>(R.id.distributorEmailTv)
@@ -40,13 +42,16 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
         val descriptionTv = findViewById<TextView>(R.id.descriptionTv)
         val albaraDocumentTv = findViewById<TextView>(R.id.albaraDocumentTv)
         val documentsRv = findViewById<RecyclerView>(R.id.documentsRv)
+        val revisionLt = findViewById<LinearLayout>(R.id.revisionLt)
+        val revisionTv = findViewById<TextView>(R.id.revisionTv)
+        val revisionDateTv = findViewById<TextView>(R.id.revisionDateTv)
         val confirmBtn = findViewById<TextView>(R.id.confirmBtn)
 
-
-
         typeTv.text = if (serveiTecnic?.isMesura == true) "Mesura" else "Instal·lació"
+
         //serveiTecnic?.currentDate is a timestamp, so we need to convert it to a date
         creationDateTv.text = serveiTecnic?.currentDate?.let { convertTimestampToDateTime(it) }
+        actionDateTv.text = serveiTecnic?.actionDate?.let { convertTimestampToDateTime(it) }
 
         distributorCodeTv.text = serveiTecnic?.codeDistributor
         distributorNameTv.text = serveiTecnic?.nameDistributor
@@ -73,6 +78,14 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
         val adapter = DocumentsAdapter(this, documentsNames, documentsUrls)
         documentsRv.adapter = adapter
 
+        if (serveiTecnic?.revision != null && serveiTecnic.revision != "") {
+            revisionLt.visibility = LinearLayout.VISIBLE
+        } else {
+            revisionLt.visibility = LinearLayout.GONE
+        }
+        revisionTv.text = serveiTecnic?.revision
+        revisionDateTv.text = serveiTecnic?.revisionDate?.let { convertTimestampToDateTime(it) }
+
         //confirmBtn on click, sends the serveiTecnic to confirmarServeiTecnicActivity
         confirmBtn.setOnClickListener {
             //if isMesura is false:
@@ -83,17 +96,12 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Mesura encara no implementat", Toast.LENGTH_SHORT).show()
             }
-
         }
-
-
-
-
     }
 
     fun convertTimestampToDateTime(timestamp: Long): String {
         val date = Date(timestamp)
-        val format = SimpleDateFormat("dd/MM/yyyy HH:mm a", Locale.getDefault())
+        val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         return format.format(date)
     }
 }

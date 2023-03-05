@@ -171,7 +171,7 @@ class ComandesTecnicActivity : AppCompatActivity() {
             for (comanda in it.children) {
                 val tecnicId = comanda.child("tecnicId").value.toString()
                 val stateServei = comanda.child("stateServei").value.toString()
-                if (tecnicId == tecnicUid && (stateServei == "Pendent")) {
+                if (tecnicId == tecnicUid && (stateServei == "Pendent" || stateServei == "Per revisar")) {
                     val key = comanda.child("key").value.toString()
                     //get actionDate number from firebase
                     val actionDate = comanda.child("actionDate").value.toString().toLong()
@@ -202,7 +202,9 @@ class ComandesTecnicActivity : AppCompatActivity() {
                     val nameDistributor = comanda.child("nameDistributor").value.toString()
                     val tecnicName = comanda.child("tecnicName").value.toString()
                     val comentarisTecnic = comanda.child("comentarisTecnic").value.toString()
-                    val serveiTecnicModel = ServeiTecnicModel(key, actionDate, albaraFile, albaraFileName, albaraNumber, albaraType, codeDistributor, currentDate, description, documents, documentsNames, emailDistributor, finalClientAddress, finalClientName, finalClientPhone, isMesura, nameDistributor, tecnicName, tecnicId, comentarisTecnic, stateServei)
+                    val revision = comanda.child("revision").value.toString()
+                    val revisionDate = comanda.child("revisionDate").value.toString().toLong()
+                    val serveiTecnicModel = ServeiTecnicModel(key, actionDate, albaraFile, albaraFileName, albaraNumber, albaraType, codeDistributor, currentDate, description, documents, documentsNames, emailDistributor, finalClientAddress, finalClientName, finalClientPhone, isMesura, nameDistributor, tecnicName, tecnicId, comentarisTecnic, revision, revisionDate, stateServei)
                     serveisList.add(serveiTecnicModel)
                 }
             }

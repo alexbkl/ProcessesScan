@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp">
+
         <TextView
             android:id="@+id/tvComandaTitle"
             android:layout_width="match_parent"
@@ -443,6 +444,7 @@
                     android:layout_height="wrap_content"
                     android:text="Documents aportats per administrador"
                     android:textColor="@color/black" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/documentsRv"
                     android:layout_width="match_parent"
@@ -453,6 +455,45 @@
 
                     android:text="document.pdf"
                     android:textColor="#0000FF" />
+
+                <LinearLayout
+                    android:id="@+id/revisionLt"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Revisions administrador:"
+                        android:textColor="@color/red" />
+
+                    <TextView
+                        android:id="@+id/revisionDateTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:longClickable="true"
+                        android:text="02/12/2023 11:00"
+                        android:textIsSelectable="true"
+                        android:textSize="18sp"
+                        app:layout_constraintTop_toBottomOf="@+id/tvActionDateTitle" />
+
+                    <TextView
+                        android:id="@+id/revisionTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_custom"
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:longClickable="true"
+                        android:padding="2dp"
+                        android:text="Revision\nalbaran\n\nprueba.\nte\nst"
+                        android:textIsSelectable="true" />
+                </LinearLayout>
+
                 <Button
                     android:id="@+id/confirmBtn"
                     android:layout_width="wrap_content"
