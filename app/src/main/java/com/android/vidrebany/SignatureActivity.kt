@@ -19,11 +19,9 @@ import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ComandaModel
 import com.google.firebase.database.FirebaseDatabase
 import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Document
 import com.itextpdf.text.Image
-import com.itextpdf.text.pdf.BaseFont
-import com.itextpdf.text.pdf.PdfContentByte
-import com.itextpdf.text.pdf.PdfReader
-import com.itextpdf.text.pdf.PdfStamper
+import com.itextpdf.text.pdf.*
 import se.warting.signatureview.views.SignaturePad
 import se.warting.signatureview.views.SignedListener
 import java.io.*
@@ -37,6 +35,7 @@ class SignatureActivity : AppCompatActivity() {
     private val REQUEST_PERMISSION_CODE = 200
     private var pdfFile: File? = null
     private var modifiedPdfFile: File? = null
+    private var cleanPdfFile: File? = null
     private var transparentSignatureBitmap: Bitmap? = null
     private var comanda: ComandaModel? = null
     //dni and nom variables CharSequence: can be null
@@ -93,6 +92,7 @@ class SignatureActivity : AppCompatActivity() {
             //pdfFile in Documents folder
             pdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + ".pdf")
             modifiedPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "firmat.pdf")
+            cleanPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "net.pdf")
 
 
             if (!checkPermissionForReadWriteExtertalStorage()) {
@@ -162,6 +162,7 @@ class SignatureActivity : AppCompatActivity() {
         //insert signature to pdfFile using itext
 
         val pdfReader = PdfReader(pdfFile!!.absolutePath)
+
         println("c")
         //pdfreader not opened with owner password, to solve it:
         PdfReader.unethicalreading = true
@@ -201,6 +202,8 @@ class SignatureActivity : AppCompatActivity() {
 
 
 
+
+
 /*
         signature.setAbsolutePosition(0F, 0F)
         canvas?.addImage(signature)
@@ -209,13 +212,40 @@ class SignatureActivity : AppCompatActivity() {
 
         pdfReader.close()
 
-        Toast.makeText(this, "PDF guardat a " + modifiedPdfFile!!.absolutePath, Toast.LENGTH_SHORT).show()
+
+
+        //if there is a second page on pdf, remove it
+        val numberOfPages: Int = pdfReader.numberOfPages
+        if (numberOfPages > 1) {
+            val document = Document()
+            val r = PdfReader(modifiedPdfFile!!.absolutePath)
+
+            val writer = PdfCopy(document, FileOutputStream(cleanPdfFile))
+            document.open()
+
+            for (i in 1..numberOfPages) {
+                if (i > 1) {
+                    continue
+                }
+                val page = writer.getImportedPage(r, i)
+                writer.addPage(page)
+            }
+
+            document.close()
+            writer.close()
+            r.close()
+
+        }
+
+
+
+        Toast.makeText(this, "PDF guardat a " + cleanPdfFile!!.absolutePath, Toast.LENGTH_SHORT).show()
 
         // Use the FileProvider to generate a content URI for the file
         val modifiedPdfUri = FileProvider.getUriForFile(
             this,
             "com.android.vidrebany.fileprovider",
-            modifiedPdfFile!!
+            cleanPdfFile!!
         )
 
 

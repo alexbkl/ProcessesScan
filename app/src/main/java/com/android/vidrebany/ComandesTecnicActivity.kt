@@ -71,8 +71,8 @@ class ComandesTecnicActivity : AppCompatActivity() {
                     "\nComentaris tècnic: " + serveiTecnic.comentarisTecnic
 
             intent2.type = "image/*"
-            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("asederado@gmail.com"))
-            intent2.putExtra(Intent.EXTRA_SUBJECT, "Servei tècnic-"+serveiTecnic.albaraNumber)
+            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@vidrebany.com"))
+            intent2.putExtra(Intent.EXTRA_SUBJECT, "Servei tècnic Albarà-"+serveiTecnic.albaraNumber)
             intent2.putExtra(Intent.EXTRA_TEXT, extraText)
             //intent2.putExtra(Intent.EXTRA_STREAM, signatureUri)
             intent2.putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayImagesUris)

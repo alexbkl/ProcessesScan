@@ -44,8 +44,8 @@ class ComandesTransporterActivity : AppCompatActivity() {
                     "\nTransportista: " + comanda.transName;
 
             intent2.type = "application/pdf"
-            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("asederado@gmail.com"))
-            intent2.putExtra(Intent.EXTRA_SUBJECT, "Comanda")
+            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@vidrebany.com"))
+            intent2.putExtra(Intent.EXTRA_SUBJECT, "Transport Albarà-" + comanda.albaraNum )
             intent2.putExtra(Intent.EXTRA_TEXT, extraText)
             intent2.putExtra(Intent.EXTRA_STREAM, modifiedPdfUri)
             intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
