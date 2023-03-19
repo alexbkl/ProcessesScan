@@ -17,6 +17,7 @@ class ComandesTransporterActivity : AppCompatActivity() {
     private val comandesList = ArrayList<ComandaModel>()
 
     private var transporterUid: String = ""
+    private var database = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,27 +30,35 @@ class ComandesTransporterActivity : AppCompatActivity() {
         val hasPdf: Boolean = intent.getBooleanExtra("hasPdf", false)
 
         if (hasPdf) {
-            val modifiedPdfUri: Uri? = intent.getParcelableExtra("modifiedPdfUri")
-            val comanda = intent.getParcelableExtra<ComandaModel>("comanda")
+            //get mail from mails/destination/mail in firebase database
+            val myRef = database.getReference("mails/destination/mail")
+            myRef.get().addOnSuccessListener {
+                val mail = it.value.toString()
+                //send mail to admin maiñ
 
-            //send modified file to email
-            val intent2 = Intent(Intent.ACTION_SEND)
+                val modifiedPdfUri: Uri? = intent.getParcelableExtra("modifiedPdfUri")
+                val comanda = intent.getParcelableExtra<ComandaModel>("comanda")
 
-            val extraText = "Núm. albarà: " + comanda!!.albaraNum + "\nNúm. client: " + comanda.clientNum +
-                    "\nData: " + comanda.date + "-" +comanda.time +
-                    "\nPrimer tel.: " + comanda.firstTel +
-                    "\nSegon tel.: " + comanda.secondTel +
-                    "\nAdreça: " + comanda.address +
-                    "\nObservacions: " + comanda.observations +
-                    "\nTransportista: " + comanda.transName;
+                //send modified file to email
+                val intent2 = Intent(Intent.ACTION_SEND)
 
-            intent2.type = "application/pdf"
-            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@vidrebany.com"))
-            intent2.putExtra(Intent.EXTRA_SUBJECT, "Transport Albarà-" + comanda.albaraNum )
-            intent2.putExtra(Intent.EXTRA_TEXT, extraText)
-            intent2.putExtra(Intent.EXTRA_STREAM, modifiedPdfUri)
-            intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            startActivity(intent2)
+                val extraText = "Núm. albarà: " + comanda!!.albaraNum + "\nNúm. client: " + comanda.clientNum +
+                        "\nData: " + comanda.date + "-" +comanda.time +
+                        "\nPrimer tel.: " + comanda.firstTel +
+                        "\nSegon tel.: " + comanda.secondTel +
+                        "\nAdreça: " + comanda.address +
+                        "\nObservacions: " + comanda.observations +
+                        "\nTransportista: " + comanda.transName;
+
+                intent2.type = "application/pdf"
+                intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                intent2.putExtra(Intent.EXTRA_SUBJECT, "Transport Albarà-" + comanda.albaraNum )
+                intent2.putExtra(Intent.EXTRA_TEXT, extraText)
+                intent2.putExtra(Intent.EXTRA_STREAM, modifiedPdfUri)
+                intent2.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                startActivity(intent2)
+            }
+
         }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar_main)

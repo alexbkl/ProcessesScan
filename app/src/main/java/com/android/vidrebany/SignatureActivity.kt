@@ -91,8 +91,8 @@ class SignatureActivity : AppCompatActivity() {
             transSignBitmap = signaturePad.getTransparentSignatureBitmap()
             //pdfFile in Documents folder
             pdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + ".pdf")
-            modifiedPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "firmat.pdf")
-            cleanPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "net.pdf")
+            modifiedPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "net.pdf")
+            cleanPdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString() +"/"+comanda?.albaraNum + "firmat.pdf")
 
 
             if (!checkPermissionForReadWriteExtertalStorage()) {

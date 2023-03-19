@@ -26,6 +26,7 @@ class ComandesTecnicActivity : AppCompatActivity() {
     private var documentsTecnicList = ArrayList<String>()
     private var documentsTecnicNamesList = ArrayList<String>()
     private var tecnicUid: String = ""
+    private var database = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,115 +39,128 @@ class ComandesTecnicActivity : AppCompatActivity() {
         val hasSignature: Boolean = intent.getBooleanExtra("hasSignature", false)
 
         if (hasSignature) {
-            val signatureUri: Uri? = intent.getParcelableExtra("signatureUri")
-            val serveiTecnic = intent.getParcelableExtra<ServeiTecnicModel>("serveiTecnic")
-            //get imageUris (ArrayList<Uri>)
-            val imageUris = intent.getParcelableArrayListExtra<Uri>("imageUris")
-
-            val arrayImagesUris: ArrayList<Uri> = ArrayList()
-
-            arrayImagesUris.add(signatureUri!!)
-            //imageUris to arrayImagesUris
-            if (imageUris != null) {
-                for (imageUri in imageUris) {
-                    arrayImagesUris.add(imageUri)
-                }
-            }
-            //send signature to email
-            val intent2 = Intent(Intent.ACTION_SEND_MULTIPLE)
-
-            val currentDate = serveiTecnic?.currentDate
-            val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yy-HH:mm")
-            val currentDateStr: String = dateFormat.format(currentDate)
-
-            val actionDate = serveiTecnic?.actionDate
-            val actionDateStr: String = dateFormat.format(actionDate)
+            //get mail from mails/destination/mail in firebase database
+            val myRef = database.getReference("mails/destination/mail")
+            myRef.get().addOnSuccessListener {
+                val mail = it.value.toString()
 
 
-            val extraText = "Núm. albarà: " + serveiTecnic!!.albaraNumber +
-                    "\nData de creació: " + currentDateStr +
-                    "\nData d'acció: " + actionDateStr +
-                    "\nObservacions: " + serveiTecnic.description +
-                    "\nTècnic: " + serveiTecnic.tecnicName +
-                    "\nComentaris tècnic: " + serveiTecnic.comentarisTecnic
+                val signatureUri: Uri? = intent.getParcelableExtra("signatureUri")
+                val serveiTecnic = intent.getParcelableExtra<ServeiTecnicModel>("serveiTecnic")
+                //get imageUris (ArrayList<Uri>)
+                val imageUris = intent.getParcelableArrayListExtra<Uri>("imageUris")
 
-            intent2.type = "image/*"
-            intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf("info@vidrebany.com"))
-            intent2.putExtra(Intent.EXTRA_SUBJECT, "Servei tècnic Albarà-"+serveiTecnic.albaraNumber)
-            intent2.putExtra(Intent.EXTRA_TEXT, extraText)
-            //intent2.putExtra(Intent.EXTRA_STREAM, signatureUri)
-            intent2.putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayImagesUris)
+                val arrayImagesUris: ArrayList<Uri> = ArrayList()
 
-
-
-            startActivity(Intent.createChooser(intent2, "Send Email"))
-
-            //set comanda status to "finalizada" inside firebase realtime database
-            val database = FirebaseDatabase.getInstance()
-            val stateRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("stateServei")
-            stateRef.setValue("Per revisar")
-
-            //get documentsTecnicList and documentsTecnicNamesList from firebase realtime database
-            val serveiTecnicRef = database.getReference("serveiTecnic").child(serveiTecnic.key)
-            serveiTecnicRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (!snapshot.child("documentsTecnic").exists() || !snapshot.child("documentsTecnicNames").exists()) return
-                    val documentsTecnic = snapshot.child("documentsTecnic").value as ArrayList<*>
-                    val documentsTecnicNames = snapshot.child("documentsTecnicNames").value as ArrayList<*>
-                    if (documentsTecnic.size > 0 && documentsTecnicNames.size > 0) {
-                        for (documentTecnic in documentsTecnic) {
-                            Toast.makeText(applicationContext, documentTecnic.toString(), Toast.LENGTH_SHORT).show()
-                            documentsTecnicList.add(documentTecnic.toString())
-                        }
-                        for (documentTecnicName in documentsTecnicNames) {
-                            documentsTecnicNamesList.add(documentTecnicName.toString())
-                        }
+                arrayImagesUris.add(signatureUri!!)
+                //imageUris to arrayImagesUris
+                if (imageUris != null) {
+                    for (imageUri in imageUris) {
+                        arrayImagesUris.add(imageUri)
                     }
                 }
+                //send signature to email
+                val intent2 = Intent(Intent.ACTION_SEND_MULTIPLE)
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(applicationContext, "Error al carregar els documents", Toast.LENGTH_SHORT).show()
-                }
+                val currentDate = serveiTecnic?.currentDate
+                val dateFormat: DateFormat = SimpleDateFormat("dd/MM/yy-HH:mm")
+                val currentDateStr: String = dateFormat.format(currentDate)
 
-            })
+                val actionDate = serveiTecnic?.actionDate
+                val actionDateStr: String = dateFormat.format(actionDate)
 
-            val commentRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("comentarisTecnic")
-            commentRef.setValue(serveiTecnic.comentarisTecnic)
 
-            //upload images to firebase storage
-            val storageRef = Firebase.storage.reference
+                val extraText = "Núm. albarà: " + serveiTecnic!!.albaraNumber +
+                        "\nData de creació: " + currentDateStr +
+                        "\nData d'acció: " + actionDateStr +
+                        "\nObservacions: " + serveiTecnic.description +
+                        "\nTècnic: " + serveiTecnic.tecnicName +
+                        "\nComentaris tècnic: " + serveiTecnic.comentarisTecnic
 
-            val fileUtils = FileUtils()
+                intent2.type = "image/*"
+                intent2.putExtra(Intent.EXTRA_EMAIL, arrayOf(mail))
+                intent2.putExtra(Intent.EXTRA_SUBJECT, "Servei tècnic Albarà-" + serveiTecnic.albaraNumber)
+                intent2.putExtra(Intent.EXTRA_TEXT, extraText)
+                //intent2.putExtra(Intent.EXTRA_STREAM, signatureUri)
+                intent2.putParcelableArrayListExtra(Intent.EXTRA_STREAM, arrayImagesUris)
 
-            if (imageUris != null) {
-                for (imageUri in imageUris) {
-                    val sd = fileUtils.getFileName(applicationContext, imageUri!!) ?: return
-                    val uploadTask = storageRef.child("serveiTecnic/" + serveiTecnic.key + "/" + sd).putFile(imageUri)
-                    uploadTask.addOnFailureListener {
-                        // Handle unsuccessful uploads
-                        Toast.makeText(applicationContext, "Error al pujar la imatge", Toast.LENGTH_SHORT).show()
-                    }.addOnSuccessListener { taskSnapshot ->
-                       val imageRef = taskSnapshot.storage
-                        imageRef.downloadUrl.addOnSuccessListener {
-                            val downloadUrl = it.toString()
-                            //add downloadUrl to documentsTecnicList
-                            documentsTecnicList.add(downloadUrl)
-                            documentsTecnicNamesList.add(sd)
 
-                            //update documentsTecnicList and documentsTecnicNamesList in firebase realtime database
-                            val documentsTecnicRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("documentsTecnic")
-                            documentsTecnicRef.setValue(documentsTecnicList)
-                            val documentsTecnicNamesRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("documentsTecnicNames")
-                            documentsTecnicNamesRef.setValue(documentsTecnicNamesList)
+
+                startActivity(Intent.createChooser(intent2, "Send Email"))
+
+                //set comanda status to "finalizada" inside firebase realtime database
+                val database = FirebaseDatabase.getInstance()
+                val stateRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("stateServei")
+                stateRef.setValue("Per revisar")
+
+                //get documentsTecnicList and documentsTecnicNamesList from firebase realtime database
+                val serveiTecnicRef = database.getReference("serveiTecnic").child(serveiTecnic.key)
+                serveiTecnicRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (!snapshot.child("documentsTecnic").exists() || !snapshot.child("documentsTecnicNames")
+                                .exists()
+                        ) return
+                        val documentsTecnic = snapshot.child("documentsTecnic").value as ArrayList<*>
+                        val documentsTecnicNames = snapshot.child("documentsTecnicNames").value as ArrayList<*>
+                        if (documentsTecnic.size > 0 && documentsTecnicNames.size > 0) {
+                            for (documentTecnic in documentsTecnic) {
+                                Toast.makeText(applicationContext, documentTecnic.toString(), Toast.LENGTH_SHORT).show()
+                                documentsTecnicList.add(documentTecnic.toString())
+                            }
+                            for (documentTecnicName in documentsTecnicNames) {
+                                documentsTecnicNamesList.add(documentTecnicName.toString())
+                            }
                         }
+                    }
 
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(applicationContext, "Error al carregar els documents", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+
+                val commentRef = database.getReference("serveiTecnic").child(serveiTecnic.key).child("comentarisTecnic")
+                commentRef.setValue(serveiTecnic.comentarisTecnic)
+
+                //upload images to firebase storage
+                val storageRef = Firebase.storage.reference
+
+                val fileUtils = FileUtils()
+
+                if (imageUris != null) {
+                    for (imageUri in imageUris) {
+                        val sd = fileUtils.getFileName(applicationContext, imageUri!!) ?: return@addOnSuccessListener
+                        val uploadTask =
+                            storageRef.child("serveiTecnic/" + serveiTecnic.key + "/" + sd).putFile(imageUri)
+                        uploadTask.addOnFailureListener {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(applicationContext, "Error al pujar la imatge", Toast.LENGTH_SHORT).show()
+                        }.addOnSuccessListener { taskSnapshot ->
+                            val imageRef = taskSnapshot.storage
+                            imageRef.downloadUrl.addOnSuccessListener {
+                                val downloadUrl = it.toString()
+                                //add downloadUrl to documentsTecnicList
+                                documentsTecnicList.add(downloadUrl)
+                                documentsTecnicNamesList.add(sd)
+
+                                //update documentsTecnicList and documentsTecnicNamesList in firebase realtime database
+                                val documentsTecnicRef =
+                                    database.getReference("serveiTecnic").child(serveiTecnic.key)
+                                        .child("documentsTecnic")
+                                documentsTecnicRef.setValue(documentsTecnicList)
+                                val documentsTecnicNamesRef =
+                                    database.getReference("serveiTecnic").child(serveiTecnic.key)
+                                        .child("documentsTecnicNames")
+                                documentsTecnicNamesRef.setValue(documentsTecnicNamesList)
+                            }
+
+
+                        }
 
                     }
 
                 }
-
             }
-
             //https://stackoverflow.com/questions/69002142/adding-multiple-images-as-an-email-attachment
         }
 
@@ -204,7 +218,31 @@ class ComandesTecnicActivity : AppCompatActivity() {
                     val comentarisTecnic = comanda.child("comentarisTecnic").value.toString()
                     val revision = comanda.child("revision").value.toString()
                     val revisionDate = comanda.child("revisionDate").value.toString().toLong()
-                    val serveiTecnicModel = ServeiTecnicModel(key, actionDate, albaraFile, albaraFileName, albaraNumber, albaraType, codeDistributor, currentDate, description, documents, documentsNames, emailDistributor, finalClientAddress, finalClientName, finalClientPhone, isMesura, nameDistributor, tecnicName, tecnicId, comentarisTecnic, revision, revisionDate, stateServei)
+                    val serveiTecnicModel = ServeiTecnicModel(
+                        key,
+                        actionDate,
+                        albaraFile,
+                        albaraFileName,
+                        albaraNumber,
+                        albaraType,
+                        codeDistributor,
+                        currentDate,
+                        description,
+                        documents,
+                        documentsNames,
+                        emailDistributor,
+                        finalClientAddress,
+                        finalClientName,
+                        finalClientPhone,
+                        isMesura,
+                        nameDistributor,
+                        tecnicName,
+                        tecnicId,
+                        comentarisTecnic,
+                        revision,
+                        revisionDate,
+                        stateServei
+                    )
                     serveisList.add(serveiTecnicModel)
                 }
             }
