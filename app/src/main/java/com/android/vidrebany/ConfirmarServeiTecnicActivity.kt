@@ -2,6 +2,8 @@ package com.android.vidrebany
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -9,19 +11,22 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
+import android.provider.MediaStore
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.android.vidrebany.models.ServeiTecnicModel
-import com.google.firebase.database.FirebaseDatabase
 import se.warting.signatureview.views.SignaturePad
 import se.warting.signatureview.views.SignedListener
 import java.io.File
@@ -41,6 +46,11 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
     private var dni: String? = null
     private var comentaris: String? = null
     private var imageUris: ArrayList<Uri> = ArrayList()
+    private var cameraImageUri: Uri? = null
+    private var CAMERA_REQUEST_CODE: Int = 100
+    private var resultLauncher: ActivityResultLauncher<Intent>? = null
+    private var cameraResultLauncher: ActivityResultLauncher<Intent>? = null
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmar_servei_tecnic)
@@ -60,13 +70,11 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
         dniEt = findViewById(R.id.etDni)
         nomEt = findViewById(R.id.etNom)
 
-        if (comentarisEt != null) {
-            comentarisEt.setText(serveiTecnic?.comentarisTecnic)
-        }
+        comentarisEt?.setText(serveiTecnic?.comentarisTecnic)
 
 
-        val btnSign = findViewById<android.widget.Button>(R.id.btnSign)
-        val btnClear = findViewById<android.widget.Button>(R.id.btnClear)
+        val btnSign = findViewById<Button>(R.id.btnSign)
+        val btnClear = findViewById<Button>(R.id.btnClear)
 
         signaturePad.setOnSignedListener(object : SignedListener {
             override fun onStartSigning() {
@@ -88,6 +96,7 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
 
         btnClear.setOnClickListener {
             if (signaturePad.isEmpty) {
+
                 Toast.makeText(this, "No hi ha firma", Toast.LENGTH_SHORT).show()
             } else {
                 //save signature
@@ -114,7 +123,7 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
             }
         }
 
-        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 // There are no request codes
                 val data: Intent? = result.data
@@ -130,37 +139,99 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
 
                         }
                     } else if (data.data != null) {
+                        //Toast type of data
                         val imageUri: Uri = data.data!!
                         imageUris.add(imageUri)
                         val imagesText = imageUris.size.toString() + " imatges seleccionades"
                         selectedImagesTv.text = imagesText
                     }
                 }
+
+
                 //Toast the names of the selected images
                 Toast.makeText(this, "Imatges sel·leccionades: " + imageUris.size, Toast.LENGTH_SHORT).show()
             }
         }
 
-        selectImages.setOnClickListener {
+        cameraResultLauncher = registerForActivityResult(
+            StartActivityForResult()
+        ) { result ->
+            if (result.getResultCode().equals(RESULT_OK)) {
+                // There are no request codes
+                imageUris.add(cameraImageUri!!)
+                val imagesText = imageUris.size.toString() + " imatges seleccionades"
+                selectedImagesTv.text = imagesText
+            }
+        }
 
+        selectImages.setOnClickListener {
+            //create a dialog to choose if pick from camera or gallery
+            AlertDialog.Builder(this)
+                .setTitle("Selecciona una opció")
+                .setPositiveButton("Galeria") { dialog, which ->
+                    //pick from gallery
+                    pickFromGallery(resultLauncher!!)
+                }
+                .setNegativeButton("Càmera") { dialog, which ->
+                    //pick from camera
+                    pickFromCamera()
+                }
+                .show()
+/*
             // initialising intent
             val intent = Intent()
 
             // setting type to select to be image
-            intent.type = "image/*"
+            intent.type = "image/ *"
 
 
             // allowing multiple image to be selected
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
-            resultLauncher.launch(intent)
+            resultLauncher.launch(intent)*/
         }
 
 
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun pickFromCamera() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
 
+                // You can use the API that requires the permission.
+                val contentValues = ContentValues()
+                contentValues.put(MediaStore.Images.Media.TITLE, "Imatge Tècnic Transportista" + serveiTecnic!!.albaraNumber)
+                contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Imatge Tècnic Revisió")
+                cameraImageUri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
+
+
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, cameraImageUri)
+
+                cameraResultLauncher?.launch(intent)
+            }
+            else -> {
+                // You can directly ask for the permission.
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            }
+        }
+
+
+
+
+    }
+
+    private fun pickFromGallery(resultLauncher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        resultLauncher.launch(intent)
+
+    }
 
     private fun createSignatureContent() {
         // Create the file directory
@@ -225,6 +296,7 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>, grantResults: IntArray
     ) {
@@ -247,6 +319,20 @@ class ConfirmarServeiTecnicActivity : AppCompatActivity() {
                     Toast.makeText(this, "Has de concedir el permís d'emmagatzemament.", Toast.LENGTH_SHORT).show()
                 }
                 return
+            }
+
+            CAMERA_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    pickFromCamera()
+                } else {
+                    // Explain to the user that the feature is unavailable because
+                    // the features requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                    Toast.makeText(this, "Has de concedir el permís de càmera.", Toast.LENGTH_SHORT).show()
+                }
             }
 
             // Add other 'when' lines to check for other
