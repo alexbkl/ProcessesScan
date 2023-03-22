@@ -43,7 +43,6 @@ class TecnicAdapter(private val tecnicsList: ArrayList<TecnicModel>) :
             //go to ComandesTecnicActivity from intent
             val intent = Intent(holder.itemView.context, ComandesTecnicActivity::class.java)
             holder.itemView.context.startActivity(intent)
-            Toast.makeText(holder.itemView.context, tecnic.name, Toast.LENGTH_SHORT).show()
         }
     }
 

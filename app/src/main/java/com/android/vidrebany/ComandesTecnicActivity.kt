@@ -104,7 +104,6 @@ class ComandesTecnicActivity : AppCompatActivity() {
                         val documentsTecnicNames = snapshot.child("documentsTecnicNames").value as ArrayList<*>
                         if (documentsTecnic.size > 0 && documentsTecnicNames.size > 0) {
                             for (documentTecnic in documentsTecnic) {
-                                Toast.makeText(applicationContext, documentTecnic.toString(), Toast.LENGTH_SHORT).show()
                                 documentsTecnicList.add(documentTecnic.toString())
                             }
                             for (documentTecnicName in documentsTecnicNames) {

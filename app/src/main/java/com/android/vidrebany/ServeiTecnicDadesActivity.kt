@@ -89,13 +89,13 @@ class ServeiTecnicDadesActivity : AppCompatActivity() {
         //confirmBtn on click, sends the serveiTecnic to confirmarServeiTecnicActivity
         confirmBtn.setOnClickListener {
             //if isMesura is false:
-            if (!serveiTecnic?.isMesura!!) {
+            //if (!serveiTecnic?.isMesura!!) {
                 val intent = Intent(this, ConfirmarServeiTecnicActivity::class.java)
                 intent.putExtra("serveiTecnic", serveiTecnic)
                 startActivity(intent)
-            } else {
-                Toast.makeText(this, "Mesura encara no implementat", Toast.LENGTH_SHORT).show()
-            }
+            //} else {
+            //    Toast.makeText(this, "Mesura encara no implementat", Toast.LENGTH_SHORT).show()
+            //}
         }
     }
 
